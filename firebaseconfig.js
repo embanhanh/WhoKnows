@@ -1,9 +1,9 @@
 import { initializeApp } from "firebase/app";
-import "firebase/auth"
-import "firebase/analytics"
-import "firebase/firestore"
+import { getAuth } from "firebase/auth"
+import { getFirestore } from "firebase/firestore"
 
-import {API_KEY,
+import {
+    API_KEY,
     AUTH_DOMAIN,
     PROJECT_ID,
     STORAGE_BUCKET,
@@ -22,3 +22,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+export const auth = getAuth();
+export const database = getFirestore()
+
+export default app

@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-google-signin/google-signin": "^11.0.0",
     "@react-navigation/native": "^6.1.15",
     "@react-navigation/stack": "^6.3.26",
     "expo": "~50.0.11",
