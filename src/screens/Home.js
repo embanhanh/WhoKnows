@@ -9,12 +9,12 @@ function Home( { navigation }) {
         <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
             <Text>Home</Text>
             <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
-                <Text>Go to
+                <Text>Sign in screen
                 </Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-                <Text>Go to 1
+                <Text>Sìgn Up screen
                 </Text>
             </TouchableOpacity>
         </View>

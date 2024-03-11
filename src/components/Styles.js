@@ -14,62 +14,6 @@ const styles = StyleSheet.create({
 
     title: {
         flex: 3,
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: "relative",
-    },
-
-    titleIcon: {
-        position:"absolute",
-        bottom: "17%"
-    },
-
-    plusIcon:{
-        position:"absolute",
-        top: "50%",
-        right:"15%",
-    },
-
-    minusIcon:{
-        position:"absolute",
-        top: "76%",
-        right:"15%",
-    },
-
-    divideIcon: {
-        position:"absolute",
-        top: "60%",
-        left: "14%",
-    },
-
-    equalIcon: {
-        position:"absolute",
-        top: "77%",
-        left: "25%",
-    },
-
-    multiplyIcon: {
-        position:"absolute",
-        top: "25%",
-        right:"2%",
-    },
-
-    moreThanIcon: {
-        position:"absolute",
-        top: "2%",
-        right:"10%",
-    },
-
-    lessThanIcon: {
-        position:"absolute",
-        top: "35%",
-        left: "4%",
-    },
-
-    percentageIcon: {
-        position:"absolute",
-        top: "5%",
-        left: "21%",
     },
 
     login: {
@@ -128,10 +72,10 @@ const styles = StyleSheet.create({
 
     loginButton: {
         marginTop: 15,
-        fontSize: 26,
+        fontSize: 24,
         fontWeight: "bold",
         color: "white",
-        paddingHorizontal: 125,
+        paddingHorizontal: 128,
         paddingVertical: 10,
         backgroundColor: "#6938EF",
         borderRadius: 15,
