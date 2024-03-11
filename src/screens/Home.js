@@ -6,7 +6,7 @@ function Home( { navigation }) {
 
 
     return ( 
-        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+        <View style={{flex: 1, justifyContent: "flex-end", alignItems: "center"}}>
             <Text>Home</Text>
             <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
                 <Text>Go to
