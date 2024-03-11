@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import ButtonType from "../components/ButtonType";
 
 function Home( { navigation }) {
 
@@ -11,6 +12,7 @@ function Home( { navigation }) {
                 <Text>Go to
                 </Text>
             </TouchableOpacity>
+            <ButtonType></ButtonType>
         </View>
     );
 }
