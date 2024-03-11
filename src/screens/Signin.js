@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, Image, TextInput, TouchableOpacity, Pressable } from "react-native";
+import { View, Text, Image, TextInput, TouchableOpacity, Pressable, KeyboardAvoidingView } from "react-native";
 
 import styles from "../components/Styles.js";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconPass from 'react-native-vector-icons/FontAwesome'
+import { useRoute } from "@react-navigation/native";
 
 function Signin() {
     return ( 
@@ -25,20 +26,22 @@ function Signin() {
                     <Text style={styles.textHeader}>Sign In</Text>
                 </View>
 
-                <View style={styles.inputAcc}>
-                    <Icon name="gmail" size={30}></Icon>
-                    <TextInput style={styles.email}
-                                placeholder="Gmail adress"/>
-                </View>
-
-                <View>
-                    <View style={styles.inputPass}>
-                        <IconPass name="lock" size={30}></IconPass>
-                        <TextInput style={styles.password} 
-                                    placeholder="Password"/>
+                <KeyboardAvoidingView>
+                    <View style={styles.inputAcc}>
+                        <Icon name="gmail" size={30}></Icon>
+                        <TextInput style={styles.email}
+                                    placeholder="Gmail adress"/>
                     </View>
-                    <Text style={styles.textForgot}>Forgot your password ?</Text>
-                </View>
+
+                    <View>
+                        <View style={styles.inputPass}>
+                            <IconPass name="lock" size={30}></IconPass>
+                            <TextInput style={styles.password} 
+                                        placeholder="Password"/>
+                        </View>
+                        <Text style={styles.textForgot}>Forgot your password ?</Text>
+                    </View>
+                </KeyboardAvoidingView>
 
                 <TouchableOpacity>
                     <Text style={styles.loginButton}>
@@ -51,9 +54,11 @@ function Signin() {
                         Don't have an account?
                     </Text>
 
-                    <Text style={styles.textSignIU}>
-                        SignUp
-                    </Text>
+                    <Pressable>
+                        <Text style={styles.textSignIU}>
+                            SignUp
+                        </Text>
+                    </Pressable>
                 </View>
             </View>
         </View>

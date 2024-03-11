@@ -50,9 +50,11 @@ function Signup() {
                         Already have an account?
                     </Text>
 
-                    <Text style={styles.textSignIU}>
-                        Sign In
-                    </Text>
+                    <Pressable>
+                        <Text style={styles.textSignIU}>
+                            Sign In
+                        </Text>
+                    </Pressable>
                 </View>
             </View>
         </View>
