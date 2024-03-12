@@ -1,24 +1,64 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import Buttons from "../components/Styles.js";
+import { signOut } from "firebase/auth";
+import React, { useContext, useState } from "react";
+import { View, Text, TouchableOpacity, Alert, StyleSheet, TextInput } from "react-native";
+import { auth, database } from "../../firebaseconfig";
+import userContext from "../AuthContext/AuthProvider";
 
-function Home( { navigation }) {
-
-
+function Home() {
+    
     return ( 
         <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-            <Text>Home</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
-                <Text>Sign in screen
-                </Text>
-            </TouchableOpacity>
+            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                <Text>Home</Text>
+                <TouchableOpacity   hableOpacity onPress={() => signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))}>
+                    <Text>Log out
+                    </Text>
+                </TouchableOpacity>
+            </View>
+            <View  style={styles.chatbox}>
+                <View style={styles.chatspace}>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-                <Text>Sìgn Up screen
-                </Text>
-            </TouchableOpacity>
+                </View>
+                <View style={styles.inputchat}>
+                    <TextInput style={styles.message}></TextInput>
+                    <TouchableOpacity style={styles.btnSend}>
+                        <Text>gửi</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         </View>
     );
 }
 
 export default Home;
+
+const styles = StyleSheet.create({
+    chatbox: {
+        alignSelf:"flex-end",
+        flex: 1,
+        width: "100%",
+        backgroundColor: "#333"
+    },
+    chatspace:{
+        height: "90%",
+        backgroundColor: "#fff"
+    },
+    inputchat:{
+        flexDirection: "row"
+    },
+    message:{
+        width: "80%",
+        backgroundColor: "#fff",
+        borderWidth: 1,
+        borderColor: "#000",
+        fontSize: 15
+    },
+    btnSend:{
+        backgroundColor: "blue",
+        alignItems:"center",
+        justifyContent:"center",
+        borderWidth: 1,
+        borderColor: "#000",
+        width: 50
+    }
+})

@@ -1,14 +1,11 @@
 import { StyleSheet } from 'react-native';
+import mainStyles from './mainstyle.js'
 
 const styles = StyleSheet.create({
 
-    commonStyle: {
-        primaryColor: '#0e252d'
-    },
-
     containers: {
         flex: 1,
-        backgroundColor: '#0e252d',
+        backgroundColor: mainStyles.primaryColor,
         paddingTop: 30,
     },
 
