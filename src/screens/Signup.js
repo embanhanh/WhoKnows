@@ -5,7 +5,7 @@ import IconPass from 'react-native-vector-icons/FontAwesome'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import styles from "../components/Styles.js";
-import LoginTitle from "../components/IconAndImage/index.js"
+import LoginTitle from "../components/loginTitle.js";
 import { auth } from "../../firebaseconfig.js";
 
 function SignUp({ navigation }) {
@@ -63,18 +63,18 @@ function SignUp({ navigation }) {
 
                 <TouchableOpacity onPress={handleSignup}>
                     <Text style={styles.loginButton}>
-                        Sign Up
+                        Đăng ký
                     </Text>
                 </TouchableOpacity>
 
                 <View style={styles.signUpAccount}>
                     <Text style={styles.text}>
-                        Already have an account?
+                        Bạn đã có tài khoản?
                     </Text>
 
                     <Pressable onPress={() => navigation.navigate('Signin')}>
                         <Text style={styles.textSignIU}>
-                            Sign In
+                            Đăng nhập
                         </Text>
                     </Pressable>
                 </View>

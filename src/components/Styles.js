@@ -9,6 +9,13 @@ const styles = StyleSheet.create({
         paddingTop: 30,
     },
 
+    scrollViewContent: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+
     title: {
         flex: 3,
     },
@@ -29,53 +36,67 @@ const styles = StyleSheet.create({
     },
 
     inputAcc: {
-        marginTop: 30,
-        paddingHorizontal: 10,
+        marginTop: "5%",
+        marginHorizontal: "2%",
+        paddingVertical: "3%",
+        paddingHorizontal: "4%",
         flexDirection: "row",
         backgroundColor: "#00FFDF",
         borderRadius: 15,
         alignItems: "center",
-        paddingVertical: 10,
     },
 
     email: {
-        fontSize: 16,
-        width: 280,
-        marginLeft: 10,
+        fontSize: 18,
+        width: "80%",
+        height: "80%",
+        marginLeft: "2%",
     },
 
     inputPass: {
-        marginTop: 15,
-        paddingHorizontal: 15,
+        marginTop: "5%",
+        marginHorizontal: "2%",
+        paddingVertical: "3%",
+        paddingHorizontal: "4%",
         flexDirection: "row",
         backgroundColor: "#00FFDF",
         borderRadius: 15,
         alignItems: "center",
-        paddingVertical: 10,
     },
 
     password: {
-        fontSize: 16,
-        width: 280,
-        marginLeft: 10,
+        fontSize: 18,
+        width: "80%",
+        height: "80%",
+        marginLeft: "3%",
     },
 
     textForgot: {
         fontSize: 16,
         color: "gray",
         marginTop: 10,
-        marginLeft: 170,
+        marginLeft: "57%",
+    },
+
+    iconGmail: {
+        fontSize: 25,
+    },
+
+    iconPass: {
+        fontSize: 25,
+        marginLeft: "1%"
     },
 
     loginButton: {
         marginTop: 15,
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: "bold",
         color: "white",
-        paddingHorizontal: 128,
-        paddingVertical: 10,
         backgroundColor: "#6938EF",
         borderRadius: 15,
+        paddingHorizontal: "30%",
+        paddingVertical: "3%",
+        textAlign: "center",
     },
 
     signUpAccount: {
