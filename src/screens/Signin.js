@@ -37,7 +37,7 @@ function Signin({ navigation }) {
                     <View style={styles.inputAcc}>
                         <Icon name="gmail" style={styles.iconGmail}></Icon>
                         <TextInput style={styles.email}
-                                    placeholder="Gmail adress"
+                                    placeholder="Gmail"
                                     keyboardType="email-address"
                                     textContentType="emailAddress"
                                     value={email}
@@ -49,7 +49,7 @@ function Signin({ navigation }) {
                     <View style={styles.inputPass}>
                         <IconPass name="lock" style={styles.iconPass}></IconPass>
                         <TextInput style={styles.password} 
-                                    placeholder="Password"
+                                    placeholder="Mật khẩu"
                                     secureTextEntry={true}
                                     textContentType="password"
                                     value={password}

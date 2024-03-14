@@ -52,7 +52,7 @@ function SignUp({ navigation }) {
                     <View style={styles.inputPass}>
                         <IconPass name="lock" size={30}></IconPass>
                         <TextInput style={styles.password} 
-                                     placeholder="Password"
+                                     placeholder="Mật khẩu"
                                      secureTextEntry={true}
                                      textContentType="password"
                                      value={password}

@@ -31,6 +31,6 @@ const LogoGame = () => {
         position:"absolute",
         width: "80%",
         height: "80%",
-        bottom: "10%"
+        bottom: "15%"
     },
 });
