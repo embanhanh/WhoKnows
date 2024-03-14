@@ -9,6 +9,7 @@ import Signin from './src/screens/Signin';
 import Signup from './src/screens/Signup';
 import { auth } from './firebaseconfig';
 import userContext from './src/AuthContext/AuthProvider';
+import TabNavigation from './src/components/TabNavigation';
 
 const Stack = createStackNavigator()
 
@@ -38,7 +39,7 @@ export default function App() {
       <NavigationContainer >
         <Stack.Navigator screenOptions={{headerShown: false}} >
           {
-            user ? (<Stack.Screen name='Home' component={Home}></Stack.Screen>) :
+            user ? (<Stack.Screen name='AppScreen' component={TabNavigation}></Stack.Screen>) :
             (<><Stack.Screen name='Signin' component={Signin} ></Stack.Screen>
             <Stack.Screen name='Signup' component={Signup} ></Stack.Screen></>)
           }  

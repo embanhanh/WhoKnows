@@ -15,17 +15,16 @@ function Home() {
                     </Text>
                 </TouchableOpacity>
             </View>
-            <View  style={styles.chatbox}>
-                <View style={styles.chatspace}>
-
-                </View>
+            {/* <View  style={styles.chatbox}>
+                <View style={styles.chatspace}></View>
+                
                 <View style={styles.inputchat}>
                     <TextInput style={styles.message}></TextInput>
                     <TouchableOpacity style={styles.btnSend}>
                         <Text>gửi</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </View> */}
         </View>
     );
 }
