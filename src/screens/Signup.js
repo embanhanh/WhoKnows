@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { View, Text, TextInput, TouchableOpacity, Pressable, SafeAreaView, Alert } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import IconPass from 'react-native-vector-icons/FontAwesome'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import styles from "../components/Styles.js";
@@ -12,6 +12,7 @@ function SignUp({ navigation }) {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSignup = () =>{
         if(email !== "" && password !== "")
@@ -24,7 +25,11 @@ function SignUp({ navigation }) {
             })
             .catch((e) => Alert.alert("Đăng ký không thành công", e.Message))
         }
-    }
+    };
+
+    const toggleShowPassword = () =>{
+        setShowPassword(!showPassword);
+    };
 
     return ( 
         <View style={styles.containers } >
@@ -37,10 +42,10 @@ function SignUp({ navigation }) {
                     <Text style={styles.textHeader}>Welcome!!</Text>
                 </View>
 
-                <View style={styles.inputAcc}>
-                    <Icon name="gmail" size={30}></Icon>
+                <View style={styles.inputText}>
+                    <Icon name="gmail" style={styles.icon}></Icon>
                     <TextInput style={styles.email}
-                                placeholder="Gmail adress"
+                                placeholder="Gmail"
                                 keyboardType="email-address"
                                 textContentType="emailAddress"
                                 value={email}
@@ -49,20 +54,23 @@ function SignUp({ navigation }) {
                 </View>
 
                 <View>
-                    <View style={styles.inputPass}>
-                        <IconPass name="lock" size={30}></IconPass>
-                        <TextInput style={styles.password} 
+                    <View style={styles.inputText}>
+                        <Icon name="lock" style={styles.icon}></Icon>
+                        <TextInput style={styles.pass} 
                                      placeholder="Mật khẩu"
-                                     secureTextEntry={true}
+                                     secureTextEntry={!showPassword}
                                      textContentType="password"
                                      value={password}
                                      onChangeText={(text) => setPassword(text)}
                         />
+                        <TouchableOpacity style={styles.toggleButton} onPress={toggleShowPassword}>
+                            <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" />
+                        </TouchableOpacity>
                     </View>
                 </View>
 
                 <TouchableOpacity onPress={handleSignup}>
-                    <Text style={styles.loginButton}>
+                    <Text style={styles.signUpButton}>
                         Đăng ký
                     </Text>
                 </TouchableOpacity>

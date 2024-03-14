@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     containers: {
         flex: 1,
         backgroundColor: mainStyles.primaryColor,
-        paddingTop: 30,
+        paddingTop: "10%",
     },
 
     scrollViewContent: {
@@ -23,10 +23,11 @@ const styles = StyleSheet.create({
     login: {
         flex: 4,
         alignItems: "center",
+        alignSelf: "center"
     },
 
     header: {
-        paddingVertical: 0,
+        paddingVertical: "1%",
     },
 
     textHeader: {
@@ -35,66 +36,56 @@ const styles = StyleSheet.create({
         fontSize: 40,
     },
 
-    inputAcc: {
+    inputText: {
         marginTop: "5%",
-        marginHorizontal: "2%",
         paddingVertical: "3%",
-        paddingHorizontal: "4%",
+        paddingHorizontal: "3%",
+        width: "85%",
         flexDirection: "row",
         backgroundColor: "#00FFDF",
         borderRadius: 15,
         alignItems: "center",
+        justifyContent: "space-between",
+    },
+
+    icon:{
+        fontSize: 25,
     },
 
     email: {
         fontSize: 18,
-        width: "80%",
-        height: "80%",
-        marginLeft: "2%",
+        width: "89%"
     },
 
-    inputPass: {
-        marginTop: "5%",
-        marginHorizontal: "2%",
-        paddingVertical: "3%",
-        paddingHorizontal: "4%",
-        flexDirection: "row",
-        backgroundColor: "#00FFDF",
-        borderRadius: 15,
-        alignItems: "center",
-    },
-
-    password: {
+    pass: {
         fontSize: 18,
-        width: "80%",
-        height: "80%",
-        marginLeft: "3%",
+        width: "76%",
     },
 
-    textForgot: {
-        fontSize: 16,
-        color: "gray",
-        marginTop: 10,
-        marginLeft: "57%",
-    },
-
-    iconGmail: {
-        fontSize: 25,
-    },
-
-    iconPass: {
-        fontSize: 25,
-        marginLeft: "1%"
+    toggleButton:{
+        width: "10%",
     },
 
     loginButton: {
-        marginTop: 15,
+        marginTop: "5%",
         fontSize: 20,
         fontWeight: "bold",
         color: "white",
         backgroundColor: "#6938EF",
         borderRadius: 15,
         paddingHorizontal: "30%",
+        paddingVertical: "3%",
+        textAlign: "center",
+    },
+
+    signUpButton: {
+        marginTop: "5%",
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "white",
+        backgroundColor: "#6938EF",
+        borderRadius: 15,
+        paddingHorizontal: "33%",
         paddingVertical: "3%",
         textAlign: "center",
     },
