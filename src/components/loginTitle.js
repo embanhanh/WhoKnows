@@ -21,7 +21,7 @@ const LoginTitle = () => {
 
   const Style = StyleSheet.create({
     title: {
-        flex: 1,
+        flex: 1,                      
         position: "relative",
         justifyContent: 'center',
         alignItems: 'center',

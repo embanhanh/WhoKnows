@@ -69,11 +69,14 @@ function SignUp({ navigation }) {
                     </View>
                 </View>
 
-                <TouchableOpacity onPress={handleSignup}>
-                    <Text style={styles.signUpButton}>
-                        Đăng ký
-                    </Text>
-                </TouchableOpacity>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.mainButton} onPress={handleSignup}>
+                        <View style={styles.backgroundBehindText}/>
+                        <Text style={styles.textButton}>
+                            Đăng ký
+                        </Text>
+                    </TouchableOpacity>
+                </View>
 
                 <View style={styles.signUpAccount}>
                     <Text style={styles.text}>

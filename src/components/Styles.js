@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     containers: {
         flex: 1,
         backgroundColor: mainStyles.primaryColor,
-        paddingTop: "10%",
+        paddingTop: "15%",
     },
 
     scrollViewContent: {
@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-
 
     title: {
         flex: 3,
@@ -66,29 +65,30 @@ const styles = StyleSheet.create({
         width: "10%",
     },
 
-    loginButton: {
-        marginTop: "5%",
-        fontSize: 20,
-        fontWeight: "bold",
-        color: "white",
-        backgroundColor: "#6938EF",
-        borderRadius: 15,
-        paddingHorizontal: "30%",
-        paddingVertical: "3%",
-        textAlign: "center",
+    buttonContainer: {
+        marginTop: "6%",
+        alignItems: 'center',
     },
 
-    signUpButton: {
-        marginTop: "5%",
+    mainButton: {
+        position: "relative",
+        paddingVertical: "3%",
+        justifyContent: 'center',
+        alignItems: 'center',
+        minWidth: "85%",
+    },
+
+    textButton: {
         fontSize: 20,
-        fontWeight: "bold",
         color: "white",
+        fontWeight: "bold",
+    },
+
+    backgroundBehindText: {
+        ...StyleSheet.absoluteFillObject,
         backgroundColor: "#6938EF",
         borderRadius: 15,
-        paddingHorizontal: "33%",
-        paddingVertical: "3%",
-        textAlign: "center",
-    },
+      },
 
     signUpAccount: {
         flexDirection: "row",
@@ -106,7 +106,63 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         marginLeft: 5,
-    }
+    },
+
+    setting: {
+        flex: 1,
+        marginTop: "20%",
+        marginLeft: "60%",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    settingButton: {
+        borderWidth: 3,
+        borderColor: "white",
+        alignItems: "center",
+        marginHorizontal: "5%",
+        justifyContent: "center",
+    },
+
+    settingIcon: {
+        color: "#ffffff",
+        marginHorizontal: "4%",
+        marginVertical: "4%",
+    },
+
+    //Home
+    container: {
+        flex: 1,
+        paddingTop: "20%",
+    },
+
+    backgroundImage: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        resizeMode: "cover"
+    },
+
+    image: {
+        flex: 1,
+        justifyContent: "center",
+    },
+    content: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    button: {
+        backgroundColor: "rgba(0,0,0,0.5)",
+        color: "white",
+        paddingHorizontal: "30%",
+        paddingVertical: "4%",
+        marginTop: "10%",
+        borderRadius: 10,
+        fontSize: 20,
+    },
 });
 
 export default styles

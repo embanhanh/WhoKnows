@@ -64,11 +64,14 @@ function Signin({ navigation }) {
                 </View>
                 
 
-                <TouchableOpacity onPress={handleLogin}>
-                    <Text style={styles.loginButton}>
-                        Đăng nhập
-                    </Text>
-                </TouchableOpacity>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.mainButton} onPress={handleLogin}>
+                        <View style={styles.backgroundBehindText}/>
+                        <Text style={styles.textButton}>
+                            Đăng nhập
+                        </Text>
+                    </TouchableOpacity>
+                </View>
 
                 <View style={styles.signUpAccount}>
                     <Text style={styles.text}>

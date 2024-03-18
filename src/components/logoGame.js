@@ -4,7 +4,7 @@ import { View, Image, StyleSheet } from "react-native"
 const LogoGame = () => {
     return (
         <View style={Style.title}>
-            <Image source={require('../assets/img/Logo.png')} style={Style.logoImage}></Image>
+            <Image source={require('../assets/img/LogoGif.gif')} style={Style.logoImage}></Image>
             <Image source={require('../assets/img/logoTitle.png')} style={Style.titleIcon}></Image>
         </View> 
     )
@@ -31,6 +31,7 @@ const LogoGame = () => {
         position:"absolute",
         width: "80%",
         height: "80%",
-        bottom: "15%"
+        bottom: "15%",
+        resizeMode: "contain"
     },
 });

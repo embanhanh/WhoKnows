@@ -1,63 +1,69 @@
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome.js';
 import { signOut } from "firebase/auth";
-import React, { useContext, useState } from "react";
-import { View, Text, TouchableOpacity, Alert, StyleSheet, TextInput } from "react-native";
 import { auth, database } from "../../firebaseconfig";
 import userContext from "../AuthContext/AuthProvider";
 
+import styles from "../components/Styles.js";
+import LogoGame from "../components/logoGame.js";
+import { useNavigation } from "@react-navigation/native";
+
 function Home() {
-    
+    const navigation = useNavigation();
+
+    const handlePlayNow = () => {
+        navigation.navigate('Room');
+    };
+
     return ( 
-        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <Text>Home</Text>
-                <TouchableOpacity   hableOpacity onPress={() => signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))}>
-                    <Text>Log out
-                    </Text>
-                </TouchableOpacity>
-            </View>
-            {/* <View  style={styles.chatbox}>
-                <View style={styles.chatspace}></View>
-                
-                <View style={styles.inputchat}>
-                    <TextInput style={styles.message}></TextInput>
-                    <TouchableOpacity style={styles.btnSend}>
-                        <Text>gửi</Text>
-                    </TouchableOpacity>
+        <ImageBackground source={require('../assets/img/HomeScreen.jpg')} style={styles.backgroundImage}>
+            <View style={styles.container} >
+                <View style={styles.title}>
+                    <LogoGame/>
                 </View>
-            </View> */}
-        </View>
+
+                {/* <TouchableOpacity onPress={() => signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))}>
+                            <Text>Log out</Text>
+                </TouchableOpacity> */}
+
+                <SafeAreaView style={styles.login}>
+                    <View style={styles.header}>
+                        <Text style={styles.textHeader}></Text>
+                    </View>
+
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.mainButton} onPress={handlePlayNow}>
+                            <View style={styles.backgroundBehindText}/>
+                            <Text style={styles.textButton}>
+                                Chơi Ngay
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.mainButton}>
+                            <View style={styles.backgroundBehindText}/>
+                            <Text style={styles.textButton}>
+                                Tạo Phòng
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.setting}>
+                        <TouchableOpacity style={styles.settingButton}>
+                            <Icon name="gear" size={30} style={styles.settingIcon}></Icon>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.settingButton}>
+                            <Icon name="user" size={30} style={styles.settingIcon}></Icon>
+                        </TouchableOpacity>
+                    </View>
+                </SafeAreaView>
+            </View>
+        </ImageBackground>
     );
 }
 
 export default Home;
 
-const styles = StyleSheet.create({
-    chatbox: {
-        alignSelf:"flex-end",
-        flex: 1,
-        width: "100%",
-        backgroundColor: "#333"
-    },
-    chatspace:{
-        height: "90%",
-        backgroundColor: "#fff"
-    },
-    inputchat:{
-        flexDirection: "row"
-    },
-    message:{
-        width: "80%",
-        backgroundColor: "#fff",
-        borderWidth: 1,
-        borderColor: "#000",
-        fontSize: 15
-    },
-    btnSend:{
-        backgroundColor: "blue",
-        alignItems:"center",
-        justifyContent:"center",
-        borderWidth: 1,
-        borderColor: "#000",
-        width: 50
-    }
-})
