@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, ActivityIndicator, Modal } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import { signOut } from "firebase/auth";
 import { auth, database } from "../../firebaseconfig";
@@ -7,13 +7,20 @@ import userContext from "../AuthContext/AuthProvider";
 
 import styles from "../components/Styles.js";
 import LogoGame from "../components/logoGame.js";
+import LoadingScreen from './LoadingScreen.js';
 import { useNavigation } from "@react-navigation/native";
+
 
 function Home() {
     const navigation = useNavigation();
+    const [modalVisible, setModalVisible] = useState(false);
 
     const handlePlayNow = () => {
-        navigation.navigate('Room');
+        navigation.navigate('GameScreen');
+    };
+
+    const handleProfile = () => {
+        navigation.navigate('Profile');
     };
 
     return ( 
@@ -22,10 +29,6 @@ function Home() {
                 <View style={styles.title}>
                     <LogoGame/>
                 </View>
-
-                {/* <TouchableOpacity onPress={() => signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))}>
-                            <Text>Log out</Text>
-                </TouchableOpacity> */}
 
                 <SafeAreaView style={styles.login}>
                     <View style={styles.header}>
@@ -51,16 +54,29 @@ function Home() {
                     </View>
 
                     <View style={styles.setting}>
-                        <TouchableOpacity style={styles.settingButton}>
+                        <TouchableOpacity style={styles.settingButton} onPress={() => setModalVisible(true)}>
                             <Icon name="gear" size={30} style={styles.settingIcon}></Icon>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.settingButton}>
+                        <TouchableOpacity style={styles.settingButton} onPress={handleProfile}>
                             <Icon name="user" size={30} style={styles.settingIcon}></Icon>
                         </TouchableOpacity>
                     </View>
                 </SafeAreaView>
             </View>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    
+                </View>
+            </Modal>
         </ImageBackground>
     );
 }

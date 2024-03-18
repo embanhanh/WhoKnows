@@ -31,7 +31,7 @@ const LogoGame = () => {
         position:"absolute",
         width: "80%",
         height: "80%",
-        bottom: "15%",
+        bottom: "20%",
         resizeMode: "contain"
     },
 });

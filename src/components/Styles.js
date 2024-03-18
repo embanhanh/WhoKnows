@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     containers: {
         flex: 1,
         backgroundColor: mainStyles.primaryColor,
-        paddingTop: "15%",
+        paddingTop: "10%",
     },
 
     scrollViewContent: {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        paddingVertical: "1%",
+        paddingVertical: "0%",
     },
 
     textHeader: {
@@ -141,27 +141,30 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
-        resizeMode: "cover"
+        resizeMode: "cover",
     },
 
-    image: {
-        flex: 1,
-        justifyContent: "center",
-    },
-    content: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+    //ModalSetting
+    modalContainer: {
+        backgroundColor: "white",
+        width: "80%",
+        height: "80%",
+        alignSelf: "center",
+        justifyContent: "center"
     },
 
-    button: {
-        backgroundColor: "rgba(0,0,0,0.5)",
-        color: "white",
-        paddingHorizontal: "30%",
-        paddingVertical: "4%",
+    //Profile
+    headerProfile: {
+        paddingVertical: "0%",
+        marginRight: "50%",
+    },
+
+    avatar: {
         marginTop: "10%",
-        borderRadius: 10,
-        fontSize: 20,
+        paddingHorizontal: "13%",
+        paddingVertical: "11%",
+        borderRadius: 50,
+        backgroundColor: "white",
     },
 });
 

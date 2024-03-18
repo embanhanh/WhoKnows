@@ -9,7 +9,9 @@ import Signin from './src/screens/Signin';
 import Signup from './src/screens/Signup';
 import { auth } from './firebaseconfig';
 import userContext from './src/AuthContext/AuthProvider';
-import Room from './src/screens/Room';
+import GameScreen from './src/screens/GameScreen';
+import LoadingScreen from './src/screens/LoadingScreen';
+import Profile from './src/screens/Profile';
 
 const Stack = createStackNavigator()
 
@@ -28,10 +30,7 @@ export default function App() {
   },[user])
 
   if(isloading){
-    return (
-    <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-      <ActivityIndicator size="large" color="black"></ActivityIndicator>
-    </View>)
+    return <LoadingScreen />;
   }
 
   return (
@@ -40,7 +39,8 @@ export default function App() {
         <Stack.Navigator screenOptions={{headerShown: false}} >
           {
             user ? (<><Stack.Screen name='Home' component={Home}></Stack.Screen>
-            <Stack.Screen name='Room' component={Room}></Stack.Screen></>) :
+            <Stack.Screen name='GameScreen' component={GameScreen}></Stack.Screen>
+            <Stack.Screen name='Profile' component={Profile}></Stack.Screen></>) :
             (<><Stack.Screen name='Signin' component={Signin} ></Stack.Screen>
             <Stack.Screen name='Signup' component={Signup} ></Stack.Screen></>)
           }  
