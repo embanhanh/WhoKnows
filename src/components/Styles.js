@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import mainStyles from './mainstyle.js'
+import mainStyles from './mainstyle.js';
 
 const styles = StyleSheet.create({
 
@@ -7,12 +7,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: mainStyles.primaryColor,
         paddingTop: "10%",
-    },
-
-    scrollViewContent: {
-        flexGrow: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
 
     title: {
@@ -154,18 +148,84 @@ const styles = StyleSheet.create({
     },
 
     //Profile
+    profileContainer: {
+        flex: 1,
+        backgroundColor: "black"
+    },
+
     headerProfile: {
-        paddingVertical: "0%",
-        marginRight: "50%",
+        flex: 2,
+        backgroundColor: mainStyles.primaryColor,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    toolsProfile: {
+        flex: 4,
+        backgroundColor: "#363442",
+        justifyContent: "center",
+        paddingTop: "20%",
+    },
+
+    cardContainer: {
+        position: "absolute",
+        top: "20%", 
+        marginHorizontal: "5%",
+        width: "90%",
+        height: "27%",
+        backgroundColor: "#363442",
+        borderRadius: 10,
+        elevation: 5, 
+        shadowColor: "#000", 
+        shadowOffset: { width: 0, height: 7 },
+        shadowOpacity: 0.25, 
+        shadowRadius: 3.84, 
+        justifyContent: "center",
+        alignItems: "center"
     },
 
     avatar: {
-        marginTop: "10%",
-        paddingHorizontal: "13%",
-        paddingVertical: "11%",
+        width: "30%",
+        height: "50%",
         borderRadius: 50,
         backgroundColor: "white",
     },
+
+    textProfile: {
+        marginTop: "5%",
+        fontSize: 20,
+        color: "white",
+    },
+
+    tools: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginHorizontal: "5%",
+        borderRadius: 10,
+        height: "10%",
+        marginTop: "10%",
+    },
+
+    textTools: {
+        fontSize: 22,
+        color: "white",
+        fontWeight: "bold",
+        width: "78%"
+    },
+
+    square: {
+        backgroundColor: mainStyles.primaryColor,
+        width: "16%",
+        height: "120%",
+        borderRadius: 30,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    iconTools: {
+        color: "white"
+    }
 });
 
 export default styles

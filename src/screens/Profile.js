@@ -1,28 +1,65 @@
 import React from "react";
-import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
 import styles from "../components/Styles.js";
+import Icon from 'react-native-vector-icons/FontAwesome.js';
 
 import { signOut } from "firebase/auth";
 import { auth, database } from "../../firebaseconfig";
 import userContext from "../AuthContext/AuthProvider";
+import { useNavigation } from "@react-navigation/core";
 
 function Profile() {
-    
+    const navigation = useNavigation();
+
+    const handleHome = () => {
+        navigation.navigate('Home');
+    };
+
     return ( 
-        <View style={styles.containers } >
-            <SafeAreaView style={styles.login}>
-                <View style={styles.headerProfile}>
-                    <Text style={styles.textHeader}>Profile</Text>
-                </View>
+        <View style={styles.profileContainer} >
+            <View style={styles.headerProfile}>
+                <Text style={styles.textHeader}>Hồ sơ</Text>
+            </View>
 
-                <View style={styles.avatar}>
-                    <Text></Text>
-                </View>
-
-                <TouchableOpacity onPress={() => signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))}>
-                    <Text>Log out</Text>
+            <View style={styles.toolsProfile}>
+                <TouchableOpacity style={styles.tools} onPress={handleHome}>
+                    <View style={styles.square}>    
+                        <Icon name="home" size={30} style={styles.iconTools}></Icon>
+                    </View>
+                    <Text style={styles.textTools}>Trang Chủ</Text>
                 </TouchableOpacity>
-            </SafeAreaView>
+
+                <TouchableOpacity style={styles.tools}>
+                    <View style={styles.square}>    
+                        <Icon name="trophy" size={30} style={styles.iconTools}></Icon>
+                    </View>
+                    <Text style={styles.textTools}>Lịch Sử</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.tools}>
+                    <View style={styles.square}>    
+                        <Icon name="sign-out" size={30} style={styles.iconTools}></Icon>
+                    </View>
+                    <Text style={styles.textTools}>something's here</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.tools} onPress={() => signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))}>
+                    <View style={styles.square}>    
+                        <Icon name="sign-out" size={30} style={styles.iconTools}></Icon>
+                    </View>
+                    <Text style={styles.textTools}>Đăng xuất</Text>
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.cardContainer}>
+                <View style={styles.avatar}>
+
+                </View>
+
+                <Text style={styles.textProfile}>
+                    abc@gmail.com
+                </Text>
+            </View>
         </View>
     );
 }
