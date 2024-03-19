@@ -24,30 +24,30 @@ function Profile() {
             <View style={styles.toolsProfile}>
                 <TouchableOpacity style={styles.tools} onPress={handleHome}>
                     <View style={styles.square}>    
-                        <Icon name="home" size={30} style={styles.iconTools}></Icon>
+                        <Icon name="home" style={styles.iconTools}></Icon>
                     </View>
                     <Text style={styles.textTools}>Trang Chủ</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.tools}>
                     <View style={styles.square}>    
-                        <Icon name="trophy" size={30} style={styles.iconTools}></Icon>
+                        <Icon name="trophy" style={styles.iconTools}></Icon>
                     </View>
                     <Text style={styles.textTools}>Lịch Sử</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.tools}>
                     <View style={styles.square}>    
-                        <Icon name="sign-out" size={30} style={styles.iconTools}></Icon>
+                        <Icon name="key" style={styles.iconTools}></Icon>
                     </View>
-                    <Text style={styles.textTools}>something's here</Text>
+                    <Text style={styles.textTools}>Đổi Mật Khẩu</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.tools} onPress={() => signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))}>
                     <View style={styles.square}>    
-                        <Icon name="sign-out" size={30} style={styles.iconTools}></Icon>
+                        <Icon name="sign-out" style={styles.iconTools}></Icon>
                     </View>
-                    <Text style={styles.textTools}>Đăng xuất</Text>
+                    <Text style={styles.textTools}>Đăng Xuất</Text>
                 </TouchableOpacity>
             </View>
 

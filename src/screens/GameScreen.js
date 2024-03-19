@@ -6,7 +6,7 @@ import styles from "../components/Styles.js";
 function GameScreen() {
     
     return ( 
-        <ImageBackground source={require('../assets/img/Theme.png')} style={styles.image} resizeMode="cover">
+        <ImageBackground source={require('../assets/img/Theme.jpg')} style={styles.container} resizeMode="contain">
             <View style={styles.content}>
 
             </View>

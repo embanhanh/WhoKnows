@@ -53,20 +53,32 @@ function SignUp({ navigation }) {
                     />
                 </View>
 
-                <View>
-                    <View style={styles.inputText}>
-                        <Icon name="lock" style={styles.icon}></Icon>
-                        <TextInput style={styles.pass} 
-                                     placeholder="Mật khẩu"
-                                     secureTextEntry={!showPassword}
-                                     textContentType="password"
-                                     value={password}
-                                     onChangeText={(text) => setPassword(text)}
-                        />
-                        <TouchableOpacity style={styles.toggleButton} onPress={toggleShowPassword}>
-                            <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" />
-                        </TouchableOpacity>
-                    </View>
+                <View style={styles.inputText}>
+                    <Icon name="lock" style={styles.icon}></Icon>
+                    <TextInput style={styles.pass} 
+                                    placeholder="Mật khẩu"
+                                    secureTextEntry={!showPassword}
+                                    textContentType="password"
+                                    value={password}
+                                    onChangeText={(text) => setPassword(text)}
+                    />
+                    <TouchableOpacity style={styles.toggleButton} onPress={toggleShowPassword}>
+                        <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" />
+                    </TouchableOpacity>
+                </View>
+                
+                <View style={styles.inputText}>
+                    <Icon name="lock" style={styles.icon}></Icon>
+                    <TextInput style={styles.pass} 
+                                    placeholder="Xác nhận lại mật khẩu"
+                                    secureTextEntry={!showPassword}
+                                    textContentType="password"
+                                    value={password}
+                                    onChangeText={(text) => setPassword(text)}
+                    />
+                    <TouchableOpacity style={styles.toggleButton} onPress={toggleShowPassword}>
+                        <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={styles.buttonContainer}>

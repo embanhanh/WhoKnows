@@ -62,6 +62,8 @@ const styles = StyleSheet.create({
     buttonContainer: {
         marginTop: "6%",
         alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
 
     mainButton: {
@@ -120,6 +122,7 @@ const styles = StyleSheet.create({
     },
 
     settingIcon: {
+        fontSize: 30,
         color: "#ffffff",
         marginHorizontal: "4%",
         marginVertical: "4%",
@@ -138,6 +141,23 @@ const styles = StyleSheet.create({
         resizeMode: "cover",
     },
 
+    createRoomButton: {
+        position: "relative",
+        paddingVertical: "3%",
+        justifyContent: 'center',
+        alignItems: 'center',
+        minWidth: "30%",
+        marginRight: "5%",
+    },
+
+    findRoomButton: {
+        position: "relative",
+        paddingVertical: "3%",
+        justifyContent: 'center',
+        alignItems: 'center',
+        minWidth: "50%",
+    },
+
     //ModalSetting
     modalContainer: {
         backgroundColor: "white",
@@ -150,7 +170,6 @@ const styles = StyleSheet.create({
     //Profile
     profileContainer: {
         flex: 1,
-        backgroundColor: "black"
     },
 
     headerProfile: {
@@ -224,7 +243,8 @@ const styles = StyleSheet.create({
     },
 
     iconTools: {
-        color: "white"
+        color: "white",
+        fontSize: 30,
     }
 });
 

@@ -45,21 +45,28 @@ function Home() {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.mainButton}>
+                        <TouchableOpacity style={styles.createRoomButton}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Tạo Phòng
+                            </Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.findRoomButton}>
+                            <View style={styles.backgroundBehindText}/>
+                            <Text style={styles.textButton}>
+                                Tìm phòng
                             </Text>
                         </TouchableOpacity>
                     </View>
 
                     <View style={styles.setting}>
                         <TouchableOpacity style={styles.settingButton} onPress={() => setModalVisible(true)}>
-                            <Icon name="gear" size={30} style={styles.settingIcon}></Icon>
+                            <Icon name="gear"  style={styles.settingIcon}></Icon>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.settingButton} onPress={handleProfile}>
-                            <Icon name="user" size={30} style={styles.settingIcon}></Icon>
+                            <Icon name="user" style={styles.settingIcon}></Icon>
                         </TouchableOpacity>
                     </View>
                 </SafeAreaView>
