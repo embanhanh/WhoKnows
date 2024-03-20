@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     backgroundBehindText: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: "#6938EF",
+        backgroundImage: "linear",
         borderRadius: 15,
       },
 
@@ -245,7 +246,112 @@ const styles = StyleSheet.create({
     iconTools: {
         color: "white",
         fontSize: 30,
-    }
+    },
+
+    //GameRoom
+    roomInfo: {
+        flex: 2,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    
+    roomImage: {
+        resizeMode: "stretch",
+        marginLeft: "3%",
+        marginBottom: "7%",
+        width: "70%",
+        height: "180%",
+        position: "relative",
+    },
+
+    textRoomNumber: {
+        position: 'absolute',
+        bottom: "80%",
+        color: 'black', 
+        fontSize: 20, 
+        fontWeight: 'bold', 
+        padding: 5, 
+    },
+
+    textRole: {
+        position: 'absolute',   
+        bottom: "55%",
+        color: 'black', 
+        fontSize: 20, 
+        fontWeight: 'bold', 
+        padding: 5, 
+    },
+
+    textWord: {
+        bottom: "20%",
+        position: 'absolute',
+        color: 'black', 
+        fontSize: 30,
+        fontWeight: 'bold', 
+        padding: 5, 
+    },
+
+    joinedPlayer: {
+        flex: 6,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      },
+    leftJoinedPlayer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        aspectRatio: 1,
+    },
+    rightJoinedPlayer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        aspectRatio: 1,
+    },
+
+    chatBoxContainer: {
+        flex: 3,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    chatBox: {
+        borderRadius: 20,
+        width: "85%",
+        height: "75%",
+        backgroundColor: "white",
+    },
+
+    gameToolsContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        position: "relative",
+      },
+
+    toolsButton: {
+        backgroundColor: "#353B63",
+        borderRadius: 25,
+        paddingHorizontal: "4%", 
+        paddingVertical: "4%", 
+        position: "absolute",
+        bottom: "30%",
+        justifyContent: "center",
+        alignItems: "center",
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 4, 
+        elevation: 5,
+    },
+    toolsIcon: {
+        fontSize: 25,
+        color: "#ffffff",
+    },
 });
 
 export default styles
