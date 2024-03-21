@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, ActivityIndicator, Modal } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, Modal } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import { signOut } from "firebase/auth";
-import { auth, database } from "../../firebaseconfig";
-import userContext from "../AuthContext/AuthProvider";
 
 import styles from "../components/Styles.js";
 import LogoGame from "../components/logoGame.js";

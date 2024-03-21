@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: "10%",
-    marginHorizontal: "10%",
+    width: "50%",
+    marginVertical: "4%"
   },
   avatarContainer: {
     borderRadius: 70, 

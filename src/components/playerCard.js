@@ -18,8 +18,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: "10%",
-    marginHorizontal: "10%",
+    width: "50%",
   },
   avatarContainer: {
     borderRadius: 70, 
@@ -28,6 +27,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden', 
     alignItems: 'center',
     justifyContent: 'center',
+  
   },
   avatar: {
     width: '100%',

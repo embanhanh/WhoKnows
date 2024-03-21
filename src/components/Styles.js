@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import mainStyles from './mainstyle.js';
 
+import * as Font from 'expo-font';
+
 const styles = StyleSheet.create({
 
     containers: {
@@ -250,7 +252,7 @@ const styles = StyleSheet.create({
 
     //GameRoom
     roomInfo: {
-        flex: 2,
+        flex: 1.5,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -258,9 +260,9 @@ const styles = StyleSheet.create({
     roomImage: {
         resizeMode: "stretch",
         marginLeft: "3%",
-        marginBottom: "7%",
-        width: "70%",
-        height: "180%",
+        marginBottom: "10%",
+        width: "60%",
+        height: "160%",
         position: "relative",
     },
 
@@ -268,59 +270,72 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: "80%",
         color: 'black', 
-        fontSize: 20, 
-        fontWeight: 'bold', 
-        padding: 5, 
-    },
-
-    textRole: {
-        position: 'absolute',   
-        bottom: "55%",
-        color: 'black', 
-        fontSize: 20, 
+        fontSize: 18, 
         fontWeight: 'bold', 
         padding: 5, 
     },
 
     textWord: {
-        bottom: "20%",
+        bottom: "40%",
         position: 'absolute',
         color: 'black', 
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: 'bold', 
         padding: 5, 
     },
 
+    homeButton: {
+        position: 'absolute',
+        borderRadius: 25,
+        borderColor: "white",
+        alignItems: "center",
+        justifyContent: "center",
+        right: "5%",
+        top: "-30%",
+    },
+
+    homeIcon: {
+        fontSize: 30,
+        color: "#ffffff",
+        marginHorizontal: "2%",
+        marginVertical: "2%",
+    },
+
+    timeLeft:{
+        position: 'absolute',
+        borderRadius: 25,
+        alignItems: "center",
+        justifyContent: "center",
+        left: "5%",
+        top: "-30%",
+        backgroundColor: "purple",
+    },
+
+    playContainer: {
+        flex: 9,
+        justifyContent: "space-between"
+    },
+
     joinedPlayer: {
-        flex: 6,
         flexDirection: 'row',
+        flexWrap: "wrap",
         justifyContent: 'space-between',
         alignItems: 'center',
-      },
-    leftJoinedPlayer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        aspectRatio: 1,
-    },
-    rightJoinedPlayer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-        aspectRatio: 1,
     },
 
     chatBoxContainer: {
-        flex: 3,
+        flex: 1,
         justifyContent: "center",
         alignItems: "center",
     },
 
     chatBox: {
         borderRadius: 20,
-        width: "85%",
+        width: "90%",
         height: "75%",
-        backgroundColor: "white",
+        marginBottom: "6%",
+        backgroundColor: "purple",
+        opacity: 0.3,
     },
 
     gameToolsContainer: {
@@ -328,28 +343,54 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         position: "relative",
-      },
+    },
 
-    toolsButton: {
+    rulesButton: {
         backgroundColor: "#353B63",
         borderRadius: 25,
         paddingHorizontal: "4%", 
-        paddingVertical: "4%", 
+        paddingVertical: "3%", 
+        position: "absolute",
+        bottom: "30%",
+        left: "10%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    rulesIcon: {
+        fontSize: 20,
+        color: "#ffffff",
+    },
+
+    toolsButton: {
+        backgroundColor: "#353B63",
+        borderRadius: 30,
+        paddingHorizontal: "3.5%", 
+        paddingVertical: "3%", 
         position: "absolute",
         bottom: "30%",
         justifyContent: "center",
         alignItems: "center",
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 4, 
-        elevation: 5,
     },
     toolsIcon: {
-        fontSize: 25,
+        fontSize: 35,
+        color: "#ffffff",
+    },
+
+    messageButton: {
+        backgroundColor: "#353B63",
+        borderRadius: 25,
+        paddingHorizontal: "3%", 
+        paddingVertical: "3%", 
+        position: "absolute",
+        bottom: "30%",
+        right: "10%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    messageIcon: {
+        fontSize: 18,
         color: "#ffffff",
     },
 });
