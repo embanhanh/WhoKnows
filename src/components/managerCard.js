@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, StyleSheet, Image, Dimensions, ImageBackground, Text } from 'react-native';
 
 const ManagerCard = () => {
   const windowWidth = Dimensions.get('window').width;
@@ -11,19 +11,19 @@ const ManagerCard = () => {
       <View style={[styles.avatarContainer, { width: avatarSize, height: avatarSize }]}>
         <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />
       </View>
-      <View style={[styles.overlayContainer, { top: avatarSize * 0.14, width: overlaySize, height: overlaySize }]}>
-        <Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
-      </View>
+      <Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
+      {/* <Image source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}></Image> */}
+      <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}></ImageBackground>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    position: "relative",
     width: "50%",
-    marginVertical: "4%"
+    marginVertical: "4%",
+    paddingHorizontal: "5%",
   },
   avatarContainer: {
     borderRadius: 50, 
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden', 
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: "flex-start",
   },
   avatar: {
     width: '100%',
@@ -39,15 +40,35 @@ const styles = StyleSheet.create({
     borderRadius: 50, 
   },
 
-  overlayContainer: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: "-13%",
+  leftBubbleChat: {
+    position: "absolute",
+    width: "100%",
+    height: "111%",
+    left: "35%",
+    bottom: "-34%"
   },
+
+  rightBubbleChat: {
+    position: "absolute",
+    width: "100%",
+    height: "110%",
+    right: "35%",
+    bottom: "-34%"
+  },
+
+  answerText: {
+    position: "absolute",
+    fontSize: 16,
+    maxWidth: "100%",
+
+  },
+
   overlay: {
-    width: '100%',
-    height: '100%',
+    position: 'absolute',
+    width: '20%',
+    height: "20%",
+    left: "22%",
+    bottom: "9%",
     resizeMode: 'contain', 
   },
 });

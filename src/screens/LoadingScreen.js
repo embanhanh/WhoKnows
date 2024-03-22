@@ -8,7 +8,7 @@ const LoadingScreen = () => {
       <Swiper
         style={styles.wrapper}
         autoplay={true}
-        autoplayTimeout={2.5}
+        autoplayTimeout={10}
         showsPagination={false}
       >
         <Image source={require('../assets/Loading/Loading1.jpg')} style={styles.slideImage} />

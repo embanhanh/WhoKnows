@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
 
     playContainer: {
         flex: 9,
-        justifyContent: "space-between"
+        justifyContent: "space-between23"
     },
 
     joinedPlayer: {

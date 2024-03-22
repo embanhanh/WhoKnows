@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, StyleSheet, Image, Dimensions, ImageBackground } from 'react-native';
 
 const PlayerCard = () => {
   const windowWidth = Dimensions.get('window').width;
@@ -10,6 +10,7 @@ const PlayerCard = () => {
       <View style={[styles.avatarContainer, { width: avatarSize, height: avatarSize }]}>
         <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />
       </View>
+      <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}></ImageBackground>
     </View>
   );
 };
@@ -19,6 +20,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: "50%",
+    marginVertical: "4%",
+    paddingHorizontal: "5%",
   },
   avatarContainer: {
     borderRadius: 70, 
@@ -27,12 +30,30 @@ const styles = StyleSheet.create({
     overflow: 'hidden', 
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: "flex-end",
+    position: "relative",
   
   },
   avatar: {
     width: '100%',
     height: '100%',
     borderRadius: 50, 
+  },
+
+  leftBubbleChat: {
+    position: "absolute",
+    width: "100%",
+    height: "111%",
+    left: "35%",
+    bottom: "-34%"
+  },
+
+  rightBubbleChat: {
+    position: "absolute",
+    width: "100%",
+    height: "110%",
+    right: "35%",
+    bottom: "-34%"
   },
 });
 
