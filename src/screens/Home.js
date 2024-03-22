@@ -11,6 +11,8 @@ import { useNavigation } from "@react-navigation/native";
 function Home() {
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
+    const [createVisible, createModalVisible] = useState(false);
+    const [findVisible, findModalVisible] = useState(false);
 
     const handlePlayNow = () => {
         navigation.navigate('GameScreen');
@@ -19,6 +21,13 @@ function Home() {
     const handleProfile = () => {
         navigation.navigate('Profile');
     };
+
+    const DATA = [
+        { title: 'Section 1', data: [5] },
+        { title: 'Section 2', data: [6] },
+        { title: 'Section 3', data: [7] },
+        { title: 'Section 4', data: [8] },
+      ];
 
     return ( 
         <ImageBackground source={require('../assets/img/HomeScreen.jpg')} style={styles.backgroundImage}>
@@ -42,17 +51,17 @@ function Home() {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.createRoomButton}>
+                        <TouchableOpacity style={styles.createRoomButton} onPress={() => createModalVisible(true)}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Tạo Phòng
                             </Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.findRoomButton}>
+                        <TouchableOpacity style={styles.findRoomButton} onPress={() => findModalVisible(true)}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
-                                Tìm phòng
+                                Tìm Phòng
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -78,6 +87,86 @@ function Home() {
                 }}
             >
                 <View style={styles.modalContainer}>
+                    
+                </View>
+            </Modal>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={createVisible}
+                onRequestClose={() => {
+                    createModalVisible(!createVisible);
+                }}
+            >
+                <View style={styles.createContainer}>
+                    <View style={styles.createTitleContainer}>
+                        <Text style={styles.textCreateTitle}>Tạo Phòng</Text>
+                    </View>
+
+                    <View style={styles.createContentContainer}>
+                        <View style={styles.idRoom}>
+                            <Text style={styles.textCreateContent}>ID phòng: </Text>
+                            <Text style={styles.textCreateContent}>*ID phòng* </Text>
+                            <TouchableOpacity style={styles.abc}>
+                                <Icon name="copy" style={styles.iconCopy}></Icon>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.numberPlayer}>
+                            <Text style={styles.textCreateContent}>Số lượng người chơi: </Text>
+                            <TouchableOpacity style={styles.number}>
+                                <View style={styles.squareButton}>
+                                    <Text style={styles.textCreateContent}>5</Text>
+                                </View>
+                            </TouchableOpacity >
+                            <TouchableOpacity style={styles.number}>
+                                <View style={styles.squareButton}>
+                                    <Text style={styles.textCreateContent}>6</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.number}>
+                                <View style={styles.squareButton}>
+                                    <Text style={styles.textCreateContent}>7</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.number}>
+                                <View style={styles.squareButton}>
+                                    <Text style={styles.textCreateContent}>8</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.keyRoom}>
+                            <Text style={styles.textCreateContent}>Mật khẩu phòng:</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.createButtonContainer}>
+                        <TouchableOpacity style={styles.createRoomButton}>
+                            <View style={styles.backgroundBehindText}/>
+                            <Text style={styles.textButton}>
+                                Tạo
+                            </Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.createRoomButton} >
+                            <View style={styles.backgroundBehindText}/>
+                            <Text style={styles.textButton}>
+                                Hủy
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={findVisible}
+                onRequestClose={() => {
+                    findModalVisible(!findVisible);
+                }}
+            >
+                <View style={styles.findContainer}>
                     
                 </View>
             </Modal>

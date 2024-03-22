@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         paddingVertical: "3%",
         justifyContent: 'center',
         alignItems: 'center',
-        minWidth: "30%",
+        minWidth: "40%",
         marginRight: "5%",
     },
 
@@ -158,7 +158,101 @@ const styles = StyleSheet.create({
         paddingVertical: "3%",
         justifyContent: 'center',
         alignItems: 'center',
-        minWidth: "50%",
+        minWidth: "40%",
+    },
+
+    //createRoom
+    createContainer: {
+        backgroundColor: "white",
+        top: "24%",
+        width: "90%",
+        height: "50%",
+        alignSelf: "center",
+        justifyContent: "center",
+        borderRadius: 20,
+    },
+
+    createTitleContainer: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    textCreateTitle: {
+        fontSize: 27,
+        fontWeight: "bold",
+        color: "black",
+    },
+
+    createContentContainer: {
+        flex: 2.5,
+        marginBottom: "10%",
+        marginLeft: "5%",
+        marginRight: "5%",
+        //alignItems: "center",
+        justifyContent: "center",
+    },
+
+    idRoom: {
+        paddingVertical: "5%",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+
+    numberPlayer: {
+        paddingVertical: "5%",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+
+    keyRoom: {
+        paddingVertical: "5%",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+
+    textCreateContent: {
+        fontSize: 20,
+        color: "black",
+    },
+
+    createButtonContainer: {
+        flex: 1,
+        marginLeft: 17,
+        marginBottom: 10,
+        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+
+    iconCopy: {
+        fontSize: 25,
+    },
+
+    number:{
+        //marginRight: "0.3%",
+    },
+
+    squareButton: {
+        //backgroundColor: mainStyles.primaryColor,
+        //width: "16%",
+        //height: "12%",
+        borderLeftWidth: 1,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderBlockColor: "black",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingHorizontal: "3%",
+    },
+
+    //findRoom
+    findContainer: {
+        backgroundColor: "white",
+        width: "90%",
+        height: "70%",
+        alignSelf: "center",
+        justifyContent: "center"
     },
 
     //ModalSetting
