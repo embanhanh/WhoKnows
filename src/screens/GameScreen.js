@@ -1,14 +1,13 @@
 
 import React from "react";
 import { View, Text, TouchableOpacity, Alert, StyleSheet, TextInput, ImageBackground, Image} from "react-native";
-import styles from "../components/Styles.js";
-import PlayerCard from "../components/playerCard.js";
-import ManagerCard from "../components/managerCard.js";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon2 from 'react-native-vector-icons/MaterialIcons.js';
 import { ScrollView } from "react-native-gesture-handler";
-import FriendsCard from "../components/friendsCard.js";
 import { useNavigation } from "@react-navigation/core";
+
+import styles from "../components/Styles.js";
+import PlayerCard from "../components/PlayerCard.js";
 
 function GameScreen() {
     const navigation = useNavigation();
@@ -16,6 +15,17 @@ function GameScreen() {
     const handleHome = () => {
         navigation.navigate('Home');
     };
+
+    const members = [
+        {isManager: true},
+        {isYou: true},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+    ]
 
     return ( 
         <ImageBackground source={require('../assets/img/Theme2.jpg')} style={styles.backgroundImage}>
@@ -36,14 +46,19 @@ function GameScreen() {
 
                 <View style={styles.playContainer}>
                     <View style={styles.joinedPlayer}>
-                        <FriendsCard bubbleType="left" avatarAlignment="flex-start"></FriendsCard>
-                        <FriendsCard bubbleType="right" avatarAlignment="flex-end"></FriendsCard>
-                        <ManagerCard bubbleType="left" avatarAlignment="flex-start"></ManagerCard>
-                        <PlayerCard bubbleType="right" avatarAlignment="flex-end"></PlayerCard>
-                        <FriendsCard bubbleType="left" avatarAlignment="flex-start"></FriendsCard>
-                        <FriendsCard bubbleType="right" avatarAlignment="flex-end"></FriendsCard>
-                        <FriendsCard bubbleType="left" avatarAlignment="flex-start"></FriendsCard>
-                        <FriendsCard bubbleType="right" avatarAlignment="flex-end"></FriendsCard>
+                    {
+                            members.map((member,index)=>{
+                                if(index%2==0){
+                                    return(
+                                        <PlayerCard key={index} bubbleType="left" avatarAlignment="flex-start" {...member}></PlayerCard>
+                                    )
+                                }else{
+                                    return(
+                                        <PlayerCard key={index} bubbleType="right" avatarAlignment="flex-end" {...member}></PlayerCard>
+                                    )
+                                }
+                            })
+                        }
                     </View>
 
                     <View style={styles.chatBoxContainer}>

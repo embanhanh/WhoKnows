@@ -148,7 +148,7 @@ function Home() {
                             </Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.createRoomButton} >
+                        <TouchableOpacity style={styles.createRoomButton} onPress={()=>{createModalVisible(!createVisible);}}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Hủy
