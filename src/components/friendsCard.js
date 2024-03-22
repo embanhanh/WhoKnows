@@ -1,17 +1,21 @@
 import React from 'react';
 import { View, StyleSheet, Image, Dimensions, ImageBackground } from 'react-native';
 
-const FriendsCard = () => {
+const FriendsCard = ({bubbleType, avatarAlignment}) => {
   const windowWidth = Dimensions.get('window').width;
   const avatarSize = windowWidth * 0.15; // Đặt kích thước avatarContainer dựa trên tỷ lệ màn hình
 
   return (
     <View style={styles.container}>
-      <View style={[styles.avatarContainer, { width: avatarSize, height: avatarSize }]}>
+      <View style={[styles.avatarContainer, { alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }]}>
         <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />
       </View>
-      {/* <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}></ImageBackground> */}
-      <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}></ImageBackground>
+      {bubbleType === 'left' && (
+        <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}></ImageBackground>
+      )}
+      {bubbleType === 'right' && (
+        <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}></ImageBackground>
+      )}
     </View>
   );
 };
@@ -43,18 +47,18 @@ const styles = StyleSheet.create({
 
   leftBubbleChat: {
     position: "absolute",
-    width: "100%",
-    height: "111%",
-    left: "35%",
-    bottom: "-34%"
+    width: "140%",
+    height: "130%",
+    bottom: "30%",
+    left: "-15%",
   },
 
   rightBubbleChat: {
     position: "absolute",
-    width: "100%",
-    height: "110%",
-    right: "35%",
-    bottom: "-34%"
+    width: "140%",
+    height: "130%",
+    bottom: "30%",
+    right: "40%",
   },
 });
 

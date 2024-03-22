@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import mainStyles from './mainstyle.js';
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
 import * as Font from 'expo-font';
 
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
 
     iconTools: {
         color: "white",
-        fontSize: 30,
+        fontSize: RFValue(30),
     },
 
     //GameRoom
@@ -260,26 +261,26 @@ const styles = StyleSheet.create({
     roomImage: {
         resizeMode: "stretch",
         marginLeft: "3%",
-        marginBottom: "10%",
-        width: "60%",
-        height: "160%",
+        marginBottom: "15%",
+        width: "56%",
+        height: "170%",
         position: "relative",
     },
 
     textRoomNumber: {
         position: 'absolute',
-        bottom: "80%",
+        bottom: "95%",
         color: 'black', 
-        fontSize: 18, 
+        fontSize: RFValue(15), 
         fontWeight: 'bold', 
         padding: 5, 
     },
 
     textWord: {
-        bottom: "40%",
+        bottom: "50%",
         position: 'absolute',
         color: 'black', 
-        fontSize: 25,
+        fontSize: RFValue(24),
         fontWeight: 'bold', 
         padding: 5, 
     },
@@ -290,43 +291,66 @@ const styles = StyleSheet.create({
         borderColor: "white",
         alignItems: "center",
         justifyContent: "center",
-        right: "5%",
+        right: "6%",
         top: "-30%",
     },
 
     homeIcon: {
-        fontSize: 30,
+        fontSize: RFValue(30),
         color: "#ffffff",
         marginHorizontal: "2%",
         marginVertical: "2%",
     },
 
-    timeLeft:{
+    timeClock:{
         position: 'absolute',
+        flexDirection: "row",
         borderRadius: 25,
         alignItems: "center",
-        justifyContent: "center",
-        left: "5%",
-        top: "-30%",
+        justifyContent: "space-between",
+        left: "2%",
+        right: "74%",
+        top: "-35%",
         backgroundColor: "purple",
+    },
+
+    clockIcon: {
+        fontSize: RFValue(20),
+        color: "white",
+        marginLeft: "8%",
+    },
+
+    timeLeft: {
+        width: "65%",
+        fontSize: RFValue(19),
+        color: "white",
+    },
+
+
+    characterGif: {
+        position: 'absolute',
+        resizeMode: "stretch",
+        width: "20%",
+        height: "70%",
+        left: "2%",
+        top: "3%",
     },
 
     playContainer: {
         flex: 9,
-        justifyContent: "space-between23"
     },
 
     joinedPlayer: {
         flexDirection: 'row',
         flexWrap: "wrap",
         justifyContent: 'space-between',
-        alignItems: 'center',
     },
 
     chatBoxContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        bo
     },
 
     chatBox: {
@@ -347,7 +371,7 @@ const styles = StyleSheet.create({
 
     rulesButton: {
         backgroundColor: "#353B63",
-        borderRadius: 25,
+        borderRadius: 30,
         paddingHorizontal: "4%", 
         paddingVertical: "3%", 
         position: "absolute",
@@ -358,7 +382,7 @@ const styles = StyleSheet.create({
     },
 
     rulesIcon: {
-        fontSize: 20,
+        fontSize: RFValue(25),
         color: "#ffffff",
     },
 
@@ -373,7 +397,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     toolsIcon: {
-        fontSize: 35,
+        fontSize: RFValue(35),
         color: "#ffffff",
     },
 
@@ -390,7 +414,7 @@ const styles = StyleSheet.create({
     },
 
     messageIcon: {
-        fontSize: 18,
+        fontSize: RFValue(25),
         color: "#ffffff",
     },
 });

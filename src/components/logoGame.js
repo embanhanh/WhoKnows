@@ -24,7 +24,7 @@ const LogoGame = () => {
         position:"absolute",
         width: "80%",
         height: "80%",
-        top: "60%"
+        top: "55%"
     },
 
     logoImage: {
