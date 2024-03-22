@@ -27,27 +27,28 @@ function GameScreen() {
                     <TouchableOpacity style={styles.homeButton} onPress={handleHome}>
                         <Icon name="sign-out"  style={styles.homeIcon}></Icon>
                     </TouchableOpacity>
-                    <View style={styles.timeLeft}>
-                        <Icon name="clock-o"  style={styles.homeIcon}></Icon>
-                        <Text>00:50</Text>
+                    <View style={styles.timeClock}>
+                        <Icon name="clock-o"  style={styles.clockIcon}></Icon>
+                        <Text style={styles.timeLeft}>00:50</Text>
                     </View>
+                    <Image source={require('../assets/img/character-EvilGhost.gif')} style={styles.characterGif}></Image>
                 </View>
 
                 <View style={styles.playContainer}>
                     <View style={styles.joinedPlayer}>
-                        <ManagerCard></ManagerCard>
-                        <PlayerCard></PlayerCard>
-                        <FriendsCard></FriendsCard>
-                        <FriendsCard></FriendsCard>
-                        <FriendsCard></FriendsCard>
-                        <FriendsCard></FriendsCard>
-                        <FriendsCard></FriendsCard>
-                        <FriendsCard></FriendsCard>
+                        <FriendsCard bubbleType="left" avatarAlignment="flex-start"></FriendsCard>
+                        <FriendsCard bubbleType="right" avatarAlignment="flex-end"></FriendsCard>
+                        <ManagerCard bubbleType="left" avatarAlignment="flex-start"></ManagerCard>
+                        <PlayerCard bubbleType="right" avatarAlignment="flex-end"></PlayerCard>
+                        <FriendsCard bubbleType="left" avatarAlignment="flex-start"></FriendsCard>
+                        <FriendsCard bubbleType="right" avatarAlignment="flex-end"></FriendsCard>
+                        <FriendsCard bubbleType="left" avatarAlignment="flex-start"></FriendsCard>
+                        <FriendsCard bubbleType="right" avatarAlignment="flex-end"></FriendsCard>
                     </View>
 
                     <View style={styles.chatBoxContainer}>
                         <View style={styles.chatBox}>
-
+        
                         </View>
                     </View>
                 </View>
