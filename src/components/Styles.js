@@ -163,6 +163,18 @@ const styles = StyleSheet.create({
     },
 
     //createRoom
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+
+    createRoomImage: {
+        resizeMode: "stretch",
+        width: "60%",
+        height: "130%",
+        //position: "relative",
+    },
+
     createContainer: {
         backgroundColor: "white",
         top: "24%",
@@ -171,45 +183,56 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         justifyContent: "center",
         borderRadius: 20,
+        //backgroundColor: "#CCCCCC",
     },
 
     createTitleContainer: {
         flex: 1,
+        marginTop: 10,
+        flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
     },
 
     textCreateTitle: {
         fontSize: 27,
+        position: 'absolute',
         fontWeight: "bold",
         color: "black",
     },
 
     createContentContainer: {
-        flex: 2.5,
-        marginBottom: "10%",
+        flex: 0.75,
+        //paddingVertical: "5%",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        //marginBottom: "10%",
         marginLeft: "5%",
         marginRight: "5%",
-        //alignItems: "center",
-        justifyContent: "center",
+        borderBottomWidth: 0.5,
+        //justifyContent: "center",
     },
 
     idRoom: {
         paddingVertical: "5%",
         flexDirection: "row",
+        alignItems: "center",
         justifyContent: "space-between",
     },
 
     numberPlayer: {
         paddingVertical: "5%",
         flexDirection: "row",
+        alignItems: "center",
         justifyContent: "space-between",
     },
 
     keyRoom: {
         paddingVertical: "5%",
         flexDirection: "row",
-        justifyContent: "space-between",
+        alignItems: "center",
+        //justifyContent: "space-between",
     },
 
     textCreateContent: {
@@ -220,7 +243,7 @@ const styles = StyleSheet.create({
     createButtonContainer: {
         flex: 1,
         marginLeft: 17,
-        marginBottom: 10,
+        marginBottom: 5,
         alignItems: "center",
         flexDirection: "row",
         justifyContent: "space-between",
@@ -228,23 +251,25 @@ const styles = StyleSheet.create({
 
     iconCopy: {
         fontSize: 25,
+        marginRight: 45,
     },
 
-    number:{
-        //marginRight: "0.3%",
-    },
-
-    squareButton: {
-        //backgroundColor: mainStyles.primaryColor,
-        //width: "16%",
-        //height: "12%",
-        borderLeftWidth: 1,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderBlockColor: "black",
+    numberButton: {
+        backgroundColor: 'lightgray',
+        borderRadius: 5,
+        width: 30,
         alignItems: "center",
-        justifyContent: "center",
-        paddingHorizontal: "3%",
+    },
+
+    inputPassword: {
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 5,
+        marginRight: 5,
+        marginLeft: 10,
+        width: 100,
+        fontSize: 20,
+        textAlign: "center",
     },
 
     //findRoom
@@ -259,10 +284,18 @@ const styles = StyleSheet.create({
     //ModalSetting
     modalContainer: {
         backgroundColor: "white",
-        width: "80%",
-        height: "80%",
+        top: "35%",
+        width: "90%",
+        height: "30%",
         alignSelf: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        borderRadius: 20,
+    },
+
+    iconClose: {
+        fontSize: 40,
+        marginLeft: "85%",
+        marginBottom: "45%"
     },
 
     //Profile

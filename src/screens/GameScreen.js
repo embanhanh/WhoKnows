@@ -7,7 +7,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/core";
 
 import styles from "../components/Styles.js";
-import PlayerCard from "../components/PlayerCard.js";
+import PlayerCard from "../components/playerCard.js";
 
 function GameScreen() {
     const navigation = useNavigation();
