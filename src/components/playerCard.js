@@ -1,15 +1,32 @@
 import React from 'react';
-import { View, StyleSheet, Image, Dimensions, ImageBackground } from 'react-native';
+import { View, StyleSheet, Image, Dimensions, ImageBackground, Text } from 'react-native';
 
-const PlayerCard = ({bubbleType, avatarAlignment}) => {
+const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou}) => {
   const windowWidth = Dimensions.get('window').width;
-  const avatarSize = windowWidth * 0.15; // Đặt kích thước avatarContainer dựa trên tỷ lệ màn hình
+  const avatarSize = windowWidth * 0.15; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
+  const overlaySize = windowWidth * 0.11; // Kích thước overlayContainer dựa trên tỷ lệ màn hình
+
+  let newStyles = {};
+  if(isManager){
+    newStyles = {...styles.avatarContainer}
+  }else if(isYou){
+    newStyles = {...styles.avatarContainer, borderColor: 'green' }
+  } else{
+    newStyles = {...styles.avatarContainer, borderColor: 'gray' }
+  }
 
   return (
     <View style={styles.container}>
-      <View style={[styles.avatarContainer, {alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }]}>
+      {
+        
+      }
+      <View style={{...newStyles,  alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }}>
         <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />
       </View>
+      {
+        isManager && <Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
+      }
+      {/* <Image source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}></Image> */}
       {bubbleType === 'left' && (
         <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}></ImageBackground>
       )}
@@ -30,13 +47,13 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     position: "relative",
-    borderRadius: 70, 
+    borderRadius: 50, 
     borderWidth: 3, 
-    borderColor: 'green', 
+    borderColor: 'yellow', 
     overflow: 'hidden', 
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: "flex-end",
+    alignSelf: "flex-start",
   },
   avatar: {
     width: '100%',
@@ -58,6 +75,21 @@ const styles = StyleSheet.create({
     height: "130%",
     bottom: "30%",
     right: "40%",
+  },
+
+  answerText: {
+    position: "absolute",
+    fontSize: 16,
+    maxWidth: "100%",
+
+  },
+
+  overlay: {
+    position: 'absolute',
+    width: '20%',
+    height: "20%",
+    left: "22%",
+    bottom: "95%",
   },
 });
 

@@ -8,24 +8,32 @@ import styles from "../components/Styles.js";
 import LoginTitle from "../components/loginTitle.js";
 import LogoGame from "../components/logoGame.js";
 import { auth } from "../../firebaseconfig.js"
+import LoadingScreen from "./LoadingScreen.js";
 
 function Signin({ navigation }) {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false);
+    const [isloading,setIsloading] = useState(false);
 
-    const handleLogin = () =>{
+    const handleLogin = async () =>{
         if(email !=="" && password !==""){
-            signInWithEmailAndPassword(auth, email, password)
-            .then(() => console.log("Sign in success"))
-            .catch((e) => Alert.alert("Đăng nhập thất bại", "Tài khoản hoặc mật khẩu không chính xác" ))
+            setIsloading(true);
+            await signInWithEmailAndPassword(auth, email, password)
+            .then(() => {console.log("Sign in success")})
+            .catch((e) => {Alert.alert("Đăng nhập thất bại", "Tài khoản hoặc mật khẩu không chính xác" )})
+            setIsloading(false)
         }
     }
 
     const toggleShowPassword = () =>{
         setShowPassword(!showPassword);
     };
+
+    if(isloading){
+        return <LoadingScreen></LoadingScreen>
+    }
 
     return ( 
         <View style={styles.containers } >

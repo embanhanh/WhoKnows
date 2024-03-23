@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { View, Text, TextInput, TouchableOpacity, Pressable, SafeAreaView, Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 
 import styles from "../components/Styles.js";
 import LoginTitle from "../components/loginTitle.js";
@@ -12,25 +12,25 @@ function SignUp({ navigation }) {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const handleSignup = () =>{
-        if(email !== "" && password !== "")
+    const handleSignup = async () =>{
+        if(email !== "" && password !== "" && confirmPassword !== "" && password === confirmPassword)
         {
-            createUserWithEmailAndPassword(auth, email,password)
+            await createUserWithEmailAndPassword(auth, email,password)
             .then(() => {
+                Alert.alert("Đăng ký thành công", "Bạn đã vào trang chủ")
                 console.log("Signup success")
                 setEmail('')
                 setPassword('')
             })
             .catch((e) => Alert.alert("Đăng ký không thành công", e.Message))
+            // signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))
         }
     };
-
-    const toggleShowPassword = () =>{
-        setShowPassword(!showPassword);
-    };
-
+    
     return ( 
         <View style={styles.containers } >
             <View style={styles.title}>
@@ -62,7 +62,7 @@ function SignUp({ navigation }) {
                                     value={password}
                                     onChangeText={(text) => setPassword(text)}
                     />
-                    <TouchableOpacity style={styles.toggleButton} onPress={toggleShowPassword}>
+                    <TouchableOpacity style={styles.toggleButton} onPress={()=>{setShowPassword(!showPassword);}}>
                         <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -71,13 +71,15 @@ function SignUp({ navigation }) {
                     <Icon name="lock" style={styles.icon}></Icon>
                     <TextInput style={styles.pass} 
                                     placeholder="Xác nhận lại mật khẩu"
-                                    secureTextEntry={!showPassword}
+                                    secureTextEntry={!showConfirmPassword}
                                     textContentType="password"
-                                    value={password}
-                                    onChangeText={(text) => setPassword(text)}
+                                    value={confirmPassword}
+                                    onChangeText={(text) => setConfirmPassword(text)}
                     />
-                    <TouchableOpacity style={styles.toggleButton} onPress={toggleShowPassword}>
-                        <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" />
+                    <TouchableOpacity style={styles.toggleButton} onPress={()=>{
+                        setShowConfirmPassword(!showConfirmPassword)
+                    }}>
+                        <Ionicons name={showConfirmPassword ? 'eye-off' : 'eye'} size={24} color="black" />
                     </TouchableOpacity>
                 </View>
 

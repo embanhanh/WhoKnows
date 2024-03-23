@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
 import styles from "../components/Styles.js";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
@@ -9,6 +9,7 @@ import userContext from "../AuthContext/AuthProvider";
 import { useNavigation } from "@react-navigation/core";
 
 function Profile() {
+    const {user} = useContext(userContext)
     const navigation = useNavigation();
 
     const handleHome = () => {
@@ -57,7 +58,7 @@ function Profile() {
                 </View>
 
                 <Text style={styles.textProfile}>
-                    abc@gmail.com
+                    {user?.email}
                 </Text>
             </View>
         </View>
