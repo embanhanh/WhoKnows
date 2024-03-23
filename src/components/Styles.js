@@ -168,22 +168,22 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
 
-    createRoomImage: {
-        resizeMode: "stretch",
-        width: "60%",
-        height: "130%",
-        //position: "relative",
-    },
+    // createRoomImage: {
+    //     resizeMode: "stretch",
+    //     width: "60%",
+    //     height: "130%",
+    //     //position: "relative",
+    // },
 
     createContainer: {
         backgroundColor: "white",
+        //backgroundColor: "#99CC99",
         top: "24%",
         width: "90%",
         height: "50%",
         alignSelf: "center",
         justifyContent: "center",
         borderRadius: 20,
-        //backgroundColor: "#CCCCCC",
     },
 
     createTitleContainer: {
@@ -211,28 +211,15 @@ const styles = StyleSheet.create({
         marginLeft: "5%",
         marginRight: "5%",
         borderBottomWidth: 0.5,
-        //justifyContent: "center",
     },
 
-    idRoom: {
-        paddingVertical: "5%",
+    createPasswordContainer: {
+        flex: 0.75,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
-    },
-
-    numberPlayer: {
-        paddingVertical: "5%",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-    },
-
-    keyRoom: {
-        paddingVertical: "5%",
-        flexDirection: "row",
-        alignItems: "center",
-        //justifyContent: "space-between",
+        marginLeft: "5%",
+        marginRight: "5%",
+        borderBottomWidth: 0.5,
     },
 
     textCreateContent: {
@@ -274,12 +261,110 @@ const styles = StyleSheet.create({
 
     //findRoom
     findContainer: {
-        backgroundColor: "white",
+        //backgroundColor: "white",
+        top: "8%",
+        backgroundColor: "#99CC99",
         width: "90%",
         height: "70%",
         alignSelf: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        borderRadius: 20,
     },
+
+    findTitleContainer: {
+        flex: 1,
+        marginTop: 5,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    iconHome: {
+        fontSize: 35,
+        marginRight: "80%",
+    },
+
+    findInputContainer: {
+        flex: 1,
+        //paddingVertical: "5%",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: "10%",
+        marginLeft: "5%",
+        marginRight: "5%",
+        borderBottomWidth: 1,
+        //justifyContent: "center",
+    },
+
+    idInputText: {
+        paddingVertical: "3%",
+        paddingHorizontal: "3%",
+        width: "75%",
+        flexDirection: "row",
+        backgroundColor: "#DDDDDD",
+        borderRadius: 15,
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+
+    id: {
+        fontSize: 18,
+        width: "90%"
+    },
+
+    joinButton: {
+        position: "relative",
+        paddingVertical: "3%",
+        justifyContent: "center",
+        alignItems: "center",
+        minWidth: "20%",
+    },
+
+    backgroundJoinButton: {
+        backgroundColor: "#009966",
+        borderRadius: 15,
+        position: "absolute",
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+    },
+
+    findListRoomContainer: {
+        flex: 5,
+        marginLeft: "5%",
+        marginRight: "5%",
+        marginBottom: "5%",
+        //alignItems: "center",
+        //flexDirection: "row",
+        //justifyContent: "space-between",
+        
+    },
+
+    roomInfoContainer: {
+        paddingVertical: "3%",
+        paddingHorizontal: "3%",
+        width: "100%",
+        height: "25%",
+        marginBottom: "8%",
+        flexDirection: "row",
+        backgroundColor: "#DDDDDD",
+        borderRadius: 15,
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+
+    iconPeople: {
+        marginLeft: 50,
+        fontSize: 22,
+    },
+
+    iconLock: {
+
+        fontSize: 22,
+    },
+
 
     //ModalSetting
     modalContainer: {
