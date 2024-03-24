@@ -7,7 +7,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/core";
 
 import styles from "../components/Styles.js";
-import PlayerCard from "../components/PlayerCard.js";
+import PlayerCard from "../components/playerCard.js";
 
 function GameScreen() {
     const navigation = useNavigation();
@@ -39,7 +39,7 @@ function GameScreen() {
                     </TouchableOpacity>
                     <View style={styles.timeClock}>
                         <Icon name="clock-o"  style={styles.clockIcon}></Icon>
-                        <Text style={styles.timeLeft}>00:50</Text>
+                        <Text style={styles.timeLeft}>00:51</Text>
                     </View>
                     <Image source={require('../assets/img/character-EvilGhost.gif')} style={styles.characterGif}></Image>
                 </View>
