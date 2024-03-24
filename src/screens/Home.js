@@ -60,15 +60,15 @@ function Home() {
     const handlePasswordSwitch = () => {
         setPasswordSwitch(!passwordSwitch);
         if (!passwordSwitch) {
-        setShowPassword(true);
+            setShowPassword(true);
         } else {
-        setShowPassword(false);
+            setShowPassword(false);
         }
     };
 
     const handlePasswordInput = (text) => {
         if (text.length <= 4) {
-        setPassword(text);
+            setPassword(text);
         }
     };
 
@@ -231,7 +231,6 @@ function Home() {
                         <TextInput style={styles.id}
                             placeholder="Nhập ID phòng"
                             keyboardType="email-address"
-                            textContentType="idRoom"
                             value={idRoom}
                             onChangeText={(text) => idRoomText(text)}
                         />

@@ -514,31 +514,6 @@ const styles = StyleSheet.create({
         marginVertical: "2%",
     },
 
-    timeClock:{
-        position: 'absolute',
-        flexDirection: "row",
-        borderRadius: 25,
-        alignItems: "center",
-        justifyContent: "space-between",
-        left: "2%",
-        right: "74%",
-        top: "-35%",
-        backgroundColor: "purple",
-    },
-
-    clockIcon: {
-        fontSize: RFValue(20),
-        color: "white",
-        marginLeft: "8%",
-    },
-
-    timeLeft: {
-        width: "65%",
-        fontSize: RFValue(19),
-        color: "white",
-    },
-
-
     characterGif: {
         position: 'absolute',
         resizeMode: "stretch",

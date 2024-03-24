@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
-import styles from "../components/Styles.js";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-
+import { doc, deleteDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
+import { useNavigation } from "@react-navigation/core";
+
+import styles from "../components/Styles.js";
 import { auth, database } from "../../firebaseconfig";
 import userContext from "../AuthContext/AuthProvider";
-import { useNavigation } from "@react-navigation/core";
 
 function Profile() {
     const {user} = useContext(userContext)
@@ -44,7 +45,12 @@ function Profile() {
                     <Text style={styles.textTools}>Đổi Mật Khẩu</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.tools} onPress={() => signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))}>
+                <TouchableOpacity style={styles.tools} onPress={async() => {
+                        await signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))
+                        const refDoc = doc(database,"user",user?.uid)
+                        await deleteDoc(refDoc)
+                    }}
+                >
                     <View style={styles.square}>    
                         <Icon name="sign-out" style={styles.iconTools}></Icon>
                     </View>

@@ -1,16 +1,37 @@
 
-import React from "react";
-import { View, Text, TouchableOpacity, Alert, StyleSheet, TextInput, ImageBackground, Image} from "react-native";
+import React,{useState, useLayoutEffect} from "react";
+import { View, Text, TouchableOpacity, Alert, StyleSheet, TextInput, ImageBackground, Image, ScrollView} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon2 from 'react-native-vector-icons/MaterialIcons.js';
-import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/core";
+import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc } from "firebase/firestore";
+
 
 import styles from "../components/Styles.js";
 import PlayerCard from "../components/playerCard.js";
+import { auth, database } from "../../firebaseconfig";
+
 
 function GameScreen() {
     const navigation = useNavigation();
+
+    const [isCountDown, setIsCountDown] = useState(false)
+    const [time, setTime] = useState(7)
+    const [msg, setMsg] = useState('')
+    const [chats, setChats] = useState([])
+
+    // Fire base
+    useLayoutEffect(()=>{
+        const q = query(collection(database, "chats"), orderBy("createAt","asc") );
+        const unsubscribe = onSnapshot(q, (data)=>{
+            if(data){
+                setChats(data.docs?.map((dt) => dt.data()))
+            }
+        },(e)=>{
+            Alert.alert("Error: ", e.message)
+        })
+        return () => unsubscribe()
+    },[])
 
     const handleHome = () => {
         navigation.navigate('Home');
@@ -62,9 +83,19 @@ function GameScreen() {
                     </View>
 
                     <View style={styles.chatBoxContainer}>
-                        <View style={styles.chatBox}>
-        
-                        </View>
+                    <ScrollView style={styles.chatBox} contentContainerStyle={{
+                            justifyContent: "flex-end", 
+                            flexGrow: 1
+                        }}>
+                            {
+                                chats.map(({email, message}, index)=>(
+                                    <View key={index} style={{backgroundColor: '#fff',height: 30, flexDirection:"row", marginVertical: 8}}>
+                                        <Text>{email}</Text>
+                                        <Text>{message} </Text>
+                                    </View>
+                                ))
+                            }
+                        </ScrollView>
                     </View>
                 </View>
 
