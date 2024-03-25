@@ -9,6 +9,9 @@ import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction
 
 import styles from "../components/Styles.js";
 import PlayerCard from "../components/playerCard.js";
+import { auth, database } from "../../firebaseconfig";
+
+
 
 function GameScreen() {
     const navigation = useNavigation();
