@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
         width: "90%",
         height: "27%",
         backgroundColor: "#363442",
-        borderRadius: 10,
+        borderRadius: RFValue(10),
         elevation: 5, 
         shadowColor: "#000", 
         shadowOffset: { width: 0, height: 7 },
@@ -421,8 +421,8 @@ const styles = StyleSheet.create({
 
     avatar: {
         width: "30%",
-        height: "50%",
-        borderRadius: 50,
+        height: "45%",
+        borderRadius: RFValue(50),
         backgroundColor: "white",
     },
 
@@ -517,7 +517,7 @@ const styles = StyleSheet.create({
     timeClock:{
         position: 'absolute',
         flexDirection: "row",
-        borderRadius: 25,
+        borderRadius: RFValue(25),
         alignItems: "center",
         justifyContent: "space-between",
         left: "2%",
@@ -534,7 +534,7 @@ const styles = StyleSheet.create({
 
     timeLeft: {
         width: "65%",
-        fontSize: RFValue(19),
+        fontSize: RFValue(18),
         color: "white",
     },
 
@@ -565,7 +565,7 @@ const styles = StyleSheet.create({
     },
 
     chatBox: {
-        borderRadius: 20,
+        borderRadius: RFValue(20),
         width: "90%",
         height: "75%",
         marginBottom: "6%",
@@ -582,7 +582,7 @@ const styles = StyleSheet.create({
 
     rulesButton: {
         backgroundColor: "#353B63",
-        borderRadius: 30,
+        borderRadius: RFValue(30),
         paddingHorizontal: "4%", 
         paddingVertical: "3%", 
         position: "absolute",
@@ -599,7 +599,7 @@ const styles = StyleSheet.create({
 
     toolsButton: {
         backgroundColor: "#353B63",
-        borderRadius: 30,
+        borderRadius: RFValue(30),
         paddingHorizontal: "3.5%", 
         paddingVertical: "3%", 
         position: "absolute",
@@ -614,7 +614,7 @@ const styles = StyleSheet.create({
 
     messageButton: {
         backgroundColor: "#353B63",
-        borderRadius: 25,
+        borderRadius: RFValue(25),
         paddingHorizontal: "3%", 
         paddingVertical: "3%", 
         position: "absolute",
