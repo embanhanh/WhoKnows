@@ -9,6 +9,7 @@ import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction
 
 import styles from "../components/Styles.js";
 import PlayerCard from "../components/playerCard.js";
+import MessageLine from "../components/MessageLine.js";
 import { auth, database } from "../../firebaseconfig";
 
 
@@ -83,16 +84,18 @@ function GameScreen() {
                     </View>
 
                     <View style={styles.chatBoxContainer}>
-                    <ScrollView style={styles.chatBox} contentContainerStyle={{
-                            justifyContent: "flex-end", 
+                        <ScrollView style={styles.chatBox}
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false} 
+                        contentContainerStyle={{
+                            justifyContent: "center", 
+                            paddingVertical: "4%",
+                            paddingHorizontal: "1%",
                             flexGrow: 1
                         }}>
                             {
-                                chats.map(({email, message}, index)=>(
-                                    <View key={index} style={{backgroundColor: '#fff',height: 30, flexDirection:"row", marginVertical: 8}}>
-                                        <Text>{email}</Text>
-                                        <Text>{message} </Text>
-                                    </View>
+                                chats.map(({ email, message, role }, index) => (
+                                    <MessageLine key={index} email={email} message={message} role={role}/>
                                 ))
                             }
                         </ScrollView>

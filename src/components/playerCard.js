@@ -63,18 +63,18 @@ const styles = StyleSheet.create({
 
   leftBubbleChat: {
     position: "absolute",
-    width: "140%",
+    width: "135%",
     height: "130%",
     bottom: "30%",
-    left: "-15%",
+    left: "-10%",
   },
 
   rightBubbleChat: {
     position: "absolute",
-    width: "140%",
+    width: "135%",
     height: "130%",
     bottom: "30%",
-    right: "40%",
+    right: "39%",
   },
 
   answerText: {
