@@ -23,8 +23,7 @@ const styles = StyleSheet.create({
     roomInfoContainer: {
         paddingVertical: "3%",
         paddingHorizontal: "3%",
-        width: "100%",
-        height: "35%",
+
         marginBottom: "7%",
         flexDirection: "row",
         backgroundColor: "#DDDDDD",

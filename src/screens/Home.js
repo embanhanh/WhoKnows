@@ -260,7 +260,7 @@ function Home() {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.findListRoomContainer}>
-                        <ScrollView>
+                        <ScrollView style={styles.scrollView}>
                             {roomData.map((room, index) => (
                                 <RoomBox key={index} id={room.id} locked={room.locked} numPlayers={room.numPlayers} maxPlayers={room.maxPlayers} />
                             ))}

@@ -263,9 +263,9 @@ const styles = StyleSheet.create({
     findContainer: {
         //backgroundColor: "white",
         top: "8%",
-        backgroundColor: "#99CC99",
-        width: "90%",
-        height: "70%",
+        backgroundColor: "#663366",
+        maxWidth: "90%",
+        maxHeight: "70%",
         alignSelf: "center",
         justifyContent: "center",
         borderRadius: 20,
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
 
     findListRoomContainer: {
         flex: 5,
-        //marginTop: -10,
+        marginTop: -10,
         marginLeft: "5%",
         marginRight: "5%",
         marginBottom: "5%",
@@ -344,7 +344,12 @@ const styles = StyleSheet.create({
         //justifyContent: "space-between",    
     },
 
-    
+    scrollView: {
+        backgroundColor: "#660066",
+        paddingHorizontal: "3%",
+        paddingVertical: "5%",
+        borderRadius: RFValue(20),
+    },
 
 
     //ModalSetting
