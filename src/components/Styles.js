@@ -556,6 +556,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: "wrap",
         justifyContent: 'space-between',
+        marginBottom: "5%",
     },
 
     chatBoxContainer: {
@@ -567,10 +568,8 @@ const styles = StyleSheet.create({
     chatBox: {
         borderRadius: RFValue(20),
         width: "90%",
-        height: "75%",
-        marginBottom: "6%",
-        backgroundColor: "purple",
-        opacity: 0.3,
+        marginBottom: "7%",
+        backgroundColor: "#171D63",
     },
 
     gameToolsContainer: {
@@ -593,7 +592,7 @@ const styles = StyleSheet.create({
     },
 
     rulesIcon: {
-        fontSize: RFValue(25),
+        fontSize: RFValue(20),
         color: "#ffffff",
     },
 
@@ -608,7 +607,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     toolsIcon: {
-        fontSize: RFValue(35),
+        fontSize: RFValue(30),
         color: "#ffffff",
     },
 
@@ -625,7 +624,7 @@ const styles = StyleSheet.create({
     },
 
     messageIcon: {
-        fontSize: RFValue(25),
+        fontSize: RFValue(20),
         color: "#ffffff",
     },
 });
