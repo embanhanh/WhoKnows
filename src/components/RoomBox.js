@@ -1,10 +1,25 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, } from 'react-native';
+import { useNavigation } from "@react-navigation/core";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icons from 'react-native-vector-icons/Ionicons.js';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
 const RoomBox = ({ id, locked, numPlayers, maxPlayers }) => {
+    const navigation = useNavigation();
+
+    // handleJoinRoom = async () => {
+    //     const docRef = doc(database,"rooms", idRooms[index])
+    //     await runTransaction(database, async(transaction) =>{
+    //         const doc = await transaction.get(docRef)
+    //         if(doc.exists()){
+    //             const preMembers = doc.data().roomMembers
+    //             transaction.update(docRef,{ roomMembers: [...preMembers, user?.uid] })
+    //         }
+    //     })
+    //     navigation.navigate('GameScreen',{...rooms[index], roomId: idRooms[index]})
+    // }
+
     return (
         <View style={styles.roomInfoContainer}>
             <Text flex={3} style={styles.textContent}>ID: {id}</Text>
@@ -13,7 +28,7 @@ const RoomBox = ({ id, locked, numPlayers, maxPlayers }) => {
             <Text flex={1.5} style={styles.textContent}>{numPlayers}/{maxPlayers}</Text>
             <TouchableOpacity style={styles.joinButton}>
                 <View style={styles.backgroundJoinButton}/>
-                <Text style={styles.textButton}>Vào</Text>
+                <TouchableOpacity style={styles.textButton} onPress={handleJoinRoom}>Vào</TouchableOpacity>
             </TouchableOpacity>
         </View>
     );

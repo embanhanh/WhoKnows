@@ -1,17 +1,19 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useContext } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, Modal, Switch, TextInput, Image, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc, setDoc } from "firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
 
 import styles from "../components/Styles.js";
 import LogoGame from "../components/logoGame.js";
 import LoadingScreen from './LoadingScreen.js';
-import { useNavigation } from "@react-navigation/native";
 import { auth, database } from "../../firebaseconfig";
-
 import RoomBox from "../components/RoomBox.js";
+import userContext from "../AuthContext/AuthProvider.js";
 
 function Home() {
+    const {user} = useContext(userContext)
+
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const [createVisible, createModalVisible] = useState(false);
@@ -80,10 +82,11 @@ function Home() {
 
     //firebase
     useLayoutEffect(() => {
-        const q = query(collection(database, "Rooms")); 
-        const unsubscribe = onSnapshot(q, (data) => {
+        const q = query(collection(database, "rooms")); 
+        const unsubscribe = onSnapshot(q, async (data) => {
             if (data) {
-                setRooms(data.docs?.map((doc) => doc.data()));
+                await setRooms(data.docs?.map((doc) => doc.data()));
+                console.log("rooms:",roomData)
             }
         }, (error) => {
             Alert.alert("Error: ", error.message);
@@ -91,6 +94,33 @@ function Home() {
 
         return () => unsubscribe();
     }, []);
+
+    // handle create room
+
+    const [idroom, setIdroom] = useState('')
+
+    function generateRandomString(length) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+    }
+
+    handleCreateRoom = async () =>{
+        const roomInfo = {
+            id: idroom,
+            roomMaster: user?.uid,
+            roomMembers: [user?.uid],
+            Locked: password === '' ? false : password,
+            maxPlayers,
+        }
+        await setDoc(doc(database, 'rooms',idroom), roomInfo)
+        createModalVisible(false)
+        navigation.navigate("GameScreen",roomInfo)
+    }
+
 
     return ( 
         <ImageBackground source={require('../assets/img/HomeScreen.jpg')} style={styles.backgroundImage}>
@@ -114,14 +144,14 @@ function Home() {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.createRoomButton} onPress={() => createModalVisible(true)}>
+                        <TouchableOpacity style={styles.createRoomButton} onPress={() => {createModalVisible(true); setIdroom(generateRandomString(4))}}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Tạo Phòng
                             </Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.findRoomButton} onPress={() => findModalVisible(true)}>
+                        <TouchableOpacity style={styles.findRoomButton} onPress={() => {findModalVisible(true)}}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Tìm Phòng
@@ -174,7 +204,7 @@ function Home() {
 
                     <View style={styles.createContentContainer}>
                         <Text style={styles.textCreateContent}>ID phòng: </Text>
-                        <Text style={styles.textCreateContent}>*ID phòng* </Text>
+                        <Text style={styles.textCreateContent}>{idroom} </Text>
                         <TouchableOpacity>
                             <Icon name="copy" style={styles.iconCopy}></Icon>
                         </TouchableOpacity>
@@ -210,7 +240,7 @@ function Home() {
                     </View>
 
                     <View style={styles.createButtonContainer}>
-                        <TouchableOpacity style={styles.createRoomButton}>
+                        <TouchableOpacity style={styles.createRoomButton} onPress={handleCreateRoom}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Tạo
@@ -247,7 +277,7 @@ function Home() {
                         <View style={styles.idInputText}>
                         <TextInput style={styles.id}
                             placeholder="Nhập ID phòng"
-                            keyboardType="email-address"
+                            keyboardType="default"
                             value={idRoom}
                             onChangeText={(text) => idRoomText(text)}
                         />
@@ -262,7 +292,7 @@ function Home() {
                     <View style={styles.findListRoomContainer}>
                         <ScrollView style={styles.scrollView}>
                             {roomData.map((room, index) => (
-                                <RoomBox key={index} id={room.id} locked={room.locked} numPlayers={room.numPlayers} maxPlayers={room.maxPlayers} />
+                                <RoomBox key={index} id={room.id} locked={room.locked} numPlayers={room.roomMembers?.length} maxPlayers={room.maxPlayers} />
                             ))}
                         </ScrollView>
                     </View>
