@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, Modal, Switch, TextInput, Image, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import Icons from 'react-native-vector-icons/Ionicons.js';
+import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc } from "firebase/firestore";
 
 import styles from "../components/Styles.js";
 import LogoGame from "../components/logoGame.js";
 import LoadingScreen from './LoadingScreen.js';
 import { useNavigation } from "@react-navigation/native";
+import { auth, database } from "../../firebaseconfig";
 
+import RoomBox from "../components/RoomBox.js";
 
 function Home() {
     const navigation = useNavigation();
@@ -39,17 +41,17 @@ function Home() {
         );
     };
 
-    const [numberOfPlayers, setNumberOfPlayers] = useState(4);
+    const [maxPlayers, setMaxPlayers] = useState(4);
 
-    const incrementNumberOfPlayers = () => {
-        if (numberOfPlayers < 8) {
-            setNumberOfPlayers(numberOfPlayers + 1);
+    const incrementMaxPlayers = () => {
+        if (maxPlayers < 8) {
+            setMaxPlayers(maxPlayers + 1);
         }
     };
 
-    const decrementNumberOfPlayers = () => {
-        if (numberOfPlayers > 4) {
-            setNumberOfPlayers(numberOfPlayers - 1);
+    const decrementMaxPlayers = () => {
+        if (maxPlayers > 4) {
+            setMaxPlayers(maxPlayers - 1);
         }
     };
 
@@ -73,6 +75,22 @@ function Home() {
     };
 
     const [idRoom, idRoomText] = useState('');
+    
+    const [roomData, setRooms] = useState([]);
+
+    //firebase
+    useLayoutEffect(() => {
+        const q = query(collection(database, "Rooms")); 
+        const unsubscribe = onSnapshot(q, (data) => {
+            if (data) {
+                setRooms(data.docs?.map((doc) => doc.data()));
+            }
+        }, (error) => {
+            Alert.alert("Error: ", error.message);
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     return ( 
         <ImageBackground source={require('../assets/img/HomeScreen.jpg')} style={styles.backgroundImage}>
@@ -163,9 +181,9 @@ function Home() {
                     </View>
 
                     <NumericUpDown 
-                        value={numberOfPlayers}
-                        increment={incrementNumberOfPlayers}
-                        decrement={decrementNumberOfPlayers}
+                        value={maxPlayers}
+                        increment={incrementMaxPlayers}
+                        decrement={decrementMaxPlayers}
                     />
 
                     <View style={styles.createPasswordContainer}>
@@ -184,7 +202,6 @@ function Home() {
                                 onChangeText={handlePasswordInput}
                                 value={password}
                                 keyboardType="numeric"
-                                
                                 //secureTextEntry={true}
                                 maxLength={4}
                             />
@@ -223,7 +240,7 @@ function Home() {
                     <View style={styles.findTitleContainer}>
                         <Text style={styles.textCreateTitle}>Tìm Phòng</Text>
                         <TouchableOpacity onPress={()=>{findModalVisible(!findVisible);}}>
-                            <Icon name="home" style={styles.iconHome}></Icon>
+                            <Icon name="close" style={styles.iconClose}></Icon>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.findInputContainer}>
@@ -244,40 +261,9 @@ function Home() {
                     </View>
                     <View style={styles.findListRoomContainer}>
                         <ScrollView>
-                            <View style={styles.roomInfoContainer}>
-                                <Text style={styles.textCreateContent}>ID: A103 </Text>
-                                <Icons name="people-outline" style={styles.iconPeople}></Icons>
-                                <Text style={styles.textCreateContent}>4/8 </Text>
-                                <TouchableOpacity style={styles.joinButton}>
-                                    <View style={styles.backgroundJoinButton}/>
-                                    <Text style={styles.textButton}>
-                                        Vào
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.roomInfoContainer}>
-                                <Text style={styles.textCreateContent}>ID: 42E1 </Text>
-                                <Icon name="lock" style={styles.iconLock}></Icon>
-                                <Icons name="people-outline" style={styles.iconPeople}></Icons>
-                                <Text style={styles.textCreateContent}>3/6 </Text>
-                                <TouchableOpacity style={styles.joinButton}>
-                                    <View style={styles.backgroundJoinButton}/>
-                                    <Text style={styles.textButton}>
-                                        Vào
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.roomInfoContainer}>
-                                <Text style={styles.textCreateContent}>ID: 80C2 </Text>
-                                <Icons name="people-outline" style={styles.iconPeople}></Icons>
-                                <Text style={styles.textCreateContent}>7/8 </Text>
-                                <TouchableOpacity style={styles.joinButton}>
-                                    <View style={styles.backgroundJoinButton}/>
-                                    <Text style={styles.textButton}>
-                                        Vào
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
+                            {roomData.map((room, index) => (
+                                <RoomBox key={index} id={room.id} locked={room.locked} numPlayers={room.numPlayers} maxPlayers={room.maxPlayers} />
+                            ))}
                         </ScrollView>
                     </View>
                     

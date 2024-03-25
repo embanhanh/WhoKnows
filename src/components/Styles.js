@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#6938EF",
         backgroundImage: "linear",
         borderRadius: 15,
-      },
+    },
 
     signUpAccount: {
         flexDirection: "row",
@@ -273,6 +273,7 @@ const styles = StyleSheet.create({
 
     findTitleContainer: {
         flex: 1,
+        height: '100%',
         marginTop: 5,
         flexDirection: "row",
         alignItems: "center",
@@ -286,14 +287,15 @@ const styles = StyleSheet.create({
 
     findInputContainer: {
         flex: 1,
+        height: '100%',
         //paddingVertical: "5%",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: "10%",
+        marginBottom: "7%",
         marginLeft: "5%",
         marginRight: "5%",
-        borderBottomWidth: 1,
+        //borderBottomWidth: 1,
         //justifyContent: "center",
     },
 
@@ -325,45 +327,24 @@ const styles = StyleSheet.create({
         backgroundColor: "#009966",
         borderRadius: 15,
         position: "absolute",
-        left: 0,
-        right: 0,
         top: 0,
+        left: 0,
         bottom: 0,
+        right: 0,
     },
 
     findListRoomContainer: {
         flex: 5,
+        //marginTop: -10,
         marginLeft: "5%",
         marginRight: "5%",
         marginBottom: "5%",
         //alignItems: "center",
-        //flexDirection: "row",
-        //justifyContent: "space-between",
-        
-    },
-
-    roomInfoContainer: {
-        paddingVertical: "3%",
-        paddingHorizontal: "3%",
-        width: "100%",
-        height: "25%",
-        marginBottom: "8%",
         flexDirection: "row",
-        backgroundColor: "#DDDDDD",
-        borderRadius: 15,
-        alignItems: "center",
-        justifyContent: "space-between",
+        //justifyContent: "space-between",    
     },
 
-    iconPeople: {
-        marginLeft: 50,
-        fontSize: 22,
-    },
-
-    iconLock: {
-
-        fontSize: 22,
-    },
+    
 
 
     //ModalSetting
@@ -380,7 +361,7 @@ const styles = StyleSheet.create({
     iconClose: {
         fontSize: 40,
         marginLeft: "85%",
-        marginBottom: "45%"
+        //marginBottom: "45%"
     },
 
     //Profile
