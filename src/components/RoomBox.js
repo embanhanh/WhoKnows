@@ -1,24 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, } from 'react-native';
 import { useNavigation } from "@react-navigation/core";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icons from 'react-native-vector-icons/Ionicons.js';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { doc,updateDoc } from 'firebase/firestore';
 
-const RoomBox = ({ id, locked, numPlayers, maxPlayers }) => {
+import userContext from '../AuthContext/AuthProvider';
+import { database } from '../../firebaseconfig';
+
+const RoomBox = ({ id, locked, numPlayers, maxPlayers, roomMembers, handleJoinRoom }) => {
+    const {user} = useContext(userContext)
     const navigation = useNavigation();
-
-    // handleJoinRoom = async () => {
-    //     const docRef = doc(database,"rooms", idRooms[index])
-    //     await runTransaction(database, async(transaction) =>{
-    //         const doc = await transaction.get(docRef)
-    //         if(doc.exists()){
-    //             const preMembers = doc.data().roomMembers
-    //             transaction.update(docRef,{ roomMembers: [...preMembers, user?.uid] })
-    //         }
-    //     })
-    //     navigation.navigate('GameScreen',{...rooms[index], roomId: idRooms[index]})
-    // }
 
     return (
         <View style={styles.roomInfoContainer}>
@@ -28,7 +21,7 @@ const RoomBox = ({ id, locked, numPlayers, maxPlayers }) => {
             <Text flex={1.5} style={styles.textContent}>{numPlayers}/{maxPlayers}</Text>
             <TouchableOpacity style={styles.joinButton}>
                 <View style={styles.backgroundJoinButton}/>
-                <TouchableOpacity style={styles.textButton} onPress={handleJoinRoom}>Vào</TouchableOpacity>
+                <TouchableOpacity style={styles.textButton} onPress={()=>handleJoinRoom(id,roomMembers)}><Text>Vào</Text></TouchableOpacity>
             </TouchableOpacity>
         </View>
     );

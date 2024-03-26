@@ -20,7 +20,7 @@ function GameScreen({route}) {
     const {user} = useContext(userContext)
     const [member, setMember] = useState([])
     const [host, setHost] = useState('')
-    const [memberId, setMemberId] = useState(route.params.roomMembers)
+    const [memberId, setMemberId] = useState([])
 
     const [isCountDown, setIsCountDown] = useState(false)
     const [time, setTime] = useState(7)
@@ -43,13 +43,16 @@ function GameScreen({route}) {
     },[])
     // members
     useLayoutEffect(()=>{
-        const unsubscribe = onSnapshot(doc(database,"rooms",route.params.id), async (data)=>{
+        const unsubscribe = onSnapshot(doc(database,"rooms",route.params), async (data)=>{
             if(data.exists()){
                 try {
-                    const userQuery = query(collection(database, "user"), where('userId', "in", data.data().roomMembers));
-                    const membersSnapshot = await getDocs(userQuery);
-                    const members = membersSnapshot.docs.map((dt) => dt.data());
-                    setMember(members)
+                    const cc = data.data().roomMembers
+                    setMemberId(cc)
+                    // console.log(data.data().roomMembers);
+                    // const userQuery = query(collection(database, "user"), where('userId', "in", data.data().roomMembers));
+                    // const membersSnapshot = await getDocs(userQuery);
+                    // const members = membersSnapshot.docs.map((dt) => dt.data());
+                    // setMember(members)
                     const newHost = data.data().roomMaster
                     if(newHost !== host)
                         setHost(newHost)
@@ -66,7 +69,7 @@ function GameScreen({route}) {
 
     // handle out room
     const handleHome = async () => {
-        const docRef = doc(database,"rooms", route.params.id)
+        const docRef = doc(database,"rooms", route.params)
         if(typeof memberId === "object"){
             const index = memberId.indexOf(user?.uid)
             const newMemberId = memberId
@@ -85,33 +88,6 @@ function GameScreen({route}) {
             setMemberId(newMemberId)
         }
         navigation.navigate('Home');
-        // try {
-        //     const newMembers = await runTransaction(database, async(transaction) =>{
-        //         const doc = await transaction.get(docRef)
-        //         if(doc.exists()){
-        //             const roomdata = doc.data()
-        //             const preMembers = roomdata?.roomMembers
-        //             if( preMembers && typeof preMembers === "object"){
-        //                 const index = preMembers.indexOf(user?.uid)
-        //                 preMembers.splice(index, 1)
-        //                 if(preMembers.length !== 0){
-        //                     if(user.uid === host){
-        //                         const newHost = preMembers[Math.floor(Math.random()*preMembers.length)]
-        //                         transaction.update(docRef,{ roomMaster: newHost, roomMembers: [...preMembers] })
-        //                     }else{
-        //                         transaction.update(docRef,{ roomMembers: [...preMembers] })
-        //                     }
-        //                 }
-        //             }
-        //             return preMembers
-        //         }
-        //     })
-        //     if(newMembers.length === 0)
-        //         deleteDoc(docRef)
-        // } catch (e) {
-        //     console.error(e);
-        // }
-        // navigation.navigate('Home');
     };
 
     return ( 
@@ -119,7 +95,7 @@ function GameScreen({route}) {
             <View style={styles.container}>
                 <View style={styles.roomInfo}>
                     <Image source={require('../assets/img/RoomInfo.png')} style={styles.roomImage}></Image>
-                    <Text style={styles.textRoomNumber}>ID phòng: {route.params.id}</Text>
+                    <Text style={styles.textRoomNumber}>ID phòng: {route.params}</Text>
                     <Text style={styles.textWord}>Ghost</Text>
                     <TouchableOpacity style={styles.homeButton} onPress={handleHome}>
                         <Icon name="sign-out"  style={styles.homeIcon}></Icon>
@@ -134,14 +110,14 @@ function GameScreen({route}) {
                 <View style={styles.playContainer}>
                     <View style={styles.joinedPlayer}>
                     {
-                            member.map((member,index)=>{
+                            memberId.map((member,index)=>{
                                 if(index%2==0){
                                     return(
-                                        <PlayerCard key={index} bubbleType="left" avatarAlignment="flex-start" isManager={member.userId === host} isYou={member.userId === user.uid}></PlayerCard>
+                                        <PlayerCard key={index} bubbleType="left" avatarAlignment="flex-start" isManager={member === host} isYou={member === user.uid}></PlayerCard>
                                     )
                                 }else{
                                     return(
-                                        <PlayerCard key={index} bubbleType="right" avatarAlignment="flex-end" isManager={member.userId === host} isYou={member.userId === user.uid}></PlayerCard>
+                                        <PlayerCard key={index} bubbleType="right" avatarAlignment="flex-end" isManager={member === host} isYou={member === user.uid}></PlayerCard>
                                     )
                                 }
                             })

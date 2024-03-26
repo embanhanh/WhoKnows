@@ -1,7 +1,7 @@
 import React, { useState, useLayoutEffect, useContext } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, Modal, Switch, TextInput, Image, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc, setDoc,updateDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 
 import styles from "../components/Styles.js";
@@ -19,9 +19,7 @@ function Home() {
     const [createVisible, createModalVisible] = useState(false);
     const [findVisible, findModalVisible] = useState(false);
 
-    const handlePlayNow = () => {
-        navigation.navigate('GameScreen');
-    };
+
 
     const handleProfile = () => {
         navigation.navigate('Profile');
@@ -59,15 +57,9 @@ function Home() {
 
     const [passwordSwitch, setPasswordSwitch] = useState(false);
     const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
 
     const handlePasswordSwitch = () => {
         setPasswordSwitch(!passwordSwitch);
-        if (!passwordSwitch) {
-            setShowPassword(true);
-        } else {
-            setShowPassword(false);
-        }
     };
 
     const handlePasswordInput = (text) => {
@@ -86,7 +78,7 @@ function Home() {
         const unsubscribe = onSnapshot(q, async (data) => {
             if (data) {
                 await setRooms(data.docs?.map((doc) => doc.data()));
-                console.log("rooms:",roomData)
+                console.log("rooms:", user?.email, roomData)
             }
         }, (error) => {
             Alert.alert("Error: ", error.message);
@@ -95,8 +87,19 @@ function Home() {
         return () => unsubscribe();
     }, []);
 
-    // handle create room
+    // handle play now
+    const handlePlayNow = () => {
+        const roomAvailble = roomData
+        const newRoom = roomAvailble.filter((room)=>room.locked === false && room.roomMembers?.length !== room.maxPlayers)
+        if(newRoom.length === 0){
+            handleCreateRoom(generateRandomString(4))
+        }else {
+            const roomSelected = newRoom[Math.floor(Math.random()*newRoom.length)]
+            handleJoinRoom(roomSelected.id, roomSelected.roomMembers)
+        }
+    };
 
+    // handle create room
     const [idroom, setIdroom] = useState('')
 
     function generateRandomString(length) {
@@ -108,19 +111,26 @@ function Home() {
         return result;
     }
 
-    handleCreateRoom = async () =>{
+    handleCreateRoom = async (idroom) =>{
         const roomInfo = {
             id: idroom,
             roomMaster: user?.uid,
             roomMembers: [user?.uid],
-            Locked: password === '' ? false : password,
+            locked: password === '' ? false : password,
             maxPlayers,
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
         createModalVisible(false)
-        navigation.navigate("GameScreen",roomInfo)
+        setPassword(''); setPasswordSwitch(false); setMaxPlayers(4)
+        navigation.navigate("GameScreen",idroom)
     }
-
+    // handle join room
+    handleJoinRoom = async (id, roomMembers) => {
+        const docRef = doc(database,"rooms", id)
+        await updateDoc(docRef, { roomMembers: [...roomMembers, user?.uid] })
+        findModalVisible(false)
+        navigation.navigate('GameScreen', id)
+    }
 
     return ( 
         <ImageBackground source={require('../assets/img/HomeScreen.jpg')} style={styles.backgroundImage}>
@@ -144,14 +154,14 @@ function Home() {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.createRoomButton} onPress={() => {createModalVisible(true); setIdroom(generateRandomString(4))}}>
+                        <TouchableOpacity style={styles.createRoomButton} onPress={() => {createModalVisible(!createVisible); setIdroom(generateRandomString(4))}}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Tạo Phòng
                             </Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.findRoomButton} onPress={() => {findModalVisible(true)}}>
+                        <TouchableOpacity style={styles.findRoomButton} onPress={() => {findModalVisible(!findVisible)}}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Tìm Phòng
@@ -160,7 +170,7 @@ function Home() {
                     </View>
 
                     <View style={styles.setting}>
-                        <TouchableOpacity style={styles.settingButton} onPress={() => setModalVisible(true)}>
+                        <TouchableOpacity style={styles.settingButton} onPress={() => setModalVisible(!modalVisible)}>
                             <Icon name="gear"  style={styles.settingIcon}></Icon>
                         </TouchableOpacity>
 
@@ -225,7 +235,7 @@ function Home() {
                         onValueChange={handlePasswordSwitch}
                         value={passwordSwitch}
                         />
-                        {showPassword && (
+                        {passwordSwitch && (
                             <View style={styles.keyRoom}>
                             <TextInput
                                 style={styles.inputPassword}
@@ -240,14 +250,14 @@ function Home() {
                     </View>
 
                     <View style={styles.createButtonContainer}>
-                        <TouchableOpacity style={styles.createRoomButton} onPress={handleCreateRoom}>
+                        <TouchableOpacity style={styles.createRoomButton} onPress={()=>handleCreateRoom(idroom)}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Tạo
                             </Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.createRoomButton} onPress={()=>{createModalVisible(!createVisible);}}>
+                        <TouchableOpacity style={styles.createRoomButton} onPress={()=>{createModalVisible(false); setPassword(''); setPasswordSwitch(false); setMaxPlayers(4)}}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Hủy
@@ -292,7 +302,8 @@ function Home() {
                     <View style={styles.findListRoomContainer}>
                         <ScrollView style={styles.scrollView}>
                             {roomData.map((room, index) => (
-                                <RoomBox key={index} id={room.id} locked={room.locked} numPlayers={room.roomMembers?.length} maxPlayers={room.maxPlayers} />
+                                <RoomBox key={index} id={room.id} locked={room.locked} handleJoinRoom={handleJoinRoom}
+                                    numPlayers={room.roomMembers?.length} roomMembers={room.roomMembers}  maxPlayers={room.maxPlayers} />
                             ))}
                         </ScrollView>
                     </View>
