@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect, useContext } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, Modal, Switch, TextInput, Image, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, Modal, Switch, TextInput, Image, ScrollView, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc, setDoc,updateDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
@@ -87,6 +87,7 @@ function Home() {
         return () => unsubscribe();
     }, []);
 
+    // Handle Logic
     // handle play now
     const handlePlayNow = () => {
         const roomAvailble = roomData
@@ -118,6 +119,8 @@ function Home() {
             roomMembers: [user?.uid],
             locked: password === '' ? false : password,
             maxPlayers,
+            chats:[],
+            answers: [],
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
         createModalVisible(false)
@@ -131,6 +134,27 @@ function Home() {
         findModalVisible(false)
         navigation.navigate('GameScreen', id)
     }
+
+    // handle join room with id
+    handleJoinRoomWithId = async ()=>{
+        if(idRoom.length === 4){
+            let flag = -1
+            for( let i=0;i<roomData.length;i++){
+                if(roomData[i].id === idRoom){
+                    flag = i
+                    handleJoinRoom(idRoom,roomData[i].roomMembers)
+                    idRoomText('')
+                    break
+                }
+            }
+            if(flag === -1)
+            Alert.alert("Phòng không tồn tại")
+        }
+        else{
+            Alert.alert("ID phòng phải có 4 kí tự")
+        }
+    }
+    
 
     return ( 
         <ImageBackground source={require('../assets/img/HomeScreen.jpg')} style={styles.backgroundImage}>
@@ -279,7 +303,7 @@ function Home() {
                 <View style={styles.findContainer}>
                     <View style={styles.findTitleContainer}>
                         <Text style={styles.textCreateTitle}>Tìm Phòng</Text>
-                        <TouchableOpacity onPress={()=>{findModalVisible(!findVisible);}}>
+                        <TouchableOpacity onPress={()=>{findModalVisible(!findVisible);idRoomText('')}}>
                             <Icon name="close" style={styles.iconClose}></Icon>
                         </TouchableOpacity>
                     </View>
@@ -288,11 +312,12 @@ function Home() {
                         <TextInput style={styles.id}
                             placeholder="Nhập ID phòng"
                             keyboardType="default"
+                            maxLength={4}
                             value={idRoom}
                             onChangeText={(text) => idRoomText(text)}
                         />
                         </View>
-                        <TouchableOpacity style={styles.joinButton}>
+                        <TouchableOpacity style={styles.joinButton} onPress={handleJoinRoomWithId}>
                             <View style={styles.backgroundJoinButton}/>
                             <Text style={styles.textButton}>
                                 Vào
