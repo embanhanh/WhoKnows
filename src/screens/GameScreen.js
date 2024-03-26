@@ -139,6 +139,7 @@ function GameScreen({route}) {
                                     <MessageLine key={index} email={email} message={message} role={role}/>
                                 ))
                             }
+
                         </ScrollView>
                     </View>
                 </View>

@@ -77,19 +77,25 @@ const styles = StyleSheet.create({
         minWidth: "85%",
     },
 
-    textButton: {
-        fontSize: 20,
-        color: "white",
-        fontWeight: "bold",
-    },
-
     backgroundBehindText: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: "#6938EF",
         backgroundImage: "linear",
         borderRadius: 15,
     },
-
+    textButton: {
+        fontSize: 20,
+        color: "white",
+        fontWeight: "bold",
+    },
+    createRoomButton: {
+        position: "relative",
+        paddingVertical: "3%",
+        justifyContent: 'center',
+        alignItems: 'center',
+        minWidth: "40%",
+        marginRight: "5%",
+    },
     signUpAccount: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -144,16 +150,6 @@ const styles = StyleSheet.create({
         height: '100%',
         resizeMode: "cover",
     },
-
-    createRoomButton: {
-        position: "relative",
-        paddingVertical: "3%",
-        justifyContent: 'center',
-        alignItems: 'center',
-        minWidth: "40%",
-        marginRight: "5%",
-    },
-
     findRoomButton: {
         position: "relative",
         paddingVertical: "3%",
@@ -161,197 +157,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         minWidth: "40%",
     },
-
     //createRoom
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
-
-    // createRoomImage: {
-    //     resizeMode: "stretch",
-    //     width: "60%",
-    //     height: "130%",
-    //     //position: "relative",
-    // },
-
-    createContainer: {
-        backgroundColor: "white",
-        //backgroundColor: "#99CC99",
-        top: "24%",
-        width: "90%",
-        height: "50%",
-        alignSelf: "center",
-        justifyContent: "center",
-        borderRadius: 20,
-    },
-
-    createTitleContainer: {
-        flex: 1,
-        marginTop: 10,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-
-    textCreateTitle: {
-        fontSize: 27,
-        position: 'absolute',
-        fontWeight: "bold",
-        color: "black",
-    },
-
-    createContentContainer: {
-        flex: 0.75,
-        //paddingVertical: "5%",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        //marginBottom: "10%",
-        marginLeft: "5%",
-        marginRight: "5%",
-        borderBottomWidth: 0.5,
-    },
-
-    createPasswordContainer: {
-        flex: 0.75,
-        flexDirection: "row",
-        alignItems: "center",
-        marginLeft: "5%",
-        marginRight: "5%",
-        borderBottomWidth: 0.5,
-    },
-
-    textCreateContent: {
-        fontSize: 20,
-        color: "black",
-    },
-
-    createButtonContainer: {
-        flex: 1,
-        marginLeft: 17,
-        marginBottom: 5,
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-
-    iconCopy: {
-        fontSize: 25,
-        marginRight: 45,
-    },
-
-    numberButton: {
-        backgroundColor: 'lightgray',
-        borderRadius: 5,
-        width: 30,
-        alignItems: "center",
-    },
-
-    inputPassword: {
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 5,
-        marginRight: 5,
-        marginLeft: 10,
-        width: 100,
-        fontSize: 20,
-        textAlign: "center",
-    },
-
-    //findRoom
-    findContainer: {
-        //backgroundColor: "white",
-        top: "8%",
-        backgroundColor: "#663366",
-        maxWidth: "90%",
-        maxHeight: "70%",
-        alignSelf: "center",
-        justifyContent: "center",
-        borderRadius: 20,
-    },
-
-    findTitleContainer: {
-        flex: 1,
-        height: '100%',
-        marginTop: 5,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-
     iconHome: {
         fontSize: 35,
         marginRight: "80%",
     },
-
-    findInputContainer: {
-        flex: 1,
-        height: '100%',
-        //paddingVertical: "5%",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginBottom: "7%",
-        marginLeft: "5%",
-        marginRight: "5%",
-        //borderBottomWidth: 1,
-        //justifyContent: "center",
-    },
-
-    idInputText: {
-        paddingVertical: "3%",
-        paddingHorizontal: "3%",
-        width: "75%",
-        flexDirection: "row",
-        backgroundColor: "#DDDDDD",
-        borderRadius: 15,
-        alignItems: "center",
-        justifyContent: "space-between",
-    },
-
-    id: {
-        fontSize: 18,
-        width: "90%"
-    },
-
-    joinButton: {
-        position: "relative",
-        paddingVertical: "3%",
-        justifyContent: "center",
-        alignItems: "center",
-        minWidth: "20%",
-    },
-
-    backgroundJoinButton: {
-        backgroundColor: "#009966",
-        borderRadius: 15,
-        position: "absolute",
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-    },
-
-    findListRoomContainer: {
-        flex: 5,
-        marginTop: -10,
-        marginLeft: "5%",
-        marginRight: "5%",
-        marginBottom: "5%",
-        //alignItems: "center",
-        flexDirection: "row",
-        //justifyContent: "space-between",    
-    },
-
-    scrollView: {
-        backgroundColor: "#660066",
-        paddingHorizontal: "3%",
-        paddingVertical: "5%",
-        borderRadius: RFValue(20),
-    },
-
-
     //ModalSetting
     modalContainer: {
         backgroundColor: "white",
@@ -362,32 +176,22 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 20,
     },
-
-    iconClose: {
-        fontSize: 40,
-        marginLeft: "85%",
-        //marginBottom: "45%"
-    },
-
     //Profile
     profileContainer: {
         flex: 1,
     },
-
     headerProfile: {
         flex: 2,
         backgroundColor: mainStyles.primaryColor,
         alignItems: "center",
         justifyContent: "center",
     },
-
     toolsProfile: {
         flex: 4,
         backgroundColor: "#363442",
         justifyContent: "center",
         paddingTop: "20%",
     },
-
     cardContainer: {
         position: "absolute",
         top: "20%", 
@@ -404,7 +208,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
-
     avatar: {
         width: "30%",
         height: "45%",
@@ -417,7 +220,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "white",
     },
-
     tools: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -427,14 +229,12 @@ const styles = StyleSheet.create({
         height: "10%",
         marginTop: "10%",
     },
-
     textTools: {
         fontSize: 22,
         color: "white",
         fontWeight: "bold",
         width: "78%"
     },
-
     square: {
         backgroundColor: mainStyles.primaryColor,
         width: "16%",
@@ -443,19 +243,16 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-
     iconTools: {
         color: "white",
         fontSize: RFValue(30),
     },
-
     //GameRoom
     roomInfo: {
         flex: 1.5,
         alignItems: "center",
         justifyContent: "center",
-    },
-    
+    },    
     roomImage: {
         resizeMode: "stretch",
         marginLeft: "3%",
@@ -464,7 +261,6 @@ const styles = StyleSheet.create({
         height: "170%",
         position: "relative",
     },
-
     textRoomNumber: {
         position: 'absolute',
         bottom: "95%",
@@ -473,7 +269,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold', 
         padding: 5, 
     },
-
     textWord: {
         bottom: "50%",
         position: 'absolute',
@@ -482,7 +277,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold', 
         padding: 5, 
     },
-
     homeButton: {
         position: 'absolute',
         borderRadius: 25,
@@ -492,14 +286,12 @@ const styles = StyleSheet.create({
         right: "6%",
         top: "-30%",
     },
-
     homeIcon: {
         fontSize: RFValue(30),
         color: "#ffffff",
         marginHorizontal: "2%",
         marginVertical: "2%",
     },
-
     timeClock:{
         position: 'absolute',
         flexDirection: "row",
@@ -511,19 +303,16 @@ const styles = StyleSheet.create({
         top: "-35%",
         backgroundColor: "purple",
     },
-
     clockIcon: {
         fontSize: RFValue(20),
         color: "white",
         marginLeft: "8%",
     },
-
     timeLeft: {
         width: "65%",
         fontSize: RFValue(18),
         color: "white",
     },
-
 
     characterGif: {
         position: 'absolute',
@@ -533,38 +322,32 @@ const styles = StyleSheet.create({
         left: "2%",
         top: "3%",
     },
-
     playContainer: {
         flex: 9,
     },
-
     joinedPlayer: {
         flexDirection: 'row',
         flexWrap: "wrap",
         justifyContent: 'space-between',
         marginBottom: "5%",
     },
-
     chatBoxContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
     },
-
     chatBox: {
         borderRadius: RFValue(20),
         width: "90%",
         marginBottom: "7%",
         backgroundColor: "#171D63",
     },
-
     gameToolsContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         position: "relative",
     },
-
     rulesButton: {
         backgroundColor: "#353B63",
         borderRadius: RFValue(30),
@@ -576,12 +359,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-
     rulesIcon: {
         fontSize: RFValue(20),
         color: "#ffffff",
     },
-
     toolsButton: {
         backgroundColor: "#353B63",
         borderRadius: RFValue(30),
@@ -591,12 +372,10 @@ const styles = StyleSheet.create({
         bottom: "30%",
         justifyContent: "center",
         alignItems: "center",
-    },
-    toolsIcon: {
+    },    toolsIcon: {
         fontSize: RFValue(30),
         color: "#ffffff",
     },
-
     messageButton: {
         backgroundColor: "#353B63",
         borderRadius: RFValue(25),
@@ -608,7 +387,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-
     messageIcon: {
         fontSize: RFValue(20),
         color: "#ffffff",

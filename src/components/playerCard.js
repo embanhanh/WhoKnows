@@ -17,16 +17,12 @@ const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou}) => {
 
   return (
     <View style={styles.container}>
-      {
-        
-      }
       <View style={{...newStyles,  alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }}>
         <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />
+        {
+          isManager && <Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
+        }
       </View>
-      {
-        isManager && <Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
-      }
-      {/* <Image source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}></Image> */}
       {bubbleType === 'left' && (
         <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}></ImageBackground>
       )}
@@ -49,8 +45,7 @@ const styles = StyleSheet.create({
     position: "relative",
     borderRadius: 50, 
     borderWidth: 3, 
-    borderColor: 'yellow', 
-    overflow: 'hidden', 
+    borderColor: 'yellow',  
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: "flex-start",
@@ -86,10 +81,10 @@ const styles = StyleSheet.create({
 
   overlay: {
     position: 'absolute',
-    width: '20%',
-    height: "20%",
+    width: '50%',
+    height: "25%",
     left: "22%",
-    bottom: "95%",
+    top: "-25%",
   },
 });
 
