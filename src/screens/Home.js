@@ -65,6 +65,7 @@ function Home() {
     }
     // handle create room
     handleCreateRoom = async (idroom, password, maxPlayers) =>{
+        navigation.navigate("GameScreen",idroom)
         const roomInfo = {
             id: idroom,
             roomMaster: user?.uid,
@@ -76,7 +77,6 @@ function Home() {
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
         createModalVisible(false)
-        navigation.navigate("GameScreen",idroom)
     }
     // handle close modal create 
     const handleCloseCreateModal = ()=>{

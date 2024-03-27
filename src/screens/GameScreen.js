@@ -1,6 +1,6 @@
 
-import React,{useState, useLayoutEffect, useContext} from "react";
-import { View, Text, TouchableOpacity, Alert, StyleSheet, TextInput, ImageBackground, Image, ScrollView} from "react-native";
+import React,{useState, useLayoutEffect, useContext, useRef, useEffect } from "react";
+import { View, Text, TouchableOpacity, Alert, StyleSheet, ImageBackground, Image, ScrollView, TextInput, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon2 from 'react-native-vector-icons/MaterialIcons.js';
 import { useNavigation } from "@react-navigation/core";
@@ -12,6 +12,7 @@ import PlayerCard from "../components/playerCard.js";
 import MessageLine from "../components/MessageLine.js";
 import { auth, database } from "../../firebaseconfig";
 import userContext from "../AuthContext/AuthProvider.js";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 
@@ -41,6 +42,7 @@ function GameScreen({route}) {
         })
         return () => unsubscribe()
     },[])
+
     // members
     useLayoutEffect(()=>{
         const unsubscribe = onSnapshot(doc(database,"rooms",route.params), async (data)=>{
@@ -90,75 +92,119 @@ function GameScreen({route}) {
         navigation.navigate('Home');
     };
 
+    const [inputMessage, setInputMessage] = useState('');
+    const [showTextInput, setShowTextInput] = useState(false);
+    const textInputRef = useRef(null);
+
+    const handleShowTextInput = () => {
+        setShowTextInput(true);
+        setTimeout(() => {
+            textInputRef.current.focus();
+        }, 100);
+    };
+
+    const handleHideTextInput = () => {
+        setShowTextInput(false);
+    };
+
+    useEffect(() => {
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleHideTextInput);
+
+        return () => {
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
+
     return ( 
-        <ImageBackground source={require('../assets/img/Theme2.jpg')} style={styles.backgroundImage}>
-            <View style={styles.container}>
-                <View style={styles.roomInfo}>
-                    <Image source={require('../assets/img/RoomInfo.png')} style={styles.roomImage}></Image>
-                    <Text style={styles.textRoomNumber}>ID phòng: {route.params}</Text>
-                    <Text style={styles.textWord}>Ghost</Text>
-                    <TouchableOpacity style={styles.homeButton} onPress={handleHome}>
-                        <Icon name="sign-out"  style={styles.homeIcon}></Icon>
-                    </TouchableOpacity>
-                    <View style={styles.timeClock}>
-                        <Icon name="clock-o"  style={styles.clockIcon}></Icon>
-                        <Text style={styles.timeLeft}>00:51</Text>
-                    </View>
-                    <Image source={require('../assets/img/character-EvilGhost.gif')} style={styles.characterGif}></Image>
-                </View>
+        <SafeAreaView style={{flex: 1}}>
+            <KeyboardAvoidingView style={{flex: 1}} behavior="">
+                <ImageBackground source={require('../assets/img/Theme2.jpg')} style={styles.backgroundImage}>
+                    <View style={styles.container}>
+                        <View style={styles.roomInfo}>
+                            <Image source={require('../assets/img/RoomInfo.png')} style={styles.roomImage}></Image>
+                            <Text style={styles.textRoomNumber}>ID phòng: {route.params}</Text>
+                            <Text style={styles.textWord}>Ghost</Text>
+                            <TouchableOpacity style={styles.homeButton} onPress={handleHome}>
+                                <Icon name="sign-out"  style={styles.homeIcon}></Icon>
+                            </TouchableOpacity>
+                            <View style={styles.timeClock}>
+                                <Icon name="clock-o"  style={styles.clockIcon}></Icon>
+                                <Text style={styles.timeLeft}>00:51</Text>
+                            </View>
+                            <Image source={require('../assets/img/character-EvilGhost.gif')} style={styles.characterGif}></Image>
+                        </View>
 
-                <View style={styles.playContainer}>
-                    <View style={styles.joinedPlayer}>
-                    {
-                            memberId.map((member,index)=>{
-                                if(index%2==0){
-                                    return(
-                                        <PlayerCard key={index} bubbleType="left" avatarAlignment="flex-start" isManager={member === host} isYou={member === user.uid}></PlayerCard>
-                                    )
-                                }else{
-                                    return(
-                                        <PlayerCard key={index} bubbleType="right" avatarAlignment="flex-end" isManager={member === host} isYou={member === user.uid}></PlayerCard>
-                                    )
-                                }
-                            })
-                    }
-                    </View>
-
-                    <View style={styles.chatBoxContainer}>
-                        <ScrollView style={styles.chatBox}
-                        showsVerticalScrollIndicator={false}
-                        showsHorizontalScrollIndicator={false} 
-                        contentContainerStyle={{
-                            justifyContent: "center", 
-                            paddingVertical: "4%",
-                            paddingHorizontal: "1%",
-                            flexGrow: 1
-                        }}>
+                        <View style={styles.playContainer}>
+                            <View style={styles.joinedPlayer}>
                             {
-                                chats.map(({ email, message, role }, index) => (
-                                    <MessageLine key={index} email={email} message={message} role={role}/>
-                                ))
+                                    memberId.map((member,index)=>{
+                                        if(index%2==0){
+                                            return(
+                                                <PlayerCard key={index} bubbleType="left" avatarAlignment="flex-start" isManager={member === host} isYou={member === user.uid}></PlayerCard>
+                                            )
+                                        }else{
+                                            return(
+                                                <PlayerCard key={index} bubbleType="right" avatarAlignment="flex-end" isManager={member === host} isYou={member === user.uid}></PlayerCard>
+                                            )
+                                        }
+                                    })
                             }
+                            </View>
 
-                        </ScrollView>
+                            <View style={styles.chatBoxContainer}>
+                                <ScrollView style={styles.chatBox}
+                                showsVerticalScrollIndicator={false}
+                                showsHorizontalScrollIndicator={false} 
+                                contentContainerStyle={{
+                                    justifyContent: "center", 
+                                    paddingVertical: "4%",
+                                    paddingHorizontal: "1%",
+                                    flexGrow: 1
+                                }}>
+                                    {
+                                        chats.map(({ email, message, role }, index) => (
+                                            <MessageLine key={index} email={email} message={message} role={role}/>
+                                        ))
+                                    }
+
+                                </ScrollView>
+                            </View>
+                        </View>
+
+                        <View style={styles.gameToolsContainer}>
+                            <TouchableOpacity style={styles.toolsButton}>
+                                <Icon name="pencil"  style={styles.toolsIcon}></Icon>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.rulesButton}>
+                                <Icon name="question"  style={styles.rulesIcon}></Icon>
+                            </TouchableOpacity>
+
+
+                            <TouchableOpacity style={styles.messageButton} onPress={handleShowTextInput}>
+                                <Icon2 name="message" style={styles.messageIcon}></Icon2>
+                            </TouchableOpacity>
+
+                            {showTextInput && (
+                                <TextInput
+                                    ref={textInputRef}
+                                    style={styles.textInput}
+                                    placeholder="Nhập tin nhắn..."
+                                    onChangeText={(text) => setInputMessage(text)}
+                                    value={inputMessage}
+                                    onSubmitEditing={() => {
+                                        // Xử lý gửi tin nhắn ở đây
+                                        // Ví dụ: handleSendMessage(inputMessage);
+                                        setInputMessage(''); // Đặt lại giá trị của TextInput thành rỗng sau khi gửi tin nhắn
+                                    }}
+                                />
+                            )}
+                        </View>
                     </View>
-                </View>
-
-                <View style={styles.gameToolsContainer}>
-                    <TouchableOpacity style={styles.toolsButton}>
-                        <Icon name="pencil"  style={styles.toolsIcon}></Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.rulesButton}>
-                        <Icon name="question"  style={styles.rulesIcon}></Icon>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.messageButton}>
-                        <Icon2 name="message" style={styles.messageIcon}></Icon2>
-                    </TouchableOpacity>
-                </View>
-            </View>
-         </ImageBackground>
+                </ImageBackground>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
     );
 }
 

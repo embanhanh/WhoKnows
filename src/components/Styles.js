@@ -391,6 +391,11 @@ const styles = StyleSheet.create({
         fontSize: RFValue(20),
         color: "#ffffff",
     },
+
+    textInput:{
+        backgroundColor: "white",
+        flex: 1,
+    }
 });
 
 export default styles
