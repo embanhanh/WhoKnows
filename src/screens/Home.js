@@ -15,6 +15,8 @@ import ModalFindRoom from "../components/ModalFindRoom.js";
 function Home() {
     const {user} = useContext(userContext)
     const navigation = useNavigation();
+
+    const [isloading, setIsloading] = useState(false)
     // Modal variables 
     const [modalVisible, setModalVisible] = useState(false);
     const [createVisible, createModalVisible] = useState(false);
@@ -43,14 +45,14 @@ function Home() {
 
     // Handle Logic
     // handle play now
-    const handlePlayNow = () => {
+    const handlePlayNow = async () => {
         const roomAvailble = roomData
         const newRoom = roomAvailble.filter((room)=>room.locked === false && room.roomMembers?.length !== room.maxPlayers)
         if(newRoom.length === 0){
-            handleCreateRoom(generateRandomString(4),false,4)
+            await handleCreateRoom(generateRandomString(4),false,4)
         }else {
             const roomSelected = newRoom[Math.floor(Math.random()*newRoom.length)]
-            handleJoinRoom(roomSelected.id, roomSelected.roomMembers)
+            await handleJoinRoom(roomSelected.id, roomSelected.roomMembers)
         }
     };
     //Modal Create room --- LOGIC
@@ -61,22 +63,29 @@ function Home() {
         for (let i = 0; i < length; i++) {
             result += characters.charAt(Math.floor(Math.random() * characters.length));
         }
+        console.log("random id");
         return result;
     }
     // handle create room
     handleCreateRoom = async (idroom, password, maxPlayers) =>{
-        navigation.navigate("GameScreen",idroom)
+        await createModalVisible(false)
         const roomInfo = {
             id: idroom,
             roomMaster: user?.uid,
-            roomMembers: [user?.uid],
+            roomMembers: [
+                { 
+                    Id: user?.uid,
+                    isReady: true
+                }
+            ],
             locked: password === '' ? false : password,
             maxPlayers,
             chats:[],
             answers: [],
+            round:0,
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
-        createModalVisible(false)
+        navigation.navigate("GameScreen",idroom)
     }
     // handle close modal create 
     const handleCloseCreateModal = ()=>{
@@ -91,7 +100,7 @@ function Home() {
     handleJoinRoom = async (id, roomMembers) => {
         console.log("join");
         const docRef = doc(database,"rooms", id)
-        await updateDoc(docRef, { roomMembers: [...roomMembers, user?.uid] })
+        await updateDoc(docRef, { roomMembers: [...roomMembers, {Id:user?.uid,isReady: false}] })
         findModalVisible(false)
         navigation.navigate('GameScreen', id)
     }
@@ -112,6 +121,10 @@ function Home() {
         else{
             Alert.alert("ID phòng phải có 4 kí tự")
         }
+    }
+
+    if(isloading){
+        return <LoadingScreen/>
     }
 
     return ( 

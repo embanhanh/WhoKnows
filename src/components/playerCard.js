@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Image, Dimensions, ImageBackground, Text } from 'react-native';
 
-const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou}) => {
+const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty}) => {
   const windowWidth = Dimensions.get('window').width;
   const avatarSize = windowWidth * 0.15; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
   const overlaySize = windowWidth * 0.11; // Kích thước overlayContainer dựa trên tỷ lệ màn hình
@@ -11,23 +11,29 @@ const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou}) => {
     newStyles = {...styles.avatarContainer}
   }else if(isYou){
     newStyles = {...styles.avatarContainer, borderColor: 'green' }
-  } else{
+  } else if(isEmpty){
+    newStyles = {...styles.avatarContainer, borderColor: 'gray', backgroundColor: "#333" }
+  }else{
     newStyles = {...styles.avatarContainer, borderColor: 'gray' }
   }
 
   return (
     <View style={styles.container}>
       <View style={{...newStyles,  alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }}>
-        <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />
+        {!isEmpty && <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />}
         {
           isManager && <Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
         }
       </View>
       {bubbleType === 'left' && (
-        <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}></ImageBackground>
+        <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>
+          
+        </ImageBackground>
       )}
       {bubbleType === 'right' && (
-        <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}></ImageBackground>
+        <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}>
+          
+        </ImageBackground>
       )}
     </View>
   );
@@ -49,6 +55,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: "flex-start",
+
   },
   avatar: {
     width: '100%',

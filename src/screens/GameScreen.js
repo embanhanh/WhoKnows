@@ -22,15 +22,27 @@ function GameScreen({route}) {
     const {user} = useContext(userContext)
     const [member, setMember] = useState([])
     const [host, setHost] = useState('')
-    const [memberId, setMemberId] = useState([])
+    // const [memberId, setMemberId] = useState([])
+    const [roomInfo, setRoomInfo] = useState({})
 
     const [isCountDown, setIsCountDown] = useState(false)
     const [time, setTime] = useState(7)
     const [msg, setMsg] = useState('')
     const [chats, setChats] = useState([])
 
+    // RoomInfo variables
+    const memberId = roomInfo.roomMembers?.map((member)=>member.Id) || []
+    const emptyMembers = new Array((roomInfo?.maxPlayers-memberId.length) || 0)
+    emptyMembers.fill(1)
+    const isReady = roomInfo.roomMembers?.find((member)=>member.Id === user.uid).isReady || false
+    const countReady = roomInfo.roomMembers?.reduce((acc, member)=>{
+        if(member.isReady)
+            return acc+1;
+        else
+            return acc
+    },0)
+    console.log(countReady);
     // Fire base
-
     // chats
     useLayoutEffect(()=>{
         const q = query(collection(database, "chats"), orderBy("createAt","asc") );
@@ -49,13 +61,7 @@ function GameScreen({route}) {
         const unsubscribe = onSnapshot(doc(database,"rooms",route.params), async (data)=>{
             if(data.exists()){
                 try {
-                    const cc = data.data().roomMembers
-                    setMemberId(cc)
-                    // console.log(data.data().roomMembers);
-                    // const userQuery = query(collection(database, "user"), where('userId', "in", data.data().roomMembers));
-                    // const membersSnapshot = await getDocs(userQuery);
-                    // const members = membersSnapshot.docs.map((dt) => dt.data());
-                    // setMember(members)
+                    setRoomInfo(data.data())
                     const newHost = data.data().roomMaster
                     if(newHost !== host)
                         setHost(newHost)
@@ -69,6 +75,11 @@ function GameScreen({route}) {
         })
         return () => unsubscribe()
     },[])
+
+    // handle ready/cancel/start 
+    const handleReadyCancelStart = async ()=>{
+        //logic
+    }
 
     // handle out room
     const handleHome = async () => {
@@ -88,7 +99,6 @@ function GameScreen({route}) {
             else{
                 deleteDoc(docRef)
             }
-            setMemberId(newMemberId)
         }
         navigation.navigate('Home');
     };
@@ -136,22 +146,35 @@ function GameScreen({route}) {
                         <Image source={require('../assets/img/character-EvilGhost.gif')} style={styles.characterGif}></Image>
                     </View>
 
-                    <View style={styles.playContainer}>
-                        <View style={styles.joinedPlayer}>
-                        {
-                                memberId.map((member,index)=>{
-                                    if(index%2==0){
-                                        return(
-                                            <PlayerCard key={index} bubbleType="left" avatarAlignment="flex-start" isManager={member === host} isYou={member === user.uid}></PlayerCard>
-                                        )
-                                    }else{
-                                        return(
-                                            <PlayerCard key={index} bubbleType="right" avatarAlignment="flex-end" isManager={member === host} isYou={member === user.uid}></PlayerCard>
-                                        )
-                                    }
-                                })
+                <View style={styles.playContainer}>
+                    <View style={styles.joinedPlayer}>
+                    {
+                            memberId.map((member,index)=>{
+                                if(index%2==0){
+                                    return(
+                                        <PlayerCard key={index} bubbleType="left" avatarAlignment="flex-start" isManager={member === host} isYou={member === user.uid}></PlayerCard>
+                                    )
+                                }else{
+                                    return(
+                                        <PlayerCard key={index} bubbleType="right" avatarAlignment="flex-end" isManager={member === host} isYou={member === user.uid}></PlayerCard>
+                                    )
+                                }
+                            })
+                    }
+                    {
+                           emptyMembers.map((e,index)=>{
+                            if((memberId.length + index)%2==0){
+                                return(
+                                    <PlayerCard key={index} avatarAlignment="flex-start" isEmpty={true}></PlayerCard>
+                                )
+                            }else{
+                                return(
+                                    <PlayerCard key={index} avatarAlignment="flex-end" isEmpty={true}></PlayerCard>
+                                )
+                            }
+                        })
                         }
-                        </View>
+                    </View>
 
                         <View style={styles.chatBoxContainer}>
                             <ScrollView style={styles.chatBox}
@@ -173,10 +196,14 @@ function GameScreen({route}) {
                         </View>
                     </View>
 
-                    <View style={styles.gameToolsContainer}>
-                        <TouchableOpacity style={styles.toolsButton}>
-                            <Icon name="pencil"  style={styles.toolsIcon}></Icon>
-                        </TouchableOpacity>
+                <View style={styles.gameToolsContainer}>
+                    {/* <TouchableOpacity style={styles.toolsButton}>
+                        <Icon name="pencil"  style={styles.toolsIcon}></Icon>
+                    </TouchableOpacity> */}
+                    <TouchableOpacity style={styles.toolsButton} disabled={user.uid === host && countReady !== memberId.length}>
+                        {/* <Icon name="pencil"  style={styles.toolsIcon}></Icon> */}
+                        <Text>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
+                    </TouchableOpacity>
 
                         <TouchableOpacity style={styles.rulesButton}>
                             <Icon name="question"  style={styles.rulesIcon}></Icon>
