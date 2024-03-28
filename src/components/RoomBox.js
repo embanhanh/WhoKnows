@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     },
 
     iconPeople: {
-        marginLeft: 30,
+        marginLeft: 25,
         fontSize: RFValue(20),
     },
 

@@ -30,18 +30,18 @@ function GameScreen({route}) {
     const [msg, setMsg] = useState('')
     const [chats, setChats] = useState([])
 
-    // RoomInfo variables
-    const memberId = roomInfo.roomMembers?.map((member)=>member.Id) || []
-    const emptyMembers = new Array((roomInfo?.maxPlayers-memberId.length) || 0)
-    emptyMembers.fill(1)
-    const isReady = roomInfo.roomMembers?.find((member)=>member.Id === user.uid).isReady || false
-    const countReady = roomInfo.roomMembers?.reduce((acc, member)=>{
-        if(member.isReady)
-            return acc+1;
-        else
-            return acc
-    },0)
-    console.log(countReady);
+    //Game Modal
+    const [roleVisible, roleModalVisible] = useState(false);
+    const [randomVisible, randomModalVisible] = useState(false);
+    const [describeVisible, describeModalVisible] = useState(false);
+    const [roundVisible, roundModalVisible] = useState(false);
+    const [voteVisible, voteModalVisible] = useState(false);
+    const [checkVisible, checkModalVisible] = useState(false);
+    const [guessVisible, guessModalVisible] = useState(false);
+    const [guessResultVisible, guessResultModalVisible] = useState(false);
+    const [winLoseVisible, winLoseModalVisible] = useState(false);
+    const [resultLoseVisible, resultModalVisible] = useState(false);
+
     // Fire base
     // chats
     useLayoutEffect(()=>{
