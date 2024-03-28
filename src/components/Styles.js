@@ -255,22 +255,22 @@ const styles = StyleSheet.create({
     },    
     roomImage: {
         resizeMode: "stretch",
-        marginLeft: "3%",
-        marginBottom: "15%",
+        marginLeft: "4%",
+        marginBottom: "12%",
         width: "56%",
         height: "170%",
         position: "relative",
     },
     textRoomNumber: {
         position: 'absolute',
-        bottom: "95%",
+        bottom: "90%",
         color: 'black', 
         fontSize: RFValue(15), 
         fontWeight: 'bold', 
         padding: 5, 
     },
     textWord: {
-        bottom: "50%",
+        bottom: "45%",
         position: 'absolute',
         color: 'black', 
         fontSize: RFValue(24),
@@ -318,9 +318,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         resizeMode: "stretch",
         width: "20%",
-        height: "70%",
+        height: "75%",
         left: "2%",
-        top: "3%",
+        top: "7%",
     },
     playContainer: {
         flex: 9,
@@ -392,10 +392,30 @@ const styles = StyleSheet.create({
         color: "#ffffff",
     },
 
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: "4%",
+        marginBottom: "3%",
+        width: "95%",
+        height: "100%",
+        backgroundColor: "#00FFDF",
+        borderRadius: RFValue(15),
+        justifyContent: "space-between",
+    },
+
     textInput:{
-        backgroundColor: "white",
-        flex: 1,
-    }
+        fontSize: RFValue(16),
+    },
+
+    sendButton: {
+        marginRight: "4%",
+    },
+
+    sendIcon: {
+        fontSize: RFValue(20),
+        color: "black",
+    },
 });
 
 export default styles
