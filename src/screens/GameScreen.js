@@ -28,6 +28,18 @@ function GameScreen({route}) {
     const [msg, setMsg] = useState('')
     const [chats, setChats] = useState([])
 
+    //Game Modal
+    const [roleVisible, roleModalVisible] = useState(false);
+    const [randomVisible, randomModalVisible] = useState(false);
+    const [describeVisible, describeModalVisible] = useState(false);
+    const [roundVisible, roundModalVisible] = useState(false);
+    const [voteVisible, voteModalVisible] = useState(false);
+    const [checkVisible, checkModalVisible] = useState(false);
+    const [guessVisible, guessModalVisible] = useState(false);
+    const [guessResultVisible, guessResultModalVisible] = useState(false);
+    const [winLoseVisible, winLoseModalVisible] = useState(false);
+    const [resultLoseVisible, resultModalVisible] = useState(false);
+
     // Fire base
 
     // chats
