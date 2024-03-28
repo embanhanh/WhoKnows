@@ -1,13 +1,13 @@
-import React, { useState, useLayoutEffect, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, Modal, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import {  collection, onSnapshot, query, doc, setDoc,updateDoc } from "firebase/firestore";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import styles from "../components/Styles.js";
 import LogoGame from "../components/logoGame.js";
 import LoadingScreen from './LoadingScreen.js';
-import { auth, database } from "../../firebaseconfig";
+import {  database } from "../../firebaseconfig";
 import userContext from "../AuthContext/AuthProvider.js";
 import ModalCreateRoom from "../components/ModalCreateRoom.js";
 import ModalFindRoom from "../components/ModalFindRoom.js";
@@ -29,7 +29,7 @@ function Home() {
     };
 
     //Firebase
-    useLayoutEffect(() => {
+    useFocusEffect(useCallback(() => {
         const q = query(collection(database, "rooms")); 
         const unsubscribe = onSnapshot(q, async (data) => {
             if (data) {
@@ -41,13 +41,12 @@ function Home() {
         });
 
         return () => unsubscribe();
-    }, []);
+    }, []));
 
     // Handle Logic
     // handle play now
     const handlePlayNow = async () => {
-        const roomAvailble = roomData
-        const newRoom = roomAvailble.filter((room)=>room.locked === false && room.roomMembers?.length !== room.maxPlayers)
+        const newRoom = roomData.filter((room)=>room.locked === false && room.roomMembers?.length !== room.maxPlayers)
         if(newRoom.length === 0){
             await handleCreateRoom(generateRandomString(4),false,4)
         }else {

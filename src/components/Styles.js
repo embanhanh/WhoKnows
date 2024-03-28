@@ -391,31 +391,6 @@ const styles = StyleSheet.create({
         fontSize: RFValue(20),
         color: "#ffffff",
     },
-
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingLeft: "4%",
-        marginBottom: "3%",
-        width: "95%",
-        height: "100%",
-        backgroundColor: "#00FFDF",
-        borderRadius: RFValue(15),
-        justifyContent: "space-between",
-    },
-
-    textInput:{
-        fontSize: RFValue(16),
-    },
-
-    sendButton: {
-        marginRight: "4%",
-    },
-
-    sendIcon: {
-        fontSize: RFValue(20),
-        color: "black",
-    },
 });
 
 export default styles

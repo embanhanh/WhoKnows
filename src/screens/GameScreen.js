@@ -1,10 +1,10 @@
 
-import React,{useState, useLayoutEffect, useContext, useRef, useEffect } from "react";
+import React,{useState, useContext, useCallback } from "react";
 import { View, Text, TouchableOpacity, Alert, StyleSheet, ImageBackground, Image, ScrollView, TextInput, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon2 from 'react-native-vector-icons/MaterialIcons.js';
 import Icon3 from 'react-native-vector-icons/Ionicons.js';
-import { useNavigation } from "@react-navigation/core";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc,where,deleteDoc, updateDoc } from "firebase/firestore";
 
 
@@ -14,6 +14,7 @@ import MessageLine from "../components/MessageLine.js";
 import { auth, database } from "../../firebaseconfig";
 import userContext from "../AuthContext/AuthProvider.js";
 import { SafeAreaView } from "react-native-safe-area-context";
+import InputMessage from "../components/InputMessage.js";
 
 
 
@@ -26,9 +27,10 @@ function GameScreen({route}) {
     const [roomInfo, setRoomInfo] = useState({})
     //RoomInfo variables
     const memberId = roomInfo.roomMembers?.map((member)=>member.Id) || []
+    const chats = roomInfo.chats || []
     const emptyMembers = new Array((roomInfo?.maxPlayers-memberId.length) || 0)
     emptyMembers.fill(1)
-    const isReady = roomInfo.roomMembers?.find((member)=>member.Id === user.uid).isReady || false
+    const isReady = roomInfo.roomMembers?.find((member)=>member.Id === user.uid)?.isReady || false
     const countReady = roomInfo.roomMembers?.reduce((acc, member)=>{
         if(member.isReady)
             return acc+1;
@@ -40,7 +42,6 @@ function GameScreen({route}) {
     const [isCountDown, setIsCountDown] = useState(false)
     const [time, setTime] = useState(7)
     const [msg, setMsg] = useState('')
-    const [chats, setChats] = useState([])
 
     //Game Modal
     const [roleVisible, roleModalVisible] = useState(false);
@@ -55,21 +56,8 @@ function GameScreen({route}) {
     const [resultLoseVisible, resultModalVisible] = useState(false);
 
     // Fire base
-    // chats
-    useLayoutEffect(()=>{
-        const q = query(collection(database, "chats"), orderBy("createAt","asc") );
-        const unsubscribe = onSnapshot(q, (data)=>{
-            if(data){
-                setChats(data.docs?.map((dt) => dt.data()))
-            }
-        },(e)=>{
-            Alert.alert("Error: ", e.message)
-        })
-        return () => unsubscribe()
-    },[])
-
     // members
-    useLayoutEffect(()=>{
+    useFocusEffect(useCallback(()=>{
         const unsubscribe = onSnapshot(doc(database,"rooms",route.params), async (data)=>{
             if(data.exists()){
                 try {
@@ -86,59 +74,72 @@ function GameScreen({route}) {
             Alert.alert("Error: ", e.message)
         })
         return () => unsubscribe()
-    },[])
+    },[]))
 
     // handle ready/cancel/start 
     const handleReadyCancelStart = async ()=>{
-        //logic
+       if(user.uid === host){
+            console.log('Start game')
+       }else{
+            const docref = doc(database,"rooms",route.params)
+            const index = memberId.indexOf(user?.uid)
+            roomInfo.roomMembers[index].isReady = !isReady
+            await updateDoc(docref, {roomMembers: [...roomInfo.roomMembers]})
+       }
     }
 
     // handle out room
     const handleHome = async () => {
         const docRef = doc(database,"rooms", route.params)
-        if(typeof memberId === "object"){
-            const index = memberId.indexOf(user?.uid)
-            const newMemberId = memberId
-            newMemberId.splice(index,1)
-            if(newMemberId.length !== 0){
-                if(user.uid === host){
-                    const newHost = newMemberId[Math.floor(Math.random()*newMemberId.length)]
-                    await updateDoc(docRef, { roomMaster: newHost, roomMembers: [...newMemberId] })
-                }else{
-                    await updateDoc(docRef, { roomMembers: [...newMemberId] })
-                }
+        const index = memberId.indexOf(user?.uid)
+        memberId.splice(index,1)
+        roomInfo.roomMembers.splice(index,1)
+        if(memberId.length !== 0){
+            if(user.uid === host){
+                const newHost = memberId[Math.floor(Math.random()*memberId.length)]
+                await updateDoc(docRef, { roomMaster: newHost, roomMembers: [...roomInfo.roomMembers] })
+            }else{
+                await updateDoc(docRef, { roomMembers: [...roomInfo.roomMembers] })
             }
-            else{
-                deleteDoc(docRef)
-            }
+        }
+        else{
+            deleteDoc(docRef)
         }
         navigation.navigate('Home');
     };
 
-    const [inputMessage, setInputMessage] = useState('');
+    // Text input variable
     const [showTextInput, setShowTextInput] = useState(false);
-    const textInputRef = useRef(null);
+    // const textInputRef = useRef(null);
 
     const handleShowTextInput = () => {
         setShowTextInput(true);
-        setTimeout(() => {
-            if (textInputRef.current) { // Kiểm tra xem textInputRef đã được gán giá trị chưa
-                textInputRef.current.focus(); // Gọi phương thức focus nếu textInputRef đã tồn tại
-            }
-        }, 1);
+        // setTimeout(() => {
+        //     if (textInputRef.current) { // Kiểm tra xem textInputRef đã được gán giá trị chưa
+        //         textInputRef.current.focus(); // Gọi phương thức focus nếu textInputRef đã tồn tại
+        //     }
+        // }, 1);
     };
 
     const handleHideTextInput = () => {
         setShowTextInput(false);
     };
-
-    useEffect(() => {
+    // handle send message
+    const handleSendMessage = async (inputMessage) => {
+        console.log(inputMessage);
+        if(inputMessage !== ''){
+            const docRef = doc(database,"rooms", route.params)
+            await updateDoc(docRef, { chats:[...chats, { email: user.email, message: inputMessage, id: user.uid}] })
+            setShowTextInput(false)
+        }
+    }
+    useFocusEffect(useCallback(() => {
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleHideTextInput);
 
         return () => {
             keyboardDidHideListener.remove();
         };
-    }, []);
+    }, []));
 
 
     return ( 
@@ -187,23 +188,22 @@ function GameScreen({route}) {
                         })
                         }
                     </View>
-
                         <View style={styles.chatBoxContainer}>
                             <ScrollView style={styles.chatBox}
-                            showsVerticalScrollIndicator={false}
-                            showsHorizontalScrollIndicator={false} 
-                            contentContainerStyle={{
+                                showsVerticalScrollIndicator={false}
+                                showsHorizontalScrollIndicator={false} 
+                                contentContainerStyle={{
                                 justifyContent: "flex-start", 
                                 paddingVertical: "4%",
                                 paddingHorizontal: "1%",
                                 flexGrow: 1
-                            }}>
+                            }}
+                            >
                                 {
-                                    chats.map(({ email, message, role }, index) => (
-                                        <MessageLine key={index} email={email} message={message} role={role}/>
+                                    chats.map(({ email, message, id}, index) => (
+                                        <MessageLine key={index} email={email} message={message} role={id === 'system' && 'System' || id === host && 'Manager' || id === user.uid && 'You'}/>
                                     ))
                                 }
-
                             </ScrollView>
                         </View>
                     </View>
@@ -212,40 +212,28 @@ function GameScreen({route}) {
                     {/* <TouchableOpacity style={styles.toolsButton}>
                         <Icon name="pencil"  style={styles.toolsIcon}></Icon>
                     </TouchableOpacity> */}
-                    <TouchableOpacity style={styles.toolsButton} disabled={user.uid === host && countReady !== memberId.length || countReady < 4 }>
+                    <TouchableOpacity style={styles.toolsButton}
+                        disabled={user.uid === host && (countReady !== memberId.length || countReady < 4) }
+                        onPress={handleReadyCancelStart}
+                    >
                         {/* <Icon name="pencil"  style={styles.toolsIcon}></Icon> */}
                         <Text>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
                     </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.rulesButton}>
-                            <Icon name="question"  style={styles.rulesIcon}></Icon>
-                        </TouchableOpacity>
+                    <TouchableOpacity style={styles.rulesButton}>
+                        <Icon name="question"  style={styles.rulesIcon}></Icon>
+                    </TouchableOpacity>
 
+                    <TouchableOpacity style={styles.messageButton} onPress={handleShowTextInput}>
+                        <Icon2 name="message" style={styles.messageIcon}></Icon2>
+                    </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.messageButton} onPress={handleShowTextInput}>
-                            <Icon2 name="message" style={styles.messageIcon}></Icon2>
-                        </TouchableOpacity>
-
-                        {showTextInput && (
-                            <View style={styles.inputContainer}>
-                                <TextInput
-                                    ref={textInputRef}
-                                    style={styles.textInput}
-                                    placeholder="Nhập tin nhắn..."
-                                    onChangeText={(text) => setInputMessage(text)}
-                                    value={inputMessage}
-                                    onSubmitEditing={() => {
-                                        setInputMessage('');
-                                    }}
-                                />
-                                <TouchableOpacity style={styles.sendButton}>
-                                    <Icon3 name="send" style={styles.sendIcon}></Icon3>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                    </View>
+                    {showTextInput && (
+                        <InputMessage handleSendMessage={handleSendMessage}></InputMessage>
+                    )}
                 </View>
-            </ImageBackground>
+            </View>
+        </ImageBackground>
     );
 }
 
