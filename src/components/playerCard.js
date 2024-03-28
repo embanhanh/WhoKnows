@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     width: "135%",
     height: "130%",
     bottom: "30%",
-    left: "-10%",
+    left: "-9%",
   },
 
   rightBubbleChat: {
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     width: "135%",
     height: "130%",
     bottom: "30%",
-    right: "39%",
+    right: "38%",
   },
 
   answerText: {
