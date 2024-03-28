@@ -24,6 +24,18 @@ function GameScreen({route}) {
     const [host, setHost] = useState('')
     // const [memberId, setMemberId] = useState([])
     const [roomInfo, setRoomInfo] = useState({})
+    //RoomInfo variables
+    const memberId = roomInfo.roomMembers?.map((member)=>member.Id) || []
+    const emptyMembers = new Array((roomInfo?.maxPlayers-memberId.length) || 0)
+    emptyMembers.fill(1)
+    const isReady = roomInfo.roomMembers?.find((member)=>member.Id === user.uid).isReady || false
+    const countReady = roomInfo.roomMembers?.reduce((acc, member)=>{
+        if(member.isReady)
+            return acc+1;
+        else
+            return acc
+    },0)
+    console.log(countReady);
 
     const [isCountDown, setIsCountDown] = useState(false)
     const [time, setTime] = useState(7)
@@ -200,7 +212,7 @@ function GameScreen({route}) {
                     {/* <TouchableOpacity style={styles.toolsButton}>
                         <Icon name="pencil"  style={styles.toolsIcon}></Icon>
                     </TouchableOpacity> */}
-                    <TouchableOpacity style={styles.toolsButton} disabled={user.uid === host && countReady !== memberId.length}>
+                    <TouchableOpacity style={styles.toolsButton} disabled={user.uid === host && countReady !== memberId.length || countReady < 4 }>
                         {/* <Icon name="pencil"  style={styles.toolsIcon}></Icon> */}
                         <Text>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
                     </TouchableOpacity>
