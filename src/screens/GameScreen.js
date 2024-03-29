@@ -25,12 +25,13 @@ function GameScreen({route}) {
     const [host, setHost] = useState('')
     // const [memberId, setMemberId] = useState([])
     const [roomInfo, setRoomInfo] = useState({})
+    const [isStart, setIsStart] = useState(false)
     //RoomInfo variables
     const memberId = roomInfo.roomMembers?.map((member)=>member.Id) || []
     const chats = roomInfo.chats || []
     const emptyMembers = new Array((roomInfo?.maxPlayers-memberId.length) || 0)
     emptyMembers.fill(1)
-    const isReady = roomInfo.roomMembers?.find((member)=>member.Id === user.uid)?.isReady || false
+    const isReady = roomInfo.roomMembers?.find((member)=>member.Id === user.uid).isReady || false
     const countReady = roomInfo.roomMembers?.reduce((acc, member)=>{
         if(member.isReady)
             return acc+1;
@@ -73,13 +74,24 @@ function GameScreen({route}) {
         },(e)=>{
             Alert.alert("Error: ", e.message)
         })
-        return () => unsubscribe()
+        return () => {console.log("GameScreen unmount"); unsubscribe()}
     },[]))
+    // Start Game
+    useFocusEffect(useCallback(()=>{
+        if(roomInfo?.isStart){
+            console.log("Game Start");
+        }
+
+        return ()=>{
+            
+        }
+    },[roomInfo?.isStart]))
 
     // handle ready/cancel/start 
     const handleReadyCancelStart = async ()=>{
        if(user.uid === host){
             console.log('Start game')
+            await updateDoc(docref, {isStart:true})
        }else{
             const docref = doc(database,"rooms",route.params)
             const index = memberId.indexOf(user?.uid)
@@ -108,7 +120,7 @@ function GameScreen({route}) {
         navigation.navigate('Home');
     };
 
-    // Text input variable
+    //Input message variable
     const [showTextInput, setShowTextInput] = useState(false);
     // const textInputRef = useRef(null);
 
@@ -162,51 +174,37 @@ function GameScreen({route}) {
                 <View style={styles.playContainer}>
                     <View style={styles.joinedPlayer}>
                     {
-                            memberId.map((member,index)=>{
-                                if(index%2==0){
-                                    return(
-                                        <PlayerCard key={index} bubbleType="left" avatarAlignment="flex-start" isManager={member === host} isYou={member === user.uid}></PlayerCard>
-                                    )
-                                }else{
-                                    return(
-                                        <PlayerCard key={index} bubbleType="right" avatarAlignment="flex-end" isManager={member === host} isYou={member === user.uid}></PlayerCard>
-                                    )
-                                }
-                            })
+                        memberId.map((member,index)=> index%2==0?
+                            <PlayerCard key={index} bubbleType="left" avatarAlignment="flex-start" isManager={member === host} isYou={member === user.uid}></PlayerCard>
+                            :<PlayerCard key={index} bubbleType="right" avatarAlignment="flex-end" isManager={member === host} isYou={member === user.uid}></PlayerCard>
+                        )
                     }
                     {
-                           emptyMembers.map((e,index)=>{
-                            if((memberId.length + index)%2==0){
-                                return(
-                                    <PlayerCard key={index} avatarAlignment="flex-start" isEmpty={true}></PlayerCard>
-                                )
-                            }else{
-                                return(
-                                    <PlayerCard key={index} avatarAlignment="flex-end" isEmpty={true}></PlayerCard>
-                                )
+                        emptyMembers.map((e,index)=>(memberId.length + index)%2==0 ? 
+                            <PlayerCard key={index} avatarAlignment="flex-start" isEmpty={true}></PlayerCard> 
+                            :<PlayerCard key={index} avatarAlignment="flex-end" isEmpty={true}></PlayerCard>
+                        )
+                    } 
+                    </View>
+                    <View style={styles.chatBoxContainer}>
+                        <ScrollView style={styles.chatBox}
+                            showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false} 
+                            contentContainerStyle={{
+                            justifyContent: "flex-end", 
+                            paddingVertical: "4%",
+                            paddingHorizontal: "1%",
+                            flexGrow: 1
+                        }}
+                        >
+                            {
+                                chats.map(({ email, message, id}, index) => (
+                                    <MessageLine key={index} email={email} message={message} role={id === 'system' && 'System' || id === host && 'Manager' || id === user.uid && 'You'}/>
+                                ))
                             }
-                        })
-                        }
+                        </ScrollView>
                     </View>
-                        <View style={styles.chatBoxContainer}>
-                            <ScrollView style={styles.chatBox}
-                                showsVerticalScrollIndicator={false}
-                                showsHorizontalScrollIndicator={false} 
-                                contentContainerStyle={{
-                                justifyContent: "flex-start", 
-                                paddingVertical: "4%",
-                                paddingHorizontal: "1%",
-                                flexGrow: 1
-                            }}
-                            >
-                                {
-                                    chats.map(({ email, message, id}, index) => (
-                                        <MessageLine key={index} email={email} message={message} role={id === 'system' && 'System' || id === host && 'Manager' || id === user.uid && 'You'}/>
-                                    ))
-                                }
-                            </ScrollView>
-                        </View>
-                    </View>
+                </View>
 
                 <View style={styles.gameToolsContainer}>
                     {/* <TouchableOpacity style={styles.toolsButton}>
@@ -216,7 +214,6 @@ function GameScreen({route}) {
                         disabled={user.uid === host && (countReady !== memberId.length || countReady < 4) }
                         onPress={handleReadyCancelStart}
                     >
-                        {/* <Icon name="pencil"  style={styles.toolsIcon}></Icon> */}
                         <Text>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
                     </TouchableOpacity>
 

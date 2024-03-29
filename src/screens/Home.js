@@ -82,6 +82,7 @@ function Home() {
             chats:[],
             answers: [],
             round:0,
+            isStart: false
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
         navigation.navigate("GameScreen",idroom)
