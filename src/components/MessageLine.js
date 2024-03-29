@@ -19,18 +19,16 @@ const MessageLine = ({ email, message, role }) => {
     return (
         <View style={styles.messageLineContainer}>
             <Text style={{...newStyles}}>{email}:  </Text>
-            <Text style={styles.messageText}>{message}</Text>
+            <Text style={styles.messageText} numberOfLines={2}>{message}</Text>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     messageLineContainer: {
-        height: "10%",
+        height: "13%",
         width: "90%", 
         flexDirection:"row", 
-        alignItems: "center",
-        marginVertical:"2%",
         marginLeft: "5%",
     },
     userName: {
@@ -39,6 +37,7 @@ const styles = StyleSheet.create({
     messageText: {
         fontSize: RFValue(13),
         color: "white",
+        maxWidth: "50%",
     },
 });
 
