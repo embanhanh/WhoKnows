@@ -33,14 +33,14 @@ function Home() {
         const q = query(collection(database, "rooms")); 
         const unsubscribe = onSnapshot(q, async (data) => {
             if (data) {
-                await setRooms(data.docs?.map((doc) => doc.data()));
+                setRooms(data.docs?.map((doc) => doc.data()));
                 console.log("rooms:", user?.email, roomData)
             }
         }, (error) => {
             Alert.alert("Error: ", error.message);
         });
 
-        return () => unsubscribe();
+        return () => { console.log("Home unmount"); unsubscribe();}
     }, []));
 
     // Handle Logic
@@ -67,14 +67,16 @@ function Home() {
     }
     // handle create room
     handleCreateRoom = async (idroom, password, maxPlayers) =>{
-        await createModalVisible(false)
+        navigation.navigate("GameScreen",idroom)
+        createModalVisible(false)
         const roomInfo = {
             id: idroom,
             roomMaster: user?.uid,
             roomMembers: [
                 { 
                     Id: user?.uid,
-                    isReady: true
+                    isReady: true,
+                    isGhost: false
                 }
             ],
             locked: password === '' ? false : password,
@@ -85,7 +87,6 @@ function Home() {
             isStart: false
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
-        navigation.navigate("GameScreen",idroom)
     }
     // handle close modal create 
     const handleCloseCreateModal = ()=>{
@@ -98,11 +99,11 @@ function Home() {
     }
     // handle join room
     handleJoinRoom = async (id, roomMembers) => {
+        navigation.navigate('GameScreen', id)
+        findModalVisible(false)
         console.log("join");
         const docRef = doc(database,"rooms", id)
         await updateDoc(docRef, { roomMembers: [...roomMembers, {Id:user?.uid,isReady: false}] })
-        findModalVisible(false)
-        navigation.navigate('GameScreen', id)
     }
     // handle join room with id
     handleJoinRoomWithId = async (idRoom)=>{

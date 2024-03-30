@@ -25,26 +25,26 @@ function GameScreen({route}) {
     const {user} = useContext(userContext)
     const [member, setMember] = useState([])
     const [host, setHost] = useState('')
-    // const [memberId, setMemberId] = useState([])
     const [roomInfo, setRoomInfo] = useState({})
-    const [isStart, setIsStart] = useState(false)
+    const [isGhost, setIsGhost] = useState(false)
     //RoomInfo variables
     const memberId = roomInfo.roomMembers?.map((member)=>member.Id) || []
     const chats = roomInfo.chats || []
     const emptyMembers = new Array((roomInfo?.maxPlayers-memberId.length) || 0)
     emptyMembers.fill(1)
-    const isReady = roomInfo.roomMembers?.find((member)=>member.Id === user.uid).isReady || false
+    const isReady = roomInfo.roomMembers?.find((member)=>member.Id === user.uid)?.isReady || false
     const countReady = roomInfo.roomMembers?.reduce((acc, member)=>{
         if(member.isReady)
             return acc+1;
         else
             return acc
     },0)
-    console.log(countReady);
+    const isStart = roomInfo.isStart || false
+    
+    console.log(user.email, countReady);
 
     const [isCountDown, setIsCountDown] = useState(false)
     const [time, setTime] = useState(7)
-    const [msg, setMsg] = useState('')
 
     //Game Modal
     const [roleVisible, roleModalVisible] = useState(false);
@@ -72,10 +72,10 @@ function GameScreen({route}) {
         const unsubscribe = onSnapshot(doc(database,"rooms",route.params), async (data)=>{
             if(data.exists()){
                 try {
-                    setRoomInfo(data.data())
-                    const newHost = data.data().roomMaster
-                    if(newHost !== host)
-                        setHost(newHost)
+                    setRoomInfo(()=>{console.log("setRoom", user.uid); return data.data()})
+                    if(host !== roomInfo.roomMaster){
+                        setHost(()=>{ console.log("setHost", user.uid); return roomInfo.roomMaster})
+                    }
                 } catch (error) {
                     console.error("Lỗi khi lấy dữ liệu thành viên:", error);
                     Alert.alert("Lỗi", "Lấy dữ liệu thành viên thất bại"); 
@@ -87,38 +87,62 @@ function GameScreen({route}) {
         return () => {console.log("GameScreen unmount"); unsubscribe()}
     },[]))
     // Start Game
-    useFocusEffect(useCallback(()=>{
-        if(roomInfo?.isStart){
+    // radom role
+    const showRole = async()=>{
+        const docRef = doc(database,"rooms",route.params)
+        const num1 = Math.floor(Math.random() * memberId.length)
+        roomInfo.roomMembers[num1].isGhost = true
+        if(user.uid === memberId[num1])
+            setIsGhost(true)
+        if(memberId.length > 5){
+            let num2;
+            do {
+                num2 = Math.floor(Math.random() * memberId.length); 
+            } while (num2 === num1); 
+            roomInfo.roomMembers[num2].isGhost = true
+            if(user.uid === memberId[num2])
+                setIsGhost(true)
+        }
+        roleModalVisible(true)
+        await updateDoc(docRef,{roomMembers: [...roomInfo.roomMembers]})
+    }
+
+    useFocusEffect(useCallback( ()=>{
+        if(isStart){
             console.log("Game Start");
+            showRole()
         }
 
         return ()=>{
-            
+            console.log("...");
         }
-    },[roomInfo?.isStart]))
+    },[isStart]))
 
     // handle ready/cancel/start 
     const handleReadyCancelStart = async ()=>{
-       if(user.uid === host){
+        const docref = doc(database,"rooms",route.params)
+        if(user.uid === host){
             console.log('Start game')
             await updateDoc(docref, {isStart:true})
-       }else{
-            const docref = doc(database,"rooms",route.params)
+        }else{
             const index = memberId.indexOf(user?.uid)
             roomInfo.roomMembers[index].isReady = !isReady
             await updateDoc(docref, {roomMembers: [...roomInfo.roomMembers]})
-       }
+        }
     }
 
     // handle out room
     const handleHome = async () => {
+        navigation.navigate('Home');
         const docRef = doc(database,"rooms", route.params)
         const index = memberId.indexOf(user?.uid)
         memberId.splice(index,1)
         roomInfo.roomMembers.splice(index,1)
         if(memberId.length !== 0){
             if(user.uid === host){
-                const newHost = memberId[Math.floor(Math.random()*memberId.length)]
+                const random = Math.floor(Math.random()*memberId.length)
+                const newHost = memberId[random]
+                roomInfo.roomMembers[random].isReady = true
                 await updateDoc(docRef, { roomMaster: newHost, roomMembers: [...roomInfo.roomMembers] })
             }else{
                 await updateDoc(docRef, { roomMembers: [...roomInfo.roomMembers] })
@@ -127,7 +151,6 @@ function GameScreen({route}) {
         else{
             deleteDoc(docRef)
         }
-        navigation.navigate('Home');
     };
 
     //Input message variable
@@ -136,11 +159,6 @@ function GameScreen({route}) {
 
     const handleShowTextInput = () => {
         setShowTextInput(true);
-        // setTimeout(() => {
-        //     if (textInputRef.current) { // Kiểm tra xem textInputRef đã được gán giá trị chưa
-        //         textInputRef.current.focus(); // Gọi phương thức focus nếu textInputRef đã tồn tại
-        //     }
-        // }, 1);
     };
 
     const handleHideTextInput = () => {
@@ -222,13 +240,13 @@ function GameScreen({route}) {
                         <Icon name="pencil"  style={styles.toolsIcon}></Icon>
                     </TouchableOpacity> */}
                     <TouchableOpacity style={styles.toolsButton}
-                        disabled={user.uid === host && (countReady !== memberId.length || countReady < 4) }
+                        disabled={user.uid === host && (countReady !== memberId.length /*|| countReady < 4*/) }
                         onPress={handleReadyCancelStart}
                     >
                         <Text>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.rulesButton} onPress={() => describeModalVisible(!describeVisible)}>
+                    <TouchableOpacity style={styles.rulesButton} onPress={() => roleModalVisible(!describeVisible)}>
                         <Icon name="question"  style={styles.rulesIcon}></Icon>
                     </TouchableOpacity>
 
@@ -243,7 +261,7 @@ function GameScreen({route}) {
                     {
                         roleVisible && 
                         <ModalGameRole
-                            roleVisible={roleVisible}
+                            isGhost={isGhost}
                             handleCloseRoleModal={handleCloseRoleModal}
                         />
                     }
