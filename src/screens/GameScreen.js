@@ -15,6 +15,8 @@ import { auth, database } from "../../firebaseconfig";
 import userContext from "../AuthContext/AuthProvider.js";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputMessage from "../components/InputMessage.js";
+import ModalGameRole from "../components/ModalGameRole.js";
+import ModalGameDescribeInput from "../components/ModalGameDescribeInput.js";
 
 
 
@@ -55,6 +57,14 @@ function GameScreen({route}) {
     const [guessResultVisible, guessResultModalVisible] = useState(false);
     const [winLoseVisible, winLoseModalVisible] = useState(false);
     const [resultLoseVisible, resultModalVisible] = useState(false);
+
+    const handleCloseRoleModal = () =>{
+        roleModalVisible(!roleVisible)
+    }
+
+    const handleCloseDescribeModal = () =>{
+        describeModalVisible(!describeVisible)
+    }
 
     // Fire base
     // members
@@ -136,6 +146,7 @@ function GameScreen({route}) {
     const handleHideTextInput = () => {
         setShowTextInput(false);
     };
+
     // handle send message
     const handleSendMessage = async (inputMessage) => {
         console.log(inputMessage);
@@ -168,7 +179,7 @@ function GameScreen({route}) {
                             <Icon name="clock-o"  style={styles.clockIcon}></Icon>
                             <Text style={styles.timeLeft}>00:51</Text>
                         </View>
-                        <Image source={require('../assets/img/character-EvilGhost.gif')} style={styles.characterGif}></Image>
+                        <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>
                     </View>
 
                 <View style={styles.playContainer}>
@@ -186,25 +197,25 @@ function GameScreen({route}) {
                         )
                     } 
                     </View>
-                    <View style={styles.chatBoxContainer}>
-                        <ScrollView style={styles.chatBox}
-                            showsVerticalScrollIndicator={false}
-                            showsHorizontalScrollIndicator={false} 
-                            contentContainerStyle={{
-                            justifyContent: "flex-end", 
-                            paddingVertical: "4%",
-                            paddingHorizontal: "1%",
-                            flexGrow: 1
-                        }}
-                        >
-                            {
-                                chats.map(({ email, message, id}, index) => (
-                                    <MessageLine key={index} email={email} message={message} role={id === 'system' && 'System' || id === host && 'Manager' || id === user.uid && 'You'}/>
-                                ))
-                            }
-                        </ScrollView>
+                        <View style={styles.chatBoxContainer}>
+                            <ScrollView style={styles.chatBox}
+                                showsVerticalScrollIndicator={false}
+                                showsHorizontalScrollIndicator={false} 
+                                contentContainerStyle={{
+                                justifyContent: "flex-end", 
+                                paddingVertical: "10%",
+                                paddingHorizontal: "1%",
+                                flexGrow: 1
+                            }}
+                            >
+                                {
+                                    chats.map(({ email, message, id}, index) => (
+                                        <MessageLine key={index} email={email} message={message} role={id === 'system' && 'System' || id === host && 'Manager' || id === user.uid && 'You'}/>
+                                    ))
+                                }
+                            </ScrollView>
+                        </View>
                     </View>
-                </View>
 
                 <View style={styles.gameToolsContainer}>
                     {/* <TouchableOpacity style={styles.toolsButton}>
@@ -217,7 +228,7 @@ function GameScreen({route}) {
                         <Text>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.rulesButton}>
+                    <TouchableOpacity style={styles.rulesButton} onPress={() => describeModalVisible(!describeVisible)}>
                         <Icon name="question"  style={styles.rulesIcon}></Icon>
                     </TouchableOpacity>
 
@@ -228,6 +239,22 @@ function GameScreen({route}) {
                     {showTextInput && (
                         <InputMessage handleSendMessage={handleSendMessage}></InputMessage>
                     )}
+
+                    {
+                        roleVisible && 
+                        <ModalGameRole
+                            roleVisible={roleVisible}
+                            handleCloseRoleModal={handleCloseRoleModal}
+                        />
+                    }
+
+                    {
+                        describeVisible && 
+                        <ModalGameDescribeInput
+                            describeVisible={describeVisible}
+                            handleCloseDescribeModal={handleCloseDescribeModal}
+                        />
+                    }
                 </View>
             </View>
         </ImageBackground>

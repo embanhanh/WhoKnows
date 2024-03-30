@@ -11,19 +11,19 @@ function InputMessage({
     const [inputMessage, setInputMessage] = useState('');
     return ( 
         <View style={styles.inputContainer}>
-        <TextInput
-            autoFocus
-            // ref={textInputRef}
-            style={styles.textInput}
-            placeholder="Nhập tin nhắn..."
-            onChangeText={(text) => setInputMessage(text)}
-            value={inputMessage}
-            onSubmitEditing={()=>handleSendMessage(inputMessage)}
-        />
-        <TouchableOpacity style={styles.sendButton} onPress={()=>handleSendMessage(inputMessage)}>
-            <Icon3 name="send" style={styles.sendIcon}></Icon3>
-        </TouchableOpacity>
-    </View>
+            <TextInput
+                autoFocus
+                // ref={textInputRef}
+                style={styles.textInput}
+                placeholder="Nhập tin nhắn..."
+                onChangeText={(text) => setInputMessage(text)}
+                value={inputMessage}
+                onSubmitEditing={()=>handleSendMessage(inputMessage)}
+            />
+            <TouchableOpacity style={styles.sendButton} onPress={()=>handleSendMessage(inputMessage)}>
+                <Icon3 name="send" style={styles.sendIcon}></Icon3>
+            </TouchableOpacity>
+        </View>
     );
 }
 
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     },
     textInput:{
         fontSize: RFValue(16),
+        maxWidth: "85%",
     },
     sendButton: {
         marginRight: "4%",
