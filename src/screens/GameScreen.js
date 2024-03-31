@@ -4,6 +4,8 @@ import { View, Text, TouchableOpacity, Alert, StyleSheet, ImageBackground, Image
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon2 from 'react-native-vector-icons/MaterialIcons.js';
 import Icon3 from 'react-native-vector-icons/Ionicons.js';
+import Icon4 from 'react-native-vector-icons/MaterialCommunityIcons.js';
+
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc,where,deleteDoc, updateDoc } from "firebase/firestore";
 
@@ -17,6 +19,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import InputMessage from "../components/InputMessage.js";
 import ModalGameRole from "../components/ModalGameRole.js";
 import ModalGameDescribeInput from "../components/ModalGameDescribeInput.js";
+import ModalGameGuessWord from "../components/ModalGameGuessWord.js";
+import ModalGameRoundEnd from "../components/ModalGameRoundEnd.js";
 
 
 
@@ -64,6 +68,14 @@ function GameScreen({route}) {
 
     const handleCloseDescribeModal = () =>{
         describeModalVisible(!describeVisible)
+    }
+
+    const handleCloseGuessModal = () =>{
+        guessModalVisible(!guessVisible)
+    }
+
+    const handleCloseRoundModal = () =>{
+        roundModalVisible(!roundVisible)
     }
 
     // Fire base
@@ -193,6 +205,12 @@ function GameScreen({route}) {
                         <TouchableOpacity style={styles.homeButton} onPress={handleHome}>
                             <Icon name="sign-out"  style={styles.homeIcon}></Icon>
                         </TouchableOpacity>
+
+                        {/* Test */}
+                        <TouchableOpacity style={styles.testButton} onPress={() => guessModalVisible(!guessVisible)}>
+                            <Icon name="hourglass"  style={styles.testIcon}></Icon>
+                        </TouchableOpacity>
+                        
                         <View style={styles.timeClock}>
                             <Icon name="clock-o"  style={styles.clockIcon}></Icon>
                             <Text style={styles.timeLeft}>00:51</Text>
@@ -239,6 +257,10 @@ function GameScreen({route}) {
                     {/* <TouchableOpacity style={styles.toolsButton}>
                         <Icon name="pencil"  style={styles.toolsIcon}></Icon>
                     </TouchableOpacity> */}
+                    <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>
+                        <Icon4 name="clipboard-text-clock"  style={styles.historyIcon}></Icon4>
+                    </TouchableOpacity>
+
                     <TouchableOpacity style={styles.toolsButton}
                         disabled={user.uid === host && (countReady !== memberId.length /*|| countReady < 4*/) }
                         onPress={handleReadyCancelStart}
@@ -246,12 +268,12 @@ function GameScreen({route}) {
                         <Text>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.rulesButton} onPress={() => roleModalVisible(!describeVisible)}>
+                    <TouchableOpacity style={styles.rulesButton} onPress={() => roleModalVisible(!roleVisible)}>
                         <Icon name="question"  style={styles.rulesIcon}></Icon>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.messageButton} onPress={handleShowTextInput}>
-                        <Icon2 name="message" style={styles.messageIcon}></Icon2>
+                        <Icon3 name="chatbubble-ellipses-sharp" style={styles.messageIcon}></Icon3>
                     </TouchableOpacity>
 
                     {showTextInput && (
@@ -271,6 +293,22 @@ function GameScreen({route}) {
                         <ModalGameDescribeInput
                             describeVisible={describeVisible}
                             handleCloseDescribeModal={handleCloseDescribeModal}
+                        />
+                    }
+
+                    {
+                        guessVisible && 
+                        <ModalGameGuessWord
+                            guessVisible={guessVisible}
+                            handleCloseGuessModal={handleCloseGuessModal}
+                        />
+                    }
+
+                    {
+                        roundVisible && 
+                        <ModalGameRoundEnd
+                            roundVisible={roundVisible}
+                            handleCloseRoundModal={handleCloseRoundModal}
                         />
                     }
                 </View>
