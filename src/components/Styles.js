@@ -292,6 +292,7 @@ const styles = StyleSheet.create({
         marginHorizontal: "2%",
         marginVertical: "2%",
     },
+
     timeClock:{
         position: 'absolute',
         flexDirection: "row",
@@ -355,14 +356,33 @@ const styles = StyleSheet.create({
         paddingVertical: "3%", 
         position: "absolute",
         bottom: "30%",
+        right: "20%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    rulesIcon: {
+        fontSize: RFValue(18),
+        color: "#ffffff",
+    },
+
+    historyButton: {
+        backgroundColor: "#353B63",
+        borderRadius: RFValue(30),
+        paddingHorizontal: "3%", 
+        paddingVertical: "3%", 
+        position: "absolute",
+        bottom: "30%",
         left: "10%",
         justifyContent: "center",
         alignItems: "center",
     },
-    rulesIcon: {
-        fontSize: RFValue(20),
+    
+    historyIcon: {
+        fontSize: RFValue(18),
         color: "#ffffff",
     },
+
     toolsButton: {
         backgroundColor: "#353B63",
         borderRadius: RFValue(30),
@@ -372,7 +392,9 @@ const styles = StyleSheet.create({
         bottom: "30%",
         justifyContent: "center",
         alignItems: "center",
-    },    toolsIcon: {
+    },    
+
+    toolsIcon: {
         fontSize: RFValue(30),
         color: "#ffffff",
     },
@@ -383,13 +405,30 @@ const styles = StyleSheet.create({
         paddingVertical: "3%", 
         position: "absolute",
         bottom: "30%",
-        right: "10%",
+        right: "6%",
         justifyContent: "center",
         alignItems: "center",
     },
+
     messageIcon: {
-        fontSize: RFValue(20),
+        fontSize: RFValue(18),
         color: "#ffffff",
+    },
+
+    testButton: {
+        position: 'absolute',
+        borderRadius: 25,
+        borderColor: "white",
+        alignItems: "center",
+        justifyContent: "center",
+        right: "6%",
+        top: "-30%",
+    },
+    testIcon: {
+        fontSize: RFValue(30),
+        color: "#ffffff",
+        marginHorizontal: "2%",
+        marginVertical: "20%",
     },
 });
 

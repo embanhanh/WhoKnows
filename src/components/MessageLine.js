@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     },
     userName: {
         fontSize: RFValue(13),
+        fontWeight: "bold",
     },
     messageText: {
         fontSize: RFValue(13),
