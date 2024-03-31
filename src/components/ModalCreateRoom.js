@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Modal, Switch, TextInput,  StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Modal, Switch, TextInput, StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-
 
 import NumericUpDown from "./NumericUpDown.js";
 
@@ -27,6 +26,10 @@ function ModalCreateRoom({
         }
     };
 
+    const handleCoppy = ()=>{
+        
+    }
+
     console.log("Create");
 
     return ( 
@@ -45,7 +48,7 @@ function ModalCreateRoom({
                     <View style={styles.createContentContainer}>
                         <Text style={styles.textCreateContent}>ID phòng: </Text>
                         <Text style={styles.textCreateContent}>{idroom} </Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={handleCoppy}>
                             <Icon name="copy" style={styles.iconCopy}></Icon>
                         </TouchableOpacity>
                     </View>

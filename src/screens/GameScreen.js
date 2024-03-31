@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon2 from 'react-native-vector-icons/MaterialIcons.js';
 import Icon3 from 'react-native-vector-icons/Ionicons.js';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc,where,deleteDoc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc,where,deleteDoc, updateDoc, getDoc } from "firebase/firestore";
 
 
 import styles from "../components/Styles.js";
@@ -17,16 +17,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import InputMessage from "../components/InputMessage.js";
 import ModalGameRole from "../components/ModalGameRole.js";
 import ModalGameDescribeInput from "../components/ModalGameDescribeInput.js";
-
+import keywordContext from "../AuthContext/KeywordProvider.js";
 
 
 function GameScreen({route}) {
     const navigation = useNavigation();
     const {user} = useContext(userContext)
+    const keywords = useContext(keywordContext)
+    // State
     const [member, setMember] = useState([])
     const [host, setHost] = useState('')
     const [roomInfo, setRoomInfo] = useState({})
     const [isGhost, setIsGhost] = useState(false)
+    const [keyword, setKeyword] = useState({})
     //RoomInfo variables
     const memberId = roomInfo.roomMembers?.map((member)=>member.Id) || []
     const chats = roomInfo.chats || []
@@ -40,7 +43,6 @@ function GameScreen({route}) {
             return acc
     },0)
     const isStart = roomInfo.isStart || false
-    
     console.log(user.email, countReady);
 
     const [isCountDown, setIsCountDown] = useState(false)
@@ -60,6 +62,7 @@ function GameScreen({route}) {
 
     const handleCloseRoleModal = () =>{
         roleModalVisible(!roleVisible)
+        setKeyword(roomInfo.keyword)
     }
 
     const handleCloseDescribeModal = () =>{
@@ -73,8 +76,9 @@ function GameScreen({route}) {
             if(data.exists()){
                 try {
                     setRoomInfo(()=>{console.log("setRoom", user.uid); return data.data()})
-                    if(host !== roomInfo.roomMaster){
-                        setHost(()=>{ console.log("setHost", user.uid); return roomInfo.roomMaster})
+                    const newHost = data.data().roomMaster
+                    if(newHost !== host){
+                        setHost((pre)=>{ console.log(pre === newHost); return newHost})
                     }
                 } catch (error) {
                     console.error("Lỗi khi lấy dữ liệu thành viên:", error);
@@ -86,44 +90,45 @@ function GameScreen({route}) {
         })
         return () => {console.log("GameScreen unmount"); unsubscribe()}
     },[]))
-    // Start Game
-    // radom role
-    const showRole = async()=>{
-        const docRef = doc(database,"rooms",route.params)
-        const num1 = Math.floor(Math.random() * memberId.length)
-        roomInfo.roomMembers[num1].isGhost = true
-        if(user.uid === memberId[num1])
-            setIsGhost(true)
-        if(memberId.length > 5){
-            let num2;
-            do {
-                num2 = Math.floor(Math.random() * memberId.length); 
-            } while (num2 === num1); 
-            roomInfo.roomMembers[num2].isGhost = true
-            if(user.uid === memberId[num2])
-                setIsGhost(true)
-        }
-        roleModalVisible(true)
-        await updateDoc(docRef,{roomMembers: [...roomInfo.roomMembers]})
-    }
 
+    // ---------------Logic Game Start ---------------
+    // Start Game
     useFocusEffect(useCallback( ()=>{
         if(isStart){
-            console.log("Game Start");
-            showRole()
+           roomInfo.roomMembers.forEach(mb => {
+               if(mb.Id === user.uid && mb.isGhost){
+                    setIsGhost(true)
+               }
+           })
+           roleModalVisible(true)
         }
-
         return ()=>{
             console.log("...");
         }
     },[isStart]))
+    // handle Describe
+    const handleDescribe = ()=>{
+        describeModalVisible(true)
+    }
+
+    // ------------------Logic Game End -----------------
 
     // handle ready/cancel/start 
     const handleReadyCancelStart = async ()=>{
         const docref = doc(database,"rooms",route.params)
         if(user.uid === host){
             console.log('Start game')
-            await updateDoc(docref, {isStart:true})
+            const num1 = Math.floor(Math.random() * memberId.length)
+            roomInfo.roomMembers[num1].isGhost = true
+            if(memberId.length > 5){
+                let num2;
+                do {
+                    num2 = Math.floor(Math.random() * memberId.length); 
+                } while (num2 === num1); 
+                roomInfo.roomMembers[num2].isGhost = true
+            }
+            const keyword = keywords[Math.floor(Math.random()*keywords.length)]
+            await updateDoc(docref, {isStart:true, roomMembers: [...roomInfo.roomMembers], keyword: keyword})
         }else{
             const index = memberId.indexOf(user?.uid)
             roomInfo.roomMembers[index].isReady = !isReady
@@ -155,7 +160,6 @@ function GameScreen({route}) {
 
     //Input message variable
     const [showTextInput, setShowTextInput] = useState(false);
-    // const textInputRef = useRef(null);
 
     const handleShowTextInput = () => {
         setShowTextInput(true);
@@ -189,7 +193,7 @@ function GameScreen({route}) {
                     <View style={styles.roomInfo}>
                         <Image source={require('../assets/img/RoomInfo.png')} style={styles.roomImage}></Image>
                         <Text style={styles.textRoomNumber}>ID phòng: {route.params}</Text>
-                        <Text style={styles.textWord}>Ghost</Text>
+                        <Text style={styles.textWord}>{isStart && !isGhost && keyword.key}</Text>
                         <TouchableOpacity style={styles.homeButton} onPress={handleHome}>
                             <Icon name="sign-out"  style={styles.homeIcon}></Icon>
                         </TouchableOpacity>
@@ -197,7 +201,8 @@ function GameScreen({route}) {
                             <Icon name="clock-o"  style={styles.clockIcon}></Icon>
                             <Text style={styles.timeLeft}>00:51</Text>
                         </View>
-                        <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>
+                        {isGhost && isStart &&<Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
+                        || isStart && <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>}
                     </View>
 
                 <View style={styles.playContainer}>
@@ -233,20 +238,23 @@ function GameScreen({route}) {
                                 }
                             </ScrollView>
                         </View>
-                    </View>
+                </View>
 
                 <View style={styles.gameToolsContainer}>
-                    {/* <TouchableOpacity style={styles.toolsButton}>
-                        <Icon name="pencil"  style={styles.toolsIcon}></Icon>
-                    </TouchableOpacity> */}
-                    <TouchableOpacity style={styles.toolsButton}
-                        disabled={user.uid === host && (countReady !== memberId.length /*|| countReady < 4*/) }
-                        onPress={handleReadyCancelStart}
-                    >
-                        <Text>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
-                    </TouchableOpacity>
+                    
+                    {isStart ?
+                        <TouchableOpacity style={styles.toolsButton} onPress={handleDescribe}>
+                            <Icon name="pencil"  style={styles.toolsIcon}></Icon>
+                        </TouchableOpacity> :
+                        <TouchableOpacity style={styles.toolsButton}
+                            disabled={user.uid === host && (countReady !== memberId.length /*|| countReady < 4*/) }
+                            onPress={handleReadyCancelStart}
+                        >
+                            <Text>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
+                        </TouchableOpacity>
+                    }
 
-                    <TouchableOpacity style={styles.rulesButton} onPress={() => roleModalVisible(!describeVisible)}>
+                    <TouchableOpacity style={styles.rulesButton}>
                         <Icon name="question"  style={styles.rulesIcon}></Icon>
                     </TouchableOpacity>
 

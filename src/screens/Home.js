@@ -84,7 +84,8 @@ function Home() {
             chats:[],
             answers: [],
             round:0,
-            isStart: false
+            isStart: false,
+            keyword: {}
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
     }
