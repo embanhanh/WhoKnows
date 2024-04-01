@@ -20,6 +20,7 @@ function ModalGameDescribeInput({
             {describeVisible  && <View style={styles.overlay} />}
             <SafeAreaView style={styles.container}>
                 <View style={styles.describeContainer}>
+                    <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
                     <Text style={styles.titleModal}>Mô tả từ khóa</Text>
                     <View style={styles.inputContainer}>
                         <TextInput
@@ -41,8 +42,6 @@ function ModalGameDescribeInput({
                         <Icon name="close"  style={styles.closeIcon}></Icon>
                     </TouchableOpacity>
                 </View>
-
-                <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
             </SafeAreaView>
         </Modal>
     );
@@ -53,14 +52,14 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-      },
+    },
 
     owlImage: {
         position: "absolute",
-        width: '22%',
-        height: '14%',
-        top: "24.5%",
-        left: "13%",
+        width: '35%',
+        height: '65%',
+        top: "-61%",
+        left: "-3%",
     },
 
     describeContainer: {

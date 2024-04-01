@@ -417,18 +417,16 @@ const styles = StyleSheet.create({
 
     testButton: {
         position: 'absolute',
-        borderRadius: 25,
         borderColor: "white",
         alignItems: "center",
         justifyContent: "center",
-        right: "6%",
-        top: "-30%",
+        right: "10%",
+        top: "30%",
     },
+
     testIcon: {
         fontSize: RFValue(30),
         color: "#ffffff",
-        marginHorizontal: "2%",
-        marginVertical: "20%",
     },
 });
 
