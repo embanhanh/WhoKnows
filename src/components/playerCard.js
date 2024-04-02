@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Image, Dimensions, ImageBackground, Text } from 'react-native';
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
 const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty}) => {
   const windowWidth = Dimensions.get('window').width;
@@ -27,12 +28,12 @@ const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty}) =>
       </View>
       {bubbleType === 'left' && (
         <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>
-          
+            <Text style={styles.answerTextLeft}>Captain Jack Sparrow</Text>
         </ImageBackground>
       )}
       {bubbleType === 'right' && (
         <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}>
-          
+          <Text style={styles.answerTextRight}>Captain Jack Sparrow</Text>
         </ImageBackground>
       )}
     </View>
@@ -55,7 +56,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: "flex-start",
-
   },
   avatar: {
     width: '100%',
@@ -65,26 +65,42 @@ const styles = StyleSheet.create({
 
   leftBubbleChat: {
     position: "absolute",
-    width: "135%",
-    height: "130%",
-    bottom: "30%",
-    left: "-9%",
+    width: "84%",
+    height: "100%",
+    left: "48%",
+    bottom: "7%",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   rightBubbleChat: {
     position: "absolute",
-    width: "135%",
-    height: "130%",
-    bottom: "30%",
-    right: "38%",
+    width: "84%",
+    height: "100%",
+    bottom: "7%",
+    right: "35%",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
-  answerText: {
-    position: "absolute",
-    fontSize: 16,
+  answerTextLeft: {
+    fontSize: RFPercentage(1.7),
     maxWidth: "100%",
-
+    color: "white",
+    fontWeight: "bold",
+    maxWidth: "60%",
+    marginRight: "4%",
   },
+
+  answerTextRight: {
+    fontSize: RFPercentage(1.7),
+    maxWidth: "100%",
+    color: "white",
+    fontWeight: "bold",
+    maxWidth: "60%",
+    marginRight: "23%",
+  },
+
 
   overlay: {
     position: 'absolute',
