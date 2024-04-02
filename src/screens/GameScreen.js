@@ -1,5 +1,5 @@
 
-import React,{useState, useContext, useCallback } from "react";
+import React,{useState, useContext, useCallback, useEffect } from "react";
 import { View, Text, TouchableOpacity, Alert, StyleSheet, ImageBackground, Image, ScrollView, TextInput, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon2 from 'react-native-vector-icons/MaterialIcons.js';
@@ -22,6 +22,7 @@ import ModalGameDescribeInput from "../components/ModalGameDescribeInput.js";
 import keywordContext from "../AuthContext/KeywordProvider.js";
 import ModalGameGuessWord from "../components/ModalGameGuessWord.js";
 import ModalGameRoundEnd from "../components/ModalGameRoundEnd.js";
+import CountDown from "../components/CountDown.js";
 
 
 
@@ -35,7 +36,16 @@ function GameScreen({route}) {
     const [roomInfo, setRoomInfo] = useState({})
     const [isGhost, setIsGhost] = useState(false)
     const [keyword, setKeyword] = useState({})
+    const [time, setTime] = useState(0)
+    const [isCountDown, setIsCountDown] = useState(false)
+    const [isStartAnswer, setIsStartAnswer] = useState(false)
+    const [memberAnswer, setMemberAnswer] = useState(-1)
+    const [isAnswer, setIsAnswer] = useState(false)
+    const [answer, setAnswer] = useState("...")
+    const [countAnswer, setCountAnswer] = useState(0)
     //RoomInfo variables
+    const answers = roomInfo.answers || []
+    const roomMembers = roomInfo.roomMembers || []
     const memberId = roomInfo.roomMembers?.map((member)=>member.Id) || []
     const chats = roomInfo.chats || []
     const emptyMembers = new Array((roomInfo?.maxPlayers-memberId.length) || 0)
@@ -50,8 +60,6 @@ function GameScreen({route}) {
     const isStart = roomInfo.isStart || false
     console.log(user.email, countReady);
 
-    const [isCountDown, setIsCountDown] = useState(false)
-    const [time, setTime] = useState(7)
 
     //Game Modal
     const [roleVisible, roleModalVisible] = useState(false);
@@ -65,13 +73,8 @@ function GameScreen({route}) {
     const [winLoseVisible, winLoseModalVisible] = useState(false);
     const [resultLoseVisible, resultModalVisible] = useState(false);
 
-    const handleCloseRoleModal = () =>{
-        roleModalVisible(!roleVisible)
-        setKeyword(roomInfo.keyword)
-    }
-
     const handleCloseDescribeModal = () =>{
-        describeModalVisible(!describeVisible)
+        describeModalVisible(false)
     }
 
     const handleCloseGuessModal = () =>{
@@ -93,6 +96,14 @@ function GameScreen({route}) {
                     if(newHost !== host){
                         setHost((pre)=>{ console.log(pre === newHost); return newHost})
                     }
+                    const startAnswer = data.data().isStartAnswer
+                    if(startAnswer){
+                        setIsStartAnswer(true)
+                    }
+                    const newMemberAnswer = data.data().memberAnswer
+                    if(memberAnswer !== newMemberAnswer){
+                        setMemberAnswer(newMemberAnswer)
+                    }
                 } catch (error) {
                     console.error("Lỗi khi lấy dữ liệu thành viên:", error);
                     Alert.alert("Lỗi", "Lấy dữ liệu thành viên thất bại"); 
@@ -106,7 +117,7 @@ function GameScreen({route}) {
 
     // ---------------Logic Game Start ---------------
     // Start Game
-    useFocusEffect(useCallback( ()=>{
+    useFocusEffect(useCallback(()=>{
         if(isStart){
            roomInfo.roomMembers.forEach(mb => {
                if(mb.Id === user.uid && mb.isGhost){
@@ -119,29 +130,80 @@ function GameScreen({route}) {
             console.log("...");
         }
     },[isStart]))
+    // Start Answer
+    useFocusEffect(useCallback(()=>{
+       if(isStartAnswer && answers.length !== memberId.length){
+            setTime(30)
+            setIsCountDown(true)
+            if(user.uid === memberId[memberAnswer]){
+                setIsAnswer(true)
+            }
+       }
+       if(answers.length === memberId.length){
+            console.log("End Answer");
+       }
+    },[isStartAnswer, memberAnswer]))
     // handle Describe
     const handleDescribe = ()=>{
         describeModalVisible(true)
     }
-
+    // handle logic sau khi hiện role
+    const handleCloseRoleModal = async () =>{
+        roleModalVisible(false)
+        setKeyword(roomInfo.keyword)
+        if(user.uid === host){
+            const docRef = doc(database,'rooms',route.params)
+            await updateDoc(docRef,{chats: [...chats, {email: "Hệ thống gợi ý", message: roomInfo.keyword.suggest[0], id: "system"}]})
+        }
+        setMemberAnswer(roomInfo.memberAnswer)
+        setTime(10)
+        setIsCountDown(() =>{console.log("Set CountDown"); return true})
+    }
+    // handle confirm answer
+    const handleConfirm = (text)=>{
+        setAnswer(text)
+        describeModalVisible(false)
+        setIsAnswer(false)
+    }
+    // handle after countDown
+    const handleAfterCountDown = async ()=>{
+        setIsCountDown(false)
+        if(user.uid === memberId[memberAnswer] && isStartAnswer){
+            setIsAnswer(false)
+            roomInfo.roomMembers[memberAnswer].answer = answer
+            await updateDoc(doc(database,'rooms',route.params),{ 
+                memberAnswer: (memberAnswer + 1)% memberId.length, 
+                answers: [...answers, {id: user.uid, answer: answer}],
+                roomMembers: [...roomInfo.roomMembers]
+            })
+        }
+        if(user.uid === host && !isStartAnswer){
+            await updateDoc(doc(database,'rooms',route.params), {isStartAnswer: true})
+        }
+    }
     // ------------------Logic Game End -----------------
+    // random
+    const random = (length) =>{
+        return Math.floor(Math.random() * length)
+    }
 
     // handle ready/cancel/start 
     const handleReadyCancelStart = async ()=>{
         const docref = doc(database,"rooms",route.params)
         if(user.uid === host){
             console.log('Start game')
-            const num1 = Math.floor(Math.random() * memberId.length)
+            const num1 = random(memberId.length)
             roomInfo.roomMembers[num1].isGhost = true
             if(memberId.length > 5){
                 let num2;
                 do {
-                    num2 = Math.floor(Math.random() * memberId.length); 
+                    num2 = random(memberId.length); 
                 } while (num2 === num1); 
                 roomInfo.roomMembers[num2].isGhost = true
             }
-            const keyword = keywords[Math.floor(Math.random()*keywords.length)]
-            await updateDoc(docref, {isStart:true, roomMembers: [...roomInfo.roomMembers], keyword: keyword})
+            const keyword = keywords[random(keywords.length)]
+            const answer = random(memberId.length)
+            await updateDoc(docref, {isStart:true, roomMembers: [...roomInfo.roomMembers], keyword: keyword, memberAnswer: answer})
         }else{
             const index = memberId.indexOf(user?.uid)
             roomInfo.roomMembers[index].isReady = !isReady
@@ -199,7 +261,6 @@ function GameScreen({route}) {
         };
     }, []));
 
-
     return ( 
             <ImageBackground source={require('../assets/img/Theme2.jpg')} style={styles.backgroundImage}>
                 <View style={styles.container}>
@@ -211,15 +272,13 @@ function GameScreen({route}) {
                             <Icon name="sign-out"  style={styles.homeIcon}></Icon>
                         </TouchableOpacity>
 
-                        {/* Test */}
-                        <TouchableOpacity style={styles.testButton} onPress={() => guessModalVisible(!guessVisible)}>
+                        {/* <TouchableOpacity style={styles.testButton} onPress={() => guessModalVisible(!guessVisible)}>
                             <Icon name="hourglass"  style={styles.testIcon}></Icon>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         
-                        <View style={styles.timeClock}>
-                            <Icon name="clock-o"  style={styles.clockIcon}></Icon>
-                            <Text style={styles.timeLeft}>00:51</Text>
-                        </View>
+                        {
+                            isCountDown && <CountDown time={time} handleAfterCountDown={handleAfterCountDown}/> 
+                        }
                         {isGhost && isStart &&<Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
                         || isStart && <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>}
                     </View>
@@ -227,9 +286,15 @@ function GameScreen({route}) {
                 <View style={styles.playContainer}>
                     <View style={styles.joinedPlayer}>
                     {
-                        memberId.map((member,index)=> index%2==0?
-                            <PlayerCard key={index} bubbleType="left" avatarAlignment="flex-start" isManager={member === host} isYou={member === user.uid}></PlayerCard>
-                            :<PlayerCard key={index} bubbleType="right" avatarAlignment="flex-end" isManager={member === host} isYou={member === user.uid}></PlayerCard>
+                        roomMembers.map((member,index)=> index%2==0?
+                            <PlayerCard key={index} bubbleType="left" avatarAlignment="flex-start" 
+                                isManager={member.Id === host} isYou={member.Id === user.uid}
+                                answer={member.answer}
+                            ></PlayerCard>
+                            :<PlayerCard key={index} bubbleType="right" 
+                                avatarAlignment="flex-end" isManager={member.Id === host} isYou={member.Id === user.uid}
+                                answer={member.answer}
+                            ></PlayerCard>
                         )
                     }
                     {
@@ -261,7 +326,7 @@ function GameScreen({route}) {
 
                 <View style={styles.gameToolsContainer}>
                     {isStart ?
-                        <TouchableOpacity style={styles.toolsButton} onPress={handleDescribe}>
+                        <TouchableOpacity style={styles.toolsButton} onPress={handleDescribe} disabled={!isAnswer}>
                             <Icon name="pencil"  style={styles.toolsIcon}></Icon>
                         </TouchableOpacity> :
                         <TouchableOpacity style={styles.toolsButton}
@@ -271,7 +336,6 @@ function GameScreen({route}) {
                             <Text>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
                         </TouchableOpacity>
                     }
-
 
                     <TouchableOpacity style={styles.rulesButton}>
                         <Icon name="question"  style={styles.rulesIcon}></Icon>
@@ -299,8 +363,8 @@ function GameScreen({route}) {
                     {
                         describeVisible && 
                         <ModalGameDescribeInput
-                            describeVisible={describeVisible}
                             handleCloseDescribeModal={handleCloseDescribeModal}
+                            handleConfirm={handleConfirm}
                         />
                     }
 

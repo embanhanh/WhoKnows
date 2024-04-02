@@ -3,18 +3,18 @@ import { View, Text, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import {  RFValue } from 'react-native-responsive-fontsize';
 
-function CountDown( {time} ) {
+function CountDown( {time, handleAfterCountDown } ) {
 
-    const [times, settimes] = useState( time || 5 )
-
+    const [times, settimes] = useState(time)
     useEffect(()=>{
         const id = setInterval(()=>{
             settimes(pre => {
-                if(pre === 0){
+                if(pre > 0){
+                    return pre - 1
+                }else{
                     clearInterval(id)
                     return pre
                 }
-                return pre - 1
             })
             console.log("count...")
         }, 1000)
@@ -23,6 +23,12 @@ function CountDown( {time} ) {
             clearInterval(id)
         }
     },[])
+
+    useEffect(()=>{
+        if(times === 0){
+            handleAfterCountDown() 
+        }
+    },[times])
     return ( 
         <View style={styles.timeClock}>
             <Icon name="clock-o"  style={styles.clockIcon}></Icon>
@@ -35,7 +41,7 @@ const styles = StyleSheet.create({
     timeClock:{
         position: 'absolute',
         flexDirection: "row",
-        borderRadius: 25,
+        borderRadius: RFValue(25),
         alignItems: "center",
         justifyContent: "space-between",
         left: "2%",
@@ -43,16 +49,14 @@ const styles = StyleSheet.create({
         top: "-35%",
         backgroundColor: "purple",
     },
-
     clockIcon: {
         fontSize: RFValue(20),
         color: "white",
         marginLeft: "8%",
     },
-
     timeLeft: {
         width: "65%",
-        fontSize: RFValue(19),
+        fontSize: RFValue(18),
         color: "white",
     },
 })

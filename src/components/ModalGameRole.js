@@ -5,7 +5,6 @@ import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 function ModalGameRole({
     handleCloseRoleModal,
     isGhost,
-    handleShowKeyword
 }) {
     const windowWidth = Dimensions.get('window').width;
     const avatarSize = windowWidth * 0.25; 

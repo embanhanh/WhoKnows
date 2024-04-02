@@ -1,35 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 
 function ModalGameDescribeInput({
-    describeVisible,
     handleCloseDescribeModal,
+    handleConfirm
 }) {
     const windowWidth = Dimensions.get('window').width;
-    const avatarSize = windowWidth * 0.25; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
+    const avatarSize = windowWidth * 0.25; 
+
+    const [text, setText] = useState('')
     return ( 
         <Modal
                 animationType="fade"
                 transparent={true}
-                visible={describeVisible}
+                visible={true}
                 onRequestClose={handleCloseDescribeModal}
             >
-            {describeVisible  && <View style={styles.overlay} />}
+            <View style={styles.overlay} />
             <SafeAreaView style={styles.container}>
                 <View style={styles.describeContainer}>
                     <Text style={styles.titleModal}>Mô tả từ khóa</Text>
                     <View style={styles.inputContainer}>
                         <TextInput
+                            value={text}
                             style={styles.textInput}
                             placeholder="Nhập mô tả..."
+                            onChangeText={(text)=>setText(text)}
                         />
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.mainButton}>
+                        <TouchableOpacity style={styles.mainButton} onPress={()=>handleConfirm(text)}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Xác nhận

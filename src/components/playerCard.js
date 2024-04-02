@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Image, Dimensions, ImageBackground, Text } from 'react-native';
 
-const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty}) => {
+const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, answer}) => {
   const windowWidth = Dimensions.get('window').width;
   const avatarSize = windowWidth * 0.15; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
   const overlaySize = windowWidth * 0.11; // Kích thước overlayContainer dựa trên tỷ lệ màn hình
@@ -27,12 +27,12 @@ const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty}) =>
       </View>
       {bubbleType === 'left' && (
         <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>
-          
+            <Text>{answer || ''}</Text>
         </ImageBackground>
       )}
       {bubbleType === 'right' && (
         <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}>
-          
+            <Text>{answer || ''}</Text>
         </ImageBackground>
       )}
     </View>
@@ -83,9 +83,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     fontSize: 16,
     maxWidth: "100%",
-
   },
-
   overlay: {
     position: 'absolute',
     width: '50%',

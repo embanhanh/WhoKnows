@@ -75,8 +75,10 @@ function Home() {
             roomMembers: [
                 { 
                     Id: user?.uid,
+                    email: user?.email,
                     isReady: true,
-                    isGhost: false
+                    isGhost: false,
+                    answer: ''
                 }
             ],
             locked: password === '' ? false : password,
@@ -85,7 +87,9 @@ function Home() {
             answers: [],
             round:0,
             isStart: false,
-            keyword: {}
+            keyword: {},
+            memberAnswer: 0,
+            isStartAnswer: false
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
     }
