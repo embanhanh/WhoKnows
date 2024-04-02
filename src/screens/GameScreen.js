@@ -340,6 +340,7 @@ function GameScreen({route}) {
                     <TouchableOpacity style={styles.rulesButton}>
                         <Icon name="question"  style={styles.rulesIcon}></Icon>
                     </TouchableOpacity>
+                    
                     <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>
                         <Icon4 name="clipboard-text-clock"  style={styles.historyIcon}></Icon4>
                     </TouchableOpacity>
