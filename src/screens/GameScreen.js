@@ -24,6 +24,7 @@ import ModalGameGuessWord from "../components/ModalGameGuessWord.js";
 import ModalGameRoundEnd from "../components/ModalGameRoundEnd.js";
 import CountDown from "../components/CountDown.js";
 import ModalGameResultGuess from "../components/ModalGameResultGuess.js";
+import ModalGameResult from "../components/ModalGameResult.js";
 
 
 
@@ -64,7 +65,6 @@ function GameScreen({route}) {
 
     //Game Modal
     const [roleVisible, roleModalVisible] = useState(false);
-    const [randomVisible, randomModalVisible] = useState(false);
     const [describeVisible, describeModalVisible] = useState(false);
     const [roundVisible, roundModalVisible] = useState(false);
     const [voteVisible, voteModalVisible] = useState(false);
@@ -72,7 +72,7 @@ function GameScreen({route}) {
     const [guessVisible, guessModalVisible] = useState(false);
     const [guessResultVisible, guessResultModalVisible] = useState(false);
     const [winLoseVisible, winLoseModalVisible] = useState(false);
-    const [resultLoseVisible, resultModalVisible] = useState(false);
+    const [resultVisible, resultModalVisible] = useState(false);
 
     const handleCloseDescribeModal = () =>{
         describeModalVisible(false)
@@ -88,6 +88,10 @@ function GameScreen({route}) {
 
     const handleCloseGuessResultModal = () =>{
         guessResultModalVisible(!guessResultVisible)
+    }
+
+    const handleCloseResultModal = () =>{
+        resultModalVisible(!resultVisible)
     }
 
     // Fire base
@@ -343,7 +347,7 @@ function GameScreen({route}) {
                     }
 
                     <TouchableOpacity style={styles.rulesButton}>
-                        <Icon name="question" style={styles.rulesIcon} onPress={() => guessResultModalVisible(!guessResultVisible)}></Icon>
+                        <Icon name="question" style={styles.rulesIcon} onPress={() => resultModalVisible(!resultVisible)}></Icon>
                     </TouchableOpacity>
                     
                     <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>
@@ -395,6 +399,14 @@ function GameScreen({route}) {
                         <ModalGameResultGuess
                             guessResultVisible={guessResultVisible}
                             handleCloseGuessResultModal={handleCloseGuessResultModal}
+                        />
+                    }
+
+                    {
+                        resultVisible && 
+                        <ModalGameResult
+                            resultVisible={resultVisible}
+                            handleCloseResultModal={handleCloseResultModal}
                         />
                     }
                 </View>

@@ -2,8 +2,6 @@ import React from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
-import Icon from 'react-native-vector-icons/FontAwesome.js';
-
 function ModalGameResultGuess({
     guessResultVisible,
     handleCloseGuessResultModal,
@@ -25,10 +23,6 @@ function ModalGameResultGuess({
                     <View style={styles.inputContainer}>
                         <Text style={styles.textInput}>VCL</Text>
                     </View>
-
-                    <TouchableOpacity style={styles.closeButton} onPress={handleCloseGuessResultModal}>
-                        <Icon name="close"  style={styles.closeIcon}></Icon>
-                    </TouchableOpacity>
                 </View>
             </SafeAreaView>
         </Modal>
@@ -88,23 +82,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#3B8C3E",
         backgroundImage: "linear",
         borderRadius: RFValue(15),
-    },
-
-    closeButton: {
-        backgroundColor: "#022728",
-        borderRadius: RFValue(30),
-        paddingHorizontal: "3%", 
-        paddingVertical: "2%", 
-        position: "absolute",
-        top: "-4%",
-        right: "-4%",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-
-    closeIcon: {
-        fontSize: RFValue(14),
-        color: "white",
     },
 
     overlay: {
