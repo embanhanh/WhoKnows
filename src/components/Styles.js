@@ -216,7 +216,6 @@ const styles = StyleSheet.create({
     },
 
     textProfile: {
-        marginTop: "5%",
         fontSize: 20,
         color: "white",
     },
@@ -246,6 +245,14 @@ const styles = StyleSheet.create({
     iconTools: {
         color: "white",
         fontSize: RFValue(30),
+    },
+    displayUserName: {
+        marginTop: "5%",
+        flexDirection: 'row',
+    },
+    iconEdit: {
+        color: "white",
+        fontSize: RFValue(25),
     },
     //GameRoom
     roomInfo: {
@@ -406,6 +413,13 @@ const styles = StyleSheet.create({
         fontSize: RFValue(30),
         color: "#ffffff",
     },
+
+    startText: {
+        fontSize: RFValue(17),
+        color: "white",
+        fontWeight: "bold",
+    },
+
 });
 
 export default styles

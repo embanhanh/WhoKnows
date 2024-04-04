@@ -65,7 +65,7 @@ function ModalFindRoom({
 const styles = StyleSheet.create({
     findContainer: {
         top: "8%",
-        backgroundColor: "#663366",
+        backgroundColor: "#022529",
         maxWidth: "90%",
         maxHeight: "70%",
         alignSelf: "center",
@@ -88,11 +88,12 @@ const styles = StyleSheet.create({
         fontSize: 27,
         position: 'absolute',
         fontWeight: "bold",
-        color: "black",
+        color: "white",
     },
     iconClose: {
         fontSize: 40,
         marginLeft: "85%",
+        color: "white",
     },
     findInputContainer: {
         flex: 1,
@@ -109,24 +110,26 @@ const styles = StyleSheet.create({
         paddingHorizontal: "3%",
         width: "75%",
         flexDirection: "row",
-        backgroundColor: "#DDDDDD",
-        borderRadius: 15,
+        backgroundColor: "#10666e",
+        borderRadius: RFValue(20),
         alignItems: "center",
         justifyContent: "space-between",
     },
     id: {
         fontSize: 18,
-        width: "90%"
+        width: "70%",
+        marginLeft: "3%",
     },
     joinButton: {
         position: "relative",
         paddingVertical: "3%",
         justifyContent: "center",
         alignItems: "center",
-        minWidth: "20%",
+        minWidth: "17%",
+        marginRight: "3%",
     },
     backgroundJoinButton: {
-        backgroundColor: "#009966",
+        backgroundColor: "#103b7a",
         borderRadius: 15,
         position: "absolute",
         top: 0,
@@ -148,7 +151,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     scrollView: {
-        backgroundColor: "#660066",
+        backgroundColor: "#10666e",
         paddingHorizontal: "3%",
         paddingVertical: "5%",
         borderRadius: RFValue(20),

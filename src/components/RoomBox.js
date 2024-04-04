@@ -21,7 +21,7 @@ const RoomBox = ({ id, locked, numPlayers, maxPlayers, roomMembers, handleJoinRo
             <Text flex={1.5} style={styles.textContent}>{numPlayers}/{maxPlayers}</Text>
             <TouchableOpacity style={styles.joinButton}>
                 <View style={styles.backgroundJoinButton}/>
-                <TouchableOpacity style={styles.textButton} onPress={()=>handleJoinRoom(id,roomMembers)}><Text>Vào</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.textButton} onPress={()=>handleJoinRoom(id,roomMembers)}><Text style={styles.textButton}>Vào</Text></TouchableOpacity>
             </TouchableOpacity>
         </View>
     );
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
 
     backgroundJoinButton: {
-        backgroundColor: "#009966",
+        backgroundColor: "#103b7a",
         borderRadius: 15,
         position: "absolute",
         top: 0,

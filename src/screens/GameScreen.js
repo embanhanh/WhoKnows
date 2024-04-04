@@ -64,7 +64,6 @@ function GameScreen({route}) {
 
     //Game Modal
     const [roleVisible, roleModalVisible] = useState(false);
-    const [randomVisible, randomModalVisible] = useState(false);
     const [describeVisible, describeModalVisible] = useState(false);
     const [roundVisible, roundModalVisible] = useState(false);
     const [voteVisible, voteModalVisible] = useState(false);
@@ -338,7 +337,7 @@ function GameScreen({route}) {
                             disabled={user.uid === host && (countReady !== memberId.length /*|| countReady < 4*/) }
                             onPress={handleReadyCancelStart}
                         >
-                            <Text>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
+                            <Text style={styles.startText}>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
                         </TouchableOpacity>
                     }
 
