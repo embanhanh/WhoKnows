@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Divider } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons.js';
 import PagerView from 'react-native-pager-view';
 
 function ModalGameRoundEnd({
@@ -13,6 +14,7 @@ function ModalGameRoundEnd({
 }) {
     const windowWidth = Dimensions.get('window').width;
     const avatarSize = windowWidth * 0.25; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
+    const ref = useRef();
     return ( 
         <Modal
                 animationType="fade"
@@ -30,13 +32,16 @@ function ModalGameRoundEnd({
 
                     <View style={styles.answerListContainer}>
                         <View style={styles.answerListBackGround}>
-                            <PagerView style={styles.pagerView} initialPage={0}>
+                            <PagerView style={styles.pagerView} initialPage={0} ref={ref}>
                                 <View key="1" style={styles.roundResult}>
                                     <View style={styles.roundContainer}>
                                         <Text style={styles.roundNumber}>Vòng 1</Text>
+                                        <TouchableOpacity style={styles.rightButtonContainer} onPress={() => ref.current?.setPage(1)}>
+                                            <Icon2 name="arrow-right-drop-circle" style={styles.button}></Icon2>
+                                        </TouchableOpacity>
                                     </View>
 
-                                    <Divider style={{ height: "0.5%", backgroundColor: "black", width: "80%", alignSelf: "center" }}></Divider>
+                                    <Divider style={{ height: "0.5%", backgroundColor: "black", width: "85%", alignSelf: "center", marginTop: "3%" }}></Divider>
 
                                     <View style={styles.resultContainer}>
                                         <ScrollView style={styles.resultList}>
@@ -55,9 +60,12 @@ function ModalGameRoundEnd({
                                 <View Key="2" style={styles.roundResult}>
                                     <View style={styles.roundContainer}>
                                         <Text style={styles.roundNumber}>Vòng 2</Text>
+                                        <TouchableOpacity style={styles.leftButtonContainer} onPress={() => ref.current?.setPage(0)}>
+                                            <Icon2 name="arrow-left-drop-circle" style={styles.button}></Icon2>
+                                        </TouchableOpacity>
                                     </View>
 
-                                    <Divider style={{ height: "0.5%", backgroundColor: "black", width: "80%", alignSelf: "center" }}></Divider>
+                                    <Divider style={{ height: "0.5%", backgroundColor: "black", width: "85%", alignSelf: "center", marginTop: "3%" }}></Divider>
 
                                     <View style={styles.resultContainer}>
                                         <ScrollView style={styles.resultList}>
@@ -122,16 +130,25 @@ const styles = StyleSheet.create({
         color: "white",
     },
 
-    dividerContainer: {
-        flex: 1,
+    leftButtonContainer: {
         justifyContent: "center",
         alignItems: "center",
+        position: "absolute",
+        left: "6%",
+        top: "23%"
     },
 
-    divider: {
-        height: "100%",
-        backgroundColor: 'black',
-        marginVertical: "5%",
+    rightButtonContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        right: "6%",
+        top: "23%"
+    },
+
+
+    button: {
+        fontSize: RFValue(25),
     },
 
     pagerView: {
@@ -162,6 +179,7 @@ const styles = StyleSheet.create({
         flex: 2,
         justifyContent: "center",
         alignItems: "center",
+        position: "relative",
     },
 
     roundNumber: {
@@ -176,6 +194,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: "4%",
         marginBottom: "9%",
+        marginHorizontal: "5%",
     },
 
     resultList: {
