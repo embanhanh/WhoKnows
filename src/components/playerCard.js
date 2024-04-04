@@ -65,9 +65,9 @@ const styles = StyleSheet.create({
 
   leftBubbleChat: {
     position: "absolute",
-    width: "84%",
-    height: "100%",
-    left: "48%",
+    width: "97%",
+    height: "115%",
+    left: "41%",
     bottom: "7%",
     justifyContent: "center",
     alignItems: "center",
@@ -75,10 +75,10 @@ const styles = StyleSheet.create({
 
   rightBubbleChat: {
     position: "absolute",
-    width: "84%",
-    height: "100%",
+    width: "97%",
+    height: "115%",
     bottom: "7%",
-    right: "35%",
+    right: "40%",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     maxWidth: "60%",
-    marginRight: "4%",
+    marginTop: "5%",
   },
 
   answerTextRight: {
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     maxWidth: "60%",
-    marginRight: "23%",
+    marginTop : "5%",
   },
 
   overlay: {
