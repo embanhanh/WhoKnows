@@ -23,6 +23,7 @@ import keywordContext from "../AuthContext/KeywordProvider.js";
 import ModalGameGuessWord from "../components/ModalGameGuessWord.js";
 import ModalGameRoundEnd from "../components/ModalGameRoundEnd.js";
 import CountDown from "../components/CountDown.js";
+import ModalGameResultGuess from "../components/ModalGameResultGuess.js";
 
 
 
@@ -83,6 +84,10 @@ function GameScreen({route}) {
 
     const handleCloseRoundModal = () =>{
         roundModalVisible(!roundVisible)
+    }
+
+    const handleCloseGuessResultModal = () =>{
+        guessResultModalVisible(!guessResultVisible)
     }
 
     // Fire base
@@ -338,7 +343,7 @@ function GameScreen({route}) {
                     }
 
                     <TouchableOpacity style={styles.rulesButton}>
-                        <Icon name="question"  style={styles.rulesIcon}></Icon>
+                        <Icon name="question" style={styles.rulesIcon} onPress={() => guessResultModalVisible(!guessResultVisible)}></Icon>
                     </TouchableOpacity>
                     
                     <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>
@@ -382,6 +387,14 @@ function GameScreen({route}) {
                         <ModalGameRoundEnd
                             roundVisible={roundVisible}
                             handleCloseRoundModal={handleCloseRoundModal}
+                        />
+                    }
+
+                    {
+                        guessResultVisible && 
+                        <ModalGameResultGuess
+                            guessResultVisible={guessResultVisible}
+                            handleCloseGuessResultModal={handleCloseGuessResultModal}
                         />
                     }
                 </View>
