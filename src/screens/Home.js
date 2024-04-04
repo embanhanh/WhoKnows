@@ -78,6 +78,7 @@ function Home() {
                     email: user?.email,
                     isReady: true,
                     isGhost: false,
+                    answering: false,
                     answer: ''
                 }
             ],
@@ -89,7 +90,10 @@ function Home() {
             isStart: false,
             keyword: {},
             memberAnswer: 0,
-            isStartAnswer: false
+            isStartAnswer: false, 
+            isStartAnswer2: false,
+            isStartVote: false,
+            finishedCounting: 0,
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
     }
@@ -103,12 +107,12 @@ function Home() {
         findModalVisible(!findVisible)
     }
     // handle join room
-    handleJoinRoom = async (id, roomMembers) => {
+    handleJoinRoom = async (id, roomMembers, chats) => {
         navigation.navigate('GameScreen', id)
         findModalVisible(false)
         console.log("join");
         const docRef = doc(database,"rooms", id)
-        await updateDoc(docRef, { roomMembers: [...roomMembers, {Id:user?.uid,isReady: false}] })
+        await updateDoc(docRef, { roomMembers: [...roomMembers, {Id:user?.uid,isReady: false}], chats: [...chats, {email: "Hệ thống", message: `${user.email} đã vào phòng`, id: "system"}] })
     }
     // handle join room with id
     handleJoinRoomWithId = async (idRoom)=>{

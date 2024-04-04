@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image, Dimensions, ImageBackground, Text } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
-const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, answer}) => {
+const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, answer, answering}) => {
   const windowWidth = Dimensions.get('window').width;
   const avatarSize = windowWidth * 0.15; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
   const overlaySize = windowWidth * 0.11; // Kích thước overlayContainer dựa trên tỷ lệ màn hình
@@ -26,12 +26,12 @@ const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, ans
           isManager && <Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
         }
       </View>
-      {bubbleType === 'left' && (
+      {bubbleType === 'left' && answering &&(
         <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>
             <Text style={styles.answerTextLeft}>{answer || ''}</Text>
         </ImageBackground>
       )}
-      {bubbleType === 'right' && (
+      {bubbleType === 'right' && answering &&(
         <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}>
             <Text style={styles.answerTextRight}>{answer || ''}</Text>
         </ImageBackground>

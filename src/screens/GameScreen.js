@@ -1,5 +1,5 @@
 
-import React,{useState, useContext, useCallback, useEffect } from "react";
+import React,{useState, useContext, useCallback, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, Alert, StyleSheet, ImageBackground, Image, ScrollView, TextInput, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon2 from 'react-native-vector-icons/MaterialIcons.js';
@@ -7,7 +7,7 @@ import Icon3 from 'react-native-vector-icons/Ionicons.js';
 import Icon4 from 'react-native-vector-icons/MaterialCommunityIcons.js';
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc,where,deleteDoc, updateDoc, getDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc,where,deleteDoc, updateDoc, getDoc, increment, arrayUnion } from "firebase/firestore";
 
 
 import styles from "../components/Styles.js";
@@ -31,18 +31,20 @@ function GameScreen({route}) {
     const {user} = useContext(userContext)
     const keywords = useContext(keywordContext)
     // State
+    const preState = useRef({})
     const [member, setMember] = useState([])
     const [host, setHost] = useState('')
     const [roomInfo, setRoomInfo] = useState({})
     const [isGhost, setIsGhost] = useState(false)
     const [keyword, setKeyword] = useState({})
     const [time, setTime] = useState(0)
-    const [isCountDown, setIsCountDown] = useState(false)
     const [isStartAnswer, setIsStartAnswer] = useState(false)
+    const [isStartAnswer2, setIsStartAnswer2] = useState(false)
     const [memberAnswer, setMemberAnswer] = useState(-1)
     const [isAnswer, setIsAnswer] = useState(false)
     const [answer, setAnswer] = useState("...")
-    const [countAnswer, setCountAnswer] = useState(0)
+    const [isStartVote, setIsStartVote] = useState(false)
+    const [finishedCounting, setFinishCounting] = useState(0)
     //RoomInfo variables
     const answers = roomInfo.answers || []
     const roomMembers = roomInfo.roomMembers || []
@@ -58,9 +60,6 @@ function GameScreen({route}) {
             return acc
     },0)
     const isStart = roomInfo.isStart || false
-    console.log(user.email, countReady);
-
-
     //Game Modal
     const [roleVisible, roleModalVisible] = useState(false);
     const [randomVisible, randomModalVisible] = useState(false);
@@ -91,18 +90,38 @@ function GameScreen({route}) {
         const unsubscribe = onSnapshot(doc(database,"rooms",route.params), async (data)=>{
             if(data.exists()){
                 try {
-                    setRoomInfo(()=>{console.log("setRoom", user.uid); return data.data()})
+                    setRoomInfo(data.data())
                     const newHost = data.data().roomMaster
-                    if(newHost !== host){
-                        setHost((pre)=>{ console.log(pre === newHost); return newHost})
+                    if(newHost !== preState.current.host){
+                        setHost(newHost)
+                    }
+                    const startVote = data.data().isStartVote
+                    if(startVote !== preState.current.isStartVote){
+                        setIsStartVote(startVote)
                     }
                     const startAnswer = data.data().isStartAnswer
-                    if(startAnswer){
-                        setIsStartAnswer(true)
+                    if(startAnswer !== preState.current.isStartAnswer){
+                        setIsStartAnswer(startAnswer)
+                    }
+                    const startAnswer2 = data.data().isStartAnswer2
+                    if(startAnswer2!==preState.current.isStartAnswer2){
+                        setIsStartAnswer2(startAnswer2)
                     }
                     const newMemberAnswer = data.data().memberAnswer
-                    if(memberAnswer !== newMemberAnswer){
+                    if(preState.current.memberAnswer !== newMemberAnswer){
                         setMemberAnswer(newMemberAnswer)
+                    }
+                    const newFinishedCounting = data.data().finishedCounting
+                    if(preState.current.finishedCounting !== newFinishedCounting){
+                        setFinishCounting(data.data().finishedCounting)
+                    } 
+                    preState.current = {
+                        host: newHost,
+                        isStartVote: startVote,
+                        isStartAnswer: startAnswer,
+                        isStartAnswer2: startAnswer2,
+                        memberAnswer: newMemberAnswer,
+                        finishedCounting: newFinishedCounting
                     }
                 } catch (error) {
                     console.error("Lỗi khi lấy dữ liệu thành viên:", error);
@@ -130,19 +149,6 @@ function GameScreen({route}) {
             console.log("...");
         }
     },[isStart]))
-    // Start Answer
-    useFocusEffect(useCallback(()=>{
-       if(isStartAnswer && answers.length !== memberId.length){
-            setTime(30)
-            setIsCountDown(true)
-            if(user.uid === memberId[memberAnswer]){
-                setIsAnswer(true)
-            }
-       }
-       if(answers.length === memberId.length){
-            console.log("End Answer");
-       }
-    },[isStartAnswer, memberAnswer]))
     // handle Describe
     const handleDescribe = ()=>{
         describeModalVisible(true)
@@ -153,11 +159,9 @@ function GameScreen({route}) {
         setKeyword(roomInfo.keyword)
         if(user.uid === host){
             const docRef = doc(database,'rooms',route.params)
-            await updateDoc(docRef,{chats: [...chats, {email: "Hệ thống gợi ý", message: roomInfo.keyword.suggest[0], id: "system"}]})
+            await updateDoc(docRef,{chats: arrayUnion({email: "Hệ thống gợi ý", message: roomInfo.keyword.suggest[0], id: "system"})})
         }
-        setMemberAnswer(roomInfo.memberAnswer)
         setTime(10)
-        setIsCountDown(() =>{console.log("Set CountDown"); return true})
     }
     // handle confirm answer
     const handleConfirm = (text)=>{
@@ -165,21 +169,74 @@ function GameScreen({route}) {
         describeModalVisible(false)
         setIsAnswer(false)
     }
+    // Start Vote
+    useFocusEffect(useCallback(()=>{
+        if(isStartVote){
+            // Logic vote 
+            console.log("Start Vote");
+            setTime(30)
+        }
+    },[isStartVote]))
+    // Start Answer
+    useFocusEffect(useCallback(()=>{
+        const docRef = doc(database,'rooms',route.params)
+        if((isStartAnswer && answers.length !== memberId.length)||(isStartAnswer2 && answers.length !== memberId.length*2)){
+            setTime(30)
+            if(user.uid === memberId[memberAnswer]){
+                roomMembers[memberAnswer].answering = true
+                updateDoc(docRef, {roomMembers: [...roomMembers]})
+                setIsAnswer(true)
+            }
+        }
+        if(answers.length === memberId.length && isStartAnswer ){
+            console.log("End Round 1");
+            if(user.uid === memberId[memberAnswer]){
+                updateDoc(docRef, {isStartAnswer: false, isStartVote: true}) 
+            }
+        }
+        if(answers.length === memberId.length*2 && isStartAnswer2 ){
+            console.log("End Round 2");
+            if(user.uid === memberId[memberAnswer]){
+                updateDoc(docRef, {isStartAnswer2: false}) 
+            }
+        }
+    },[isStartAnswer, memberAnswer, isStartAnswer2]))
+    // async countdown
+    useFocusEffect(useCallback(()=>{
+        if(finishedCounting === memberId.length){
+            const docRef = doc(database,'rooms',route.params)
+            if(user.uid === memberId[memberAnswer] && (isStartAnswer || isStartAnswer2) && !isStartVote){
+                setIsAnswer(false)
+                roomInfo.roomMembers[memberAnswer].answer = answer
+                updateDoc(docRef,{ 
+                    memberAnswer: (memberAnswer + 1)% memberId.length, 
+                    answers: [...answers,{email: user.email, answer: answer}],
+                    roomMembers: [...roomInfo.roomMembers],
+                    finishedCounting: increment(-memberId.length)
+                })
+            }
+            if(user.uid === host && !isStartAnswer && !isStartVote && !isStartAnswer2){
+                updateDoc(docRef, {isStartAnswer: true, finishedCounting: increment(-memberId.length)})
+            }
+            if(user.uid === host && !isStartAnswer2 && isStartVote){
+                roomMembers.forEach(member => {
+                    member.answer = ""
+                    member.answering = false
+                })
+                updateDoc(docRef, {
+                    isStartAnswer2: true, 
+                    isStartVote: false,
+                    roomMembers: roomMembers,
+                    finishedCounting: increment(-memberId.length),
+                    chats: arrayUnion({email: "Hệ thống gợi ý", message: roomInfo.keyword.suggest[1], id: "system"})
+                })
+            }
+        }
+    },[finishedCounting]))
     // handle after countDown
     const handleAfterCountDown = async ()=>{
-        setIsCountDown(false)
-        if(user.uid === memberId[memberAnswer] && isStartAnswer){
-            setIsAnswer(false)
-            roomInfo.roomMembers[memberAnswer].answer = answer
-            await updateDoc(doc(database,'rooms',route.params),{ 
-                memberAnswer: (memberAnswer + 1)% memberId.length, 
-                answers: [...answers, {id: user.uid, answer: answer}],
-                roomMembers: [...roomInfo.roomMembers]
-            })
-        }
-        if(user.uid === host && !isStartAnswer){
-            await updateDoc(doc(database,'rooms',route.params), {isStartAnswer: true})
-        }
+        setTime(0)
+        await updateDoc(doc(database,'rooms',route.params), {finishedCounting: increment(1) })
     }
     // ------------------Logic Game End -----------------
     // random
@@ -249,7 +306,7 @@ function GameScreen({route}) {
         console.log(inputMessage);
         if(inputMessage !== ''){
             const docRef = doc(database,"rooms", route.params)
-            await updateDoc(docRef, { chats:[...chats, { email: user.email, message: inputMessage, id: user.uid}] })
+            await updateDoc(docRef, { chats:[...chats,{email: user.email, message: inputMessage, id: user.uid}] })
             setShowTextInput(false)
         }
     }
@@ -276,9 +333,8 @@ function GameScreen({route}) {
                             <Icon name="hourglass"  style={styles.testIcon}></Icon>
                         </TouchableOpacity> */}
                         
-                        {
-                            isCountDown && <CountDown time={time} handleAfterCountDown={handleAfterCountDown}/> 
-                        }
+                        <CountDown time={time} handleAfterCountDown={handleAfterCountDown}/> 
+
                         {isGhost && isStart &&<Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
                         || isStart && <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>}
                     </View>
@@ -286,15 +342,11 @@ function GameScreen({route}) {
                 <View style={styles.playContainer}>
                     <View style={styles.joinedPlayer}>
                     {
-                        roomMembers.map((member,index)=> index%2==0?
-                            <PlayerCard key={index} bubbleType="left" avatarAlignment="flex-start" 
-                                isManager={member.Id === host} isYou={member.Id === user.uid}
-                                answer={member.answer}
-                            ></PlayerCard>
-                            :<PlayerCard key={index} bubbleType="right" 
-                                avatarAlignment="flex-end" isManager={member.Id === host} isYou={member.Id === user.uid}
-                                answer={member.answer}
-                            ></PlayerCard>
+                        roomMembers.map((member,index)=>
+                            (<PlayerCard key={index} bubbleType={index%2==0?"left":"right"} avatarAlignment={index%2==0?"flex-start":"flex-end"}
+                                isManager={member.Id === host} isYou={member.Id === user.uid} 
+                                answer={member.answer} answering={member.answering}
+                            ></PlayerCard>)
                         )
                     }
                     {
@@ -380,7 +432,7 @@ function GameScreen({route}) {
                     {
                         roundVisible && 
                         <ModalGameRoundEnd
-                            roundVisible={roundVisible}
+                            history={answers}
                             handleCloseRoundModal={handleCloseRoundModal}
                         />
                     }

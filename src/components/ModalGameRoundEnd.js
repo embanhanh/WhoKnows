@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome.js';
 import PagerView from 'react-native-pager-view';
 
 function ModalGameRoundEnd({
-    roundVisible,
+    history,
     handleCloseRoundModal,
 }) {
     const windowWidth = Dimensions.get('window').width;
@@ -17,10 +17,10 @@ function ModalGameRoundEnd({
         <Modal
                 animationType="fade"
                 transparent={true}
-                visible={roundVisible}
+                visible={true}
                 onRequestClose={handleCloseRoundModal}
             >
-            {roundVisible  && <View style={styles.overlay} />}
+            <View style={styles.overlay} />
             <SafeAreaView style={styles.container}>
                 <View style={styles.describeContainer}>
                     <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
@@ -40,14 +40,13 @@ function ModalGameRoundEnd({
 
                                     <View style={styles.resultContainer}>
                                         <ScrollView style={styles.resultList}>
-                                            <Text style={styles.resultText}>3T: Sủa</Text>
-                                            <Text style={styles.resultText}>HTSuperDesign: TNi</Text>
-                                            <Text style={styles.resultText}>ĐNT: sủa cái chó gì</Text>
-                                            <Text style={styles.resultText}>TT: yêu 3T</Text>
-                                            <Text style={styles.resultText}>HT: hơn Ngọc Thịnh</Text>
-                                            <Text style={styles.resultText}>NT: cay</Text>
-                                            <Text style={styles.resultText}>T2: DMVCL</Text>
-                                            <Text style={styles.resultText}>T3: DMVCL</Text>
+                                            {history.map((answer, index)=>{
+                                                if(index<=7){
+                                                    return <Text key={index} style={styles.resultText}>{`${answer.email}: ${answer.answer}`}</Text>
+                                                }
+                                                else
+                                                    return
+                                            })}
                                         </ScrollView>
                                     </View>
                                 </View>

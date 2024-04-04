@@ -1,31 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import {  RFValue } from 'react-native-responsive-fontsize';
 
 function CountDown( {time, handleAfterCountDown } ) {
-
     const [times, settimes] = useState(time)
     useEffect(()=>{
-        const id = setInterval(()=>{
-            settimes(pre => {
-                if(pre > 0){
-                    return pre - 1
-                }else{
-                    clearInterval(id)
-                    return pre
-                }
-            })
-            console.log("count...")
-        }, 1000)
-
-        return ()=>{
-            clearInterval(id)
+        if(time > 0){
+            settimes(time)
+            const id = setInterval(()=>{
+                settimes(pre => {
+                    if(pre > 1){
+                        return pre - 1
+                    }else{
+                        clearInterval(id)
+                        return pre - 1
+                    }
+                })
+                console.log("count...")
+            }, 1000)
+    
         }
-    },[])
+    },[time])
 
     useEffect(()=>{
-        if(times === 0){
+        if(times === 0 && time > 0){
             handleAfterCountDown() 
         }
     },[times])
