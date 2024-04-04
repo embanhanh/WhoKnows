@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, Dimensions, ImageBackground, Text } from 'reac
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
-const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, answer}) => {
+const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, answer, answering}) => {
   const windowWidth = Dimensions.get('window').width;
   const avatarSize = windowWidth * 0.15; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
   const overlaySize = windowWidth * 0.11; // Kích thước overlayContainer dựa trên tỷ lệ màn hình
@@ -51,7 +51,7 @@ const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, ans
             <Text style={styles.answerTextLeft}>{answer || ''}</Text>
         </ImageBackground>
       )}
-      {bubbleType === 'right' && (
+      {bubbleType === 'right' && answering &&(
         <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}>
             <Text style={styles.answerTextRight}>{answer || ''}</Text>
         </ImageBackground>
