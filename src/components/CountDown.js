@@ -4,22 +4,24 @@ import Icon from 'react-native-vector-icons/FontAwesome.js';
 import {  RFValue } from 'react-native-responsive-fontsize';
 
 function CountDown( {time, handleAfterCountDown } ) {
+    const idRef = useRef()
     const [times, settimes] = useState(time)
     useEffect(()=>{
-        if(time > 0){
-            settimes(time)
-            const id = setInterval(()=>{
-                settimes(pre => {
-                    if(pre > 1){
-                        return pre - 1
-                    }else{
-                        clearInterval(id)
-                        return pre - 1
-                    }
-                })
-                console.log("count...")
-            }, 1000)
-    
+        settimes(time)
+        idRef.current = setInterval(()=>{
+            settimes(pre => {
+                if(pre > 0){
+                    return pre - 1
+                }else{
+                    clearInterval(idRef.current)
+                    return pre
+                }
+            })
+            console.log("count...")
+        }, 1000)
+
+        return ()=>{
+            clearInterval(idRef.current)
         }
     },[time])
 
