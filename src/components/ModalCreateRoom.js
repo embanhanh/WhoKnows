@@ -107,7 +107,7 @@ function ModalCreateRoom({
 
 const styles = StyleSheet.create({
     createContainer: {
-        backgroundColor: "white",
+        backgroundColor: "#8f9cb0",
         top: "24%",
         width: "90%",
         height: "50%",
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     },
     backgroundBehindText: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: "#6938EF",
+        backgroundColor: "#103b7a",
         backgroundImage: "linear",
         borderRadius: 15,
     },

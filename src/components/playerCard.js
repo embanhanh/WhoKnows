@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Image, Dimensions, ImageBackground, Text } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
 const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, answer, answering}) => {
@@ -22,11 +23,30 @@ const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, ans
     <View style={styles.container}>
       <View style={{...newStyles,  alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }}>
         {!isEmpty && <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />}
+        {/* {playerName && <Text style={styles.playerName}>{playerName}</Text>} */}
         {
           isManager && <Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
         }
       </View>
-      {bubbleType === 'left' && answering &&(
+      {/* Vote */}
+      {/* <TouchableOpacity style={styles.voteContainerLeft}>
+        <View style={styles.voteContainerLeft}>
+          <Text style={styles.voteText}>Vote</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.voteContainerRight}>
+        <View style={styles.voteContainerRight}>
+          <Text style={styles.voteText}>Vote</Text>
+        </View>
+      </TouchableOpacity> */}
+      {/* //Tên người chơi */}
+      {/* <View style={styles.playerNameContainerLeft}>
+        <Text style={styles.playerName}>Thongg</Text>
+      </View>
+      <View style={styles.playerNameContainerRight}>
+        <Text style={styles.playerName}>Thongg</Text>
+      </View> */}
+      {bubbleType === 'left' && (
         <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>
             <Text style={styles.answerTextLeft}>{answer || ''}</Text>
         </ImageBackground>
@@ -107,6 +127,52 @@ const styles = StyleSheet.create({
     height: "25%",
     left: "22%",
     top: "-25%",
+  },
+  
+  playerNameContainerLeft: {
+    position: 'absolute',
+    top: "100%",
+    right: "80%",
+    maxWidth: "100%",
+  },
+
+  playerNameContainerRight: {
+    position: 'absolute',
+    top: "100%",
+    left: "80%",
+    maxWidth: "100%",
+  },
+
+  playerName: {
+    color: "white",
+    fontSize: 13,
+  },
+
+  voteContainerRight: {
+    position: 'absolute',
+    top: "100%",
+    left: "23%",
+    //Width: "40",
+    backgroundColor: "blue",
+    borderRadius: RFValue(10), 
+    borderColor: "red",
+    //borderWidth: "1",
+
+  },
+
+  voteContainerLeft: {
+    position: 'absolute',
+    top: "100%",
+    right: "23%",
+    //maxWidth: "100%",
+    backgroundColor: "blue",
+    borderRadius: RFValue(10), 
+    borderColor: "red",
+  },
+
+  voteText: {
+    color: "white",
+    fontSize: 13,
   },
 });
 

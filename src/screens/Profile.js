@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import { doc, deleteDoc } from "firebase/firestore";
@@ -8,14 +8,20 @@ import { useNavigation } from "@react-navigation/core";
 import styles from "../components/Styles.js";
 import { auth, database } from "../../firebaseconfig";
 import userContext from "../AuthContext/AuthProvider";
+import ModalEditName from "../components/ModalEditName.js";
 
 function Profile() {
     const {user} = useContext(userContext)
     const navigation = useNavigation();
 
+    const [editVisible, setEditVisible] = useState(false);
     const handleHome = () => {
         navigation.navigate('Home');
     };
+
+    const handleCloseEditModal = ()=>{
+        setEditVisible(false); 
+    }
 
     return ( 
         <View style={styles.profileContainer} >
@@ -63,10 +69,24 @@ function Profile() {
 
                 </View>
 
-                <Text style={styles.textProfile}>
-                    {user?.email}
-                </Text>
+                <View style={styles.displayUserName}>
+                    <Text style={styles.textProfile}>
+                        {user?.displayName}  
+                    </Text>
+                    <Text style={styles.textProfile}>  </Text>
+                    <TouchableOpacity style={styles.iconEdit} onPress={() => {setEditVisible(true)}}>
+                        <Icon name="edit" style={styles.iconEdit}></Icon>
+                    </TouchableOpacity>
+                </View>
             </View>
+
+            {
+                editVisible &&
+                <ModalEditName
+                    editVisible={editVisible}
+                    handleCloseEditModal={handleCloseEditModal}
+                />
+            }
         </View>
     );
 }

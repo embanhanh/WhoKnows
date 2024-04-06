@@ -395,7 +395,7 @@ function GameScreen({route}) {
                             disabled={user.uid === host && (countReady !== memberId.length /*|| countReady < 4*/) }
                             onPress={handleReadyCancelStart}
                         >
-                            <Text>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
+                            <Text style={styles.startText}>{user.uid === host && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
                         </TouchableOpacity>
                     }
 

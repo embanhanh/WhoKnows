@@ -2,7 +2,8 @@ import React, {useState} from "react";
 import { View, Text, TextInput, TouchableOpacity, Pressable, SafeAreaView, Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
+//import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 import styles from "../components/Styles.js";
 import LoginTitle from "../components/loginTitle.js";
@@ -16,18 +17,30 @@ function SignUp({ navigation }) {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const handleSignup = async () =>{
-        if(email !== "" && password !== "" && confirmPassword !== "" && password === confirmPassword)
-        {
-            await createUserWithEmailAndPassword(auth, email,password)
-            .then(() => {
-                Alert.alert("Đăng ký thành công", "Bạn đã vào trang chủ")
-                console.log("Signup success")
-                setEmail('')
-                setPassword('')
-            })
-            .catch((e) => Alert.alert("Đăng ký không thành công", e.Message))
-            // signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))
+    const handleSignup = async () => {
+        if(email !== "" && password !== "" && confirmPassword !== "" && password === confirmPassword) {
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                
+                // Lấy thông tin người dùng đã đăng ký
+                const user = userCredential.user;
+    
+                // Lấy tên từ email (phần trước kí tự "@")
+                const displayName = email.substring(0, email.indexOf('@'));
+                
+                // Cập nhật displayName cho người dùng
+                await updateProfile(user, {
+                    displayName: displayName
+                });
+
+                Alert.alert("Đăng ký thành công", "Bạn đã vào trang chủ");
+                console.log("Signup success");
+                setEmail('');
+                setPassword('');
+                setConfirmPassword('');
+            } catch (error) {
+                Alert.alert("Đăng ký không thành công", error.message);
+            }
         }
     };
     
