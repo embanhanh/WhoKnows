@@ -1,4 +1,3 @@
-
 import React,{useState, useContext, useCallback, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, Alert, StyleSheet, ImageBackground, Image, ScrollView, TextInput, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';

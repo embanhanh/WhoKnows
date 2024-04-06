@@ -2,48 +2,25 @@ import React, { useState } from "react";
 import { Alert, View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
-import { auth } from "../../firebaseconfig.js";
-import { updateProfile } from "firebase/auth";
+
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 
 function ModalEditName({
-    editVisible,
     handleCloseEditModal,
+    handleConfirm
 }) {
     const [newName, setNewName] = useState('');
     const windowWidth = Dimensions.get('window').width;
     const avatarSize = windowWidth * 0.25; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
-    const updateDisplayName = async (newName) => {
-        try {
-            const user = auth.currentUser;
-            await updateProfile(user, {
-                displayName: newName
-            });
-            await user.reload();
-            Alert.alert("Thông báo", "Tên đã được cập nhật thành công.");
-    
-        } catch (error) {
-            Alert.alert("Lỗi", "Đã xảy ra lỗi khi cập nhật tên: " + error.message);
-        }
-    };
-
-    const handleConfirm = () => {
-        if (newName.trim() !== '') {
-            updateDisplayName(newName);
-            handleCloseEditModal();
-        } else {
-            Alert.alert('Thông báo', 'Vui lòng nhập tên mới');
-        }
-    };
 
     return ( 
         <Modal
             animationType="fade"
             transparent={true}
-            visible={editVisible}
+            visible={true}
             onRequestClose={handleCloseEditModal}
         >
-            {editVisible  && <View style={styles.overlay} />}
+            <View style={styles.overlay} />
             <SafeAreaView style={styles.container}>
                 <View style={styles.describeContainer}>
                     <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
@@ -54,11 +31,12 @@ function ModalEditName({
                             placeholder="Nhập tên mới"
                             value={newName}
                             onChangeText={setNewName}
+                            maxLength={10}
                         />
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.mainButton} onPress={handleConfirm}>
+                        <TouchableOpacity style={styles.mainButton} onPress={()=>handleConfirm(newName)}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>Xác nhận</Text>
                         </TouchableOpacity>
