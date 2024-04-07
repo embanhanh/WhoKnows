@@ -1,9 +1,10 @@
-import React, { useState, useContext } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
+import React, { useState, useContext, useCallback } from "react";
+import { Alert,View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import { doc, deleteDoc } from "firebase/firestore";
-import { signOut } from "firebase/auth";
+import { signOut, updateProfile,onAuthStateChanged } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
+import { useFocusEffect } from "@react-navigation/native";
 
 import styles from "../components/Styles.js";
 import { auth, database } from "../../firebaseconfig";
@@ -15,6 +16,8 @@ function Profile() {
     const navigation = useNavigation();
 
     const [editVisible, setEditVisible] = useState(false);
+    const [userName, setUserName] = useState(user.displayName)
+
     const handleHome = () => {
         navigation.navigate('Home');
     };
@@ -22,6 +25,29 @@ function Profile() {
     const handleCloseEditModal = ()=>{
         setEditVisible(false); 
     }
+
+    const updateDisplayName = async (newName) => {
+        try {
+            // const user = auth.currentUser;
+            await updateProfile(user, {
+                displayName: newName
+            });
+            await user.reload();
+            setUserName(user.displayName)
+            Alert.alert("Thông báo", "Tên đã được cập nhật thành công.");
+        } catch (error) {
+            Alert.alert("Lỗi", "Đã xảy ra lỗi khi cập nhật tên: " + error.message);
+        }
+    };
+
+    const handleConfirm = async(newName) => {
+        if (newName.trim() !== '') {
+            await updateDisplayName(newName);
+            handleCloseEditModal();
+        } else {
+            Alert.alert('Thông báo', 'Vui lòng nhập tên mới');
+        }
+    };
 
     return ( 
         <View style={styles.profileContainer} >
@@ -37,7 +63,9 @@ function Profile() {
                     <Text style={styles.textTools}>Trang Chủ</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.tools}>
+                <TouchableOpacity style={styles.tools} onPress={()=>{
+                    console.log(user);
+                }}>
                     <View style={styles.square}>    
                         <Icon name="trophy" style={styles.iconTools}></Icon>
                     </View>
@@ -71,7 +99,7 @@ function Profile() {
 
                 <View style={styles.displayUserName}>
                     <Text style={styles.textProfile}>
-                        {user?.displayName}  
+                        {userName}  
                     </Text>
                     <Text style={styles.textProfile}>  </Text>
                     <TouchableOpacity style={styles.iconEdit} onPress={() => {setEditVisible(true)}}>
@@ -83,7 +111,7 @@ function Profile() {
             {
                 editVisible &&
                 <ModalEditName
-                    editVisible={editVisible}
+                    handleConfirm={handleConfirm}
                     handleCloseEditModal={handleCloseEditModal}
                 />
             }

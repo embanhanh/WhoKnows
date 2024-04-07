@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: "40%",
         marginTop: "18%",
         backgroundColor: "#699A3D",
-        borderWidth: RFValue(3),
+        borderWidth: RFValue(2),
         borderColor: "black",
         borderRadius: RFValue(20),
     },
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: "40%",
         marginTop: "16%",
         backgroundColor: "#4E3E92",
-        borderWidth: RFValue(3),
+        borderWidth: RFValue(2),
         borderColor: "black",
         borderRadius: RFValue(20),
     },
@@ -141,13 +141,13 @@ const styles = StyleSheet.create({
     avatarContainer: {
         position: "absolute",
         borderRadius: 60, 
-        borderWidth: RFValue(3), 
+        borderWidth: RFValue(2), 
         backgroundColor: "#699A3D",
         borderColor:   'black',  
         alignItems: 'center',
         justifyContent: 'center',
         top: "-23%",
-        left: "360%",
+        left: "335%",
     },
 
     avatar: {

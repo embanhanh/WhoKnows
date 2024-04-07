@@ -11,6 +11,7 @@ import PagerView from 'react-native-pager-view';
 function ModalGameRoundEnd({
     history,
     handleCloseRoundModal,
+    members
 }) {
     const windowWidth = Dimensions.get('window').width;
     const avatarSize = windowWidth * 0.25; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
@@ -46,7 +47,7 @@ function ModalGameRoundEnd({
                                     <View style={styles.resultContainer}>
                                         <ScrollView style={styles.resultList}>
                                             {history.map((answer, index)=>{
-                                                if(index<=7){
+                                                if(index<members){
                                                     return <Text key={index} style={styles.resultText}>{`${answer.email}: ${answer.answer}`}</Text>
                                                 }
                                                 else
@@ -68,14 +69,13 @@ function ModalGameRoundEnd({
 
                                     <View style={styles.resultContainer}>
                                         <ScrollView style={styles.resultList}>
-                                            <Text style={styles.resultText}>3T: Sủa</Text>
-                                            <Text style={styles.resultText}>HTSuperDesign: TNi</Text>
-                                            <Text style={styles.resultText}>ĐNT: sủa cái chó gì</Text>
-                                            <Text style={styles.resultText}>TT: yêu 3T</Text>
-                                            <Text style={styles.resultText}>HT: hơn Ngọc Thịnh</Text>
-                                            <Text style={styles.resultText}>NT: cay</Text>
-                                            <Text style={styles.resultText}>T2: DMVCL</Text>
-                                            <Text style={styles.resultText}>T3: DMVCL</Text>
+                                        {history.map((answer, index)=>{
+                                                if(index>=members){
+                                                    return <Text key={index} style={styles.resultText}>{`${answer.email}: ${answer.answer}`}</Text>
+                                                }
+                                                else
+                                                    return
+                                            })}
                                         </ScrollView>
                                     </View>
                                 </View>

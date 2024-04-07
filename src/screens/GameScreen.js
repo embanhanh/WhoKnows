@@ -1,4 +1,3 @@
-
 import React,{useState, useContext, useCallback, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, Alert, StyleSheet, ImageBackground, Image, ScrollView, TextInput, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
@@ -7,7 +6,7 @@ import Icon3 from 'react-native-vector-icons/Ionicons.js';
 import Icon4 from 'react-native-vector-icons/MaterialCommunityIcons.js';
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { addDoc, collection, getDocs, onSnapshot, query, orderBy, runTransaction, doc,where,deleteDoc, updateDoc, getDoc, increment, arrayUnion } from "firebase/firestore";
+import {onSnapshot, doc,deleteDoc, updateDoc, increment, arrayUnion } from "firebase/firestore";
 
 
 import styles from "../components/Styles.js";
@@ -25,6 +24,7 @@ import ModalGameRoundEnd from "../components/ModalGameRoundEnd.js";
 import CountDown from "../components/CountDown.js";
 import ModalGameResultGuess from "../components/ModalGameResultGuess.js";
 import ModalGameResult from "../components/ModalGameResult.js";
+import ModalGameVote from "../components/ModalGameVote.js";
 
 
 
@@ -91,6 +91,10 @@ function GameScreen({route}) {
 
     const handleCloseResultModal = () =>{
         resultModalVisible(!resultVisible)
+    }
+
+    const handleCloseVoteModal = () =>{
+        voteModalVisible(!voteVisible)
     }
 
     // Fire base
@@ -173,16 +177,18 @@ function GameScreen({route}) {
         setTime(10)
     }
     // handle confirm answer
-    const handleConfirm = (text)=>{
-        setAnswer(text)
-        describeModalVisible(false)
-        setIsAnswer(false)
+    const handleConfirm = async (text)=>{
+        if(text !== ""){
+            setAnswer(text)
+            await updateDoc(doc(database,'rooms',route.params), {finishedCounting: memberId.length })
+        }
     }
     // Start Vote
     useFocusEffect(useCallback(()=>{
         if(isStartVote){
             // Logic vote 
             console.log("Start Vote");
+            setAnswer("...")
             setTime(30)
         }
     },[isStartVote]))
@@ -190,8 +196,9 @@ function GameScreen({route}) {
     useFocusEffect(useCallback(()=>{
         const docRef = doc(database,'rooms',route.params)
         if((isStartAnswer && answers.length !== memberId.length)||(isStartAnswer2 && answers.length !== memberId.length*2)){
-            setTime(30)
+            setTime(15)
             if(user.uid === memberId[memberAnswer]){
+                describeModalVisible(true)
                 roomMembers[memberAnswer].answering = true
                 updateDoc(docRef, {roomMembers: [...roomMembers]})
                 setIsAnswer(true)
@@ -199,44 +206,42 @@ function GameScreen({route}) {
         }
         if(answers.length === memberId.length && isStartAnswer ){
             console.log("End Round 1");
-            if(user.uid === memberId[memberAnswer]){
-                updateDoc(docRef, {isStartAnswer: false, isStartVote: true}) 
-            }
+            updateDoc(docRef, {isStartAnswer: false, isStartVote: true}) 
         }
         if(answers.length === memberId.length*2 && isStartAnswer2 ){
             console.log("End Round 2");
-            if(user.uid === memberId[memberAnswer]){
-                updateDoc(docRef, {isStartAnswer2: false}) 
-            }
+            updateDoc(docRef, {isStartAnswer2: false}) 
         }
     },[isStartAnswer, memberAnswer, isStartAnswer2]))
     // async countdown
     useFocusEffect(useCallback(()=>{
         if(finishedCounting === memberId.length){
+            setTime(0)
             const docRef = doc(database,'rooms',route.params)
             if(user.uid === memberId[memberAnswer] && (isStartAnswer || isStartAnswer2) && !isStartVote){
                 setIsAnswer(false)
+                describeModalVisible(false)
                 roomInfo.roomMembers[memberAnswer].answer = answer
                 updateDoc(docRef,{ 
                     memberAnswer: (memberAnswer + 1)% memberId.length, 
                     answers: [...answers,{email: user.email, answer: answer}],
                     roomMembers: [...roomInfo.roomMembers],
-                    finishedCounting: increment(-memberId.length)
+                    finishedCounting: 0
                 })
             }
             if(user.uid === host && !isStartAnswer && !isStartVote && !isStartAnswer2){
-                updateDoc(docRef, {isStartAnswer: true, finishedCounting: increment(-memberId.length)})
+                updateDoc(docRef, {isStartAnswer: true, finishedCounting: 0})
             }
-            if(user.uid === host && !isStartAnswer2 && isStartVote){
-                roomMembers.forEach(member => {
+            if(!isStartAnswer2 && isStartVote){
+                roomInfo.roomMembers.forEach(member => {
                     member.answer = ""
                     member.answering = false
                 })
                 updateDoc(docRef, {
                     isStartAnswer2: true, 
                     isStartVote: false,
-                    roomMembers: roomMembers,
-                    finishedCounting: increment(-memberId.length),
+                    roomMembers: [...roomInfo.roomMembers],
+                    finishedCounting: 0,
                     chats: arrayUnion({email: "Hệ thống gợi ý", message: roomInfo.keyword.suggest[1], id: "system"})
                 })
             }
@@ -244,7 +249,6 @@ function GameScreen({route}) {
     },[finishedCounting]))
     // handle after countDown
     const handleAfterCountDown = async ()=>{
-        setTime(0)
         await updateDoc(doc(database,'rooms',route.params), {finishedCounting: increment(1) })
     }
     // ------------------Logic Game End -----------------
@@ -359,9 +363,8 @@ function GameScreen({route}) {
                         )
                     }
                     {
-                        emptyMembers.map((e,index)=>(memberId.length + index)%2==0 ? 
-                            <PlayerCard key={index} avatarAlignment="flex-start" isEmpty={true}></PlayerCard> 
-                            :<PlayerCard key={index} avatarAlignment="flex-end" isEmpty={true}></PlayerCard>
+                        emptyMembers.map((e,index)=> 
+                            <PlayerCard key={index} avatarAlignment={(memberId.length + index)%2==0 ?"flex-start":"flex-end"} isEmpty={true}></PlayerCard> 
                         )
                     } 
                     </View>
@@ -387,7 +390,9 @@ function GameScreen({route}) {
 
                 <View style={styles.gameToolsContainer}>
                     {isStart ?
-                        <TouchableOpacity style={styles.toolsButton} onPress={handleDescribe} disabled={!isAnswer}>
+                        <TouchableOpacity style={isAnswer? {...styles.toolsButton, backgroundColor: "#ffa500"}:styles.toolsButton} 
+                            onPress={handleDescribe} disabled={!isAnswer}
+                        >
                             <Icon name="pencil"  style={styles.toolsIcon}></Icon>
                         </TouchableOpacity> :
                         <TouchableOpacity style={styles.toolsButton}
@@ -399,7 +404,7 @@ function GameScreen({route}) {
                     }
 
                     <TouchableOpacity style={styles.rulesButton}>
-                        <Icon name="question" style={styles.rulesIcon} onPress={() => resultModalVisible(!resultVisible)}></Icon>
+                        <Icon name="question" style={styles.rulesIcon} onPress={() => voteModalVisible(!voteVisible)}></Icon>
                     </TouchableOpacity>
                     
                     <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>
@@ -441,6 +446,7 @@ function GameScreen({route}) {
                     {
                         roundVisible && 
                         <ModalGameRoundEnd
+                            members={memberId.length}
                             history={answers}
                             handleCloseRoundModal={handleCloseRoundModal}
                         />
@@ -459,6 +465,14 @@ function GameScreen({route}) {
                         <ModalGameResult
                             resultVisible={resultVisible}
                             handleCloseResultModal={handleCloseResultModal}
+                        />
+                    }
+
+                    {       
+                        voteVisible && 
+                        <ModalGameVote
+                            voteVisible={voteVisible}
+                            handleCloseVoteModal={handleCloseVoteModal}
                         />
                     }
                 </View>
