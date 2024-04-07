@@ -24,6 +24,7 @@ import ModalGameRoundEnd from "../components/ModalGameRoundEnd.js";
 import CountDown from "../components/CountDown.js";
 import ModalGameResultGuess from "../components/ModalGameResultGuess.js";
 import ModalGameResult from "../components/ModalGameResult.js";
+import ModalGameVote from "../components/ModalGameVote.js";
 
 
 
@@ -90,6 +91,10 @@ function GameScreen({route}) {
 
     const handleCloseResultModal = () =>{
         resultModalVisible(!resultVisible)
+    }
+
+    const handleCloseVoteModal = () =>{
+        voteModalVisible(!voteVisible)
     }
 
     // Fire base
@@ -399,7 +404,7 @@ function GameScreen({route}) {
                     }
 
                     <TouchableOpacity style={styles.rulesButton}>
-                        <Icon name="question" style={styles.rulesIcon} onPress={() => resultModalVisible(true)}></Icon>
+                        <Icon name="question" style={styles.rulesIcon} onPress={() => voteModalVisible(!voteVisible)}></Icon>
                     </TouchableOpacity>
                     
                     <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>
@@ -460,6 +465,14 @@ function GameScreen({route}) {
                         <ModalGameResult
                             resultVisible={resultVisible}
                             handleCloseResultModal={handleCloseResultModal}
+                        />
+                    }
+
+                    {       
+                        voteVisible && 
+                        <ModalGameVote
+                            voteVisible={voteVisible}
+                            handleCloseVoteModal={handleCloseVoteModal}
                         />
                     }
                 </View>
