@@ -35,13 +35,11 @@ const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, ans
         </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.voteContainerRight}>
-        <View style={styles.voteContainerRight}>
           <Text style={styles.voteText}>Vote</Text>
-        </View>
       </TouchableOpacity> */}
       {/* //Tên người chơi */}
-      {/* <View style={styles.playerNameContainerLeft}>
-        <Text style={styles.playerName}>Thongg</Text>
+      <View style={styles.playerNameContainerLeft}>
+        <Text style={styles.playerName}>Thong</Text>
       </View>
       <View style={styles.playerNameContainerRight}>
         <Text style={styles.playerName}>Thongg</Text>
@@ -130,10 +128,13 @@ const styles = StyleSheet.create({
   },
   
   playerNameContainerLeft: {
+    flex: 1,
     position: 'absolute',
     top: "100%",
     right: "80%",
     maxWidth: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   playerNameContainerRight: {
@@ -141,6 +142,7 @@ const styles = StyleSheet.create({
     top: "100%",
     left: "80%",
     maxWidth: "100%",
+    alignItems: "center",
   },
 
   playerName: {
@@ -150,8 +152,12 @@ const styles = StyleSheet.create({
 
   voteContainerRight: {
     position: 'absolute',
+    alignItems:"center",
+    justifyContent: "center",
     top: "100%",
     left: "23%",
+    paddingHorizontal: "5%",
+    paddingVertical: "5%",
     //Width: "40",
     backgroundColor: "blue",
     borderRadius: RFValue(10), 
