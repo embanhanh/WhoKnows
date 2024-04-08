@@ -167,7 +167,7 @@ function GameScreen({route}) {
         setKeyword(roomInfo.keyword)
         if(user.uid === host){
             const docRef = doc(database,'rooms',route.params)
-            await updateDoc(docRef,{chats: arrayUnion({email: "Hệ thống gợi ý", message: roomInfo.keyword.suggest[0], id: "system"})})
+            await updateDoc(docRef,{chats: arrayUnion({displayName: "Hệ thống gợi ý", message: roomInfo.keyword.suggest[0], id: "system"})})
         }
         setTime(10)
     }
@@ -219,7 +219,7 @@ function GameScreen({route}) {
                 roomInfo.roomMembers[memberAnswer].answer = answer
                 updateDoc(docRef,{ 
                     memberAnswer: (memberAnswer + 1)% memberId.length, 
-                    answers: [...answers,{email: user.email, answer: answer}],
+                    answers: [...answers,{displayName: user.displayName, answer: answer}],
                     roomMembers: [...roomInfo.roomMembers],
                     finishedCounting: 0
                 })
@@ -237,7 +237,7 @@ function GameScreen({route}) {
                     isStartVote: false,
                     roomMembers: [...roomInfo.roomMembers],
                     finishedCounting: 0,
-                    chats: arrayUnion({email: "Hệ thống gợi ý", message: roomInfo.keyword.suggest[1], id: "system"})
+                    chats: arrayUnion({displayName: "Hệ thống gợi ý", message: roomInfo.keyword.suggest[1], id: "system"})
                 })
             }
         }
@@ -314,7 +314,7 @@ function GameScreen({route}) {
         console.log(inputMessage);
         if(inputMessage !== ''){
             const docRef = doc(database,"rooms", route.params)
-            await updateDoc(docRef, { chats:[...chats,{email: user.email, message: inputMessage, id: user.uid}] })
+            await updateDoc(docRef, { chats:[...chats,{displayName: user.displayName, message: inputMessage, id: user.uid}] })
             setShowTextInput(false)
         }
     }
@@ -375,8 +375,8 @@ function GameScreen({route}) {
                             }}
                             >
                                 {
-                                    chats.map(({ email, message, id}, index) => (
-                                        <MessageLine key={index} email={email} message={message} role={id === 'system' && 'System' || id === host && 'Manager' || id === user.uid && 'You'}/>
+                                    chats.map(({ displayName, message, id}, index) => (
+                                        <MessageLine key={index} displayName={displayName} message={message} role={id === 'system' && 'System' || id === host && 'Manager' || id === user.uid && 'You'}/>
                                     ))
                                 }
                             </ScrollView>

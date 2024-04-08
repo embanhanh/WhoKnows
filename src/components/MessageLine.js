@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
-const MessageLine = ({ email, message, role }) => {
+const MessageLine = ({ displayName, message, role }) => {
     let newStyles = {};
     if(role === 'System'){
         newStyles = {...styles.userName, color: 'blue'}
@@ -18,7 +18,7 @@ const MessageLine = ({ email, message, role }) => {
 
     return (
         <View style={styles.messageLineContainer}>
-            <Text style={{...newStyles}}>{email}:  </Text>
+            <Text style={{...newStyles}}>{displayName}:  </Text>
             <Text style={styles.messageText} numberOfLines={2}>{message}</Text>
         </View>
     );

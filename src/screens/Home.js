@@ -34,7 +34,7 @@ function Home() {
         const unsubscribe = onSnapshot(q, async (data) => {
             if (data) {
                 setRooms(data.docs?.map((doc) => doc.data()));
-                console.log("rooms:", user?.email, roomData)
+                console.log("rooms:", user?.displayName, roomData)
             }
         }, (error) => {
             Alert.alert("Error: ", error.message);
@@ -75,7 +75,7 @@ function Home() {
             roomMembers: [
                 { 
                     Id: user?.uid,
-                    email: user?.email,
+                    displayName: user?.displayName,
                     isReady: true,
                     isGhost: false,
                     answering: false,
@@ -112,7 +112,7 @@ function Home() {
         findModalVisible(false)
         console.log("join");
         const docRef = doc(database,"rooms", id)
-        await updateDoc(docRef, { roomMembers: [...roomMembers, {Id:user?.uid,isReady: false}], chats: [...chats, {email: "Hệ thống", message: `${user.email} đã vào phòng`, id: "system"}] })
+        await updateDoc(docRef, { roomMembers: [...roomMembers, {Id:user?.uid,isReady: false}], chats: [...chats, {displayName: "Hệ thống", message: `${user.displayName} đã vào phòng`, id: "system"}] })
     }
     // handle join room with id
     handleJoinRoomWithId = async (idRoom)=>{
