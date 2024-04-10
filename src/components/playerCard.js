@@ -50,22 +50,6 @@ const PlayerCard = ({
             <Text style={{fontSize:14, color: "#fff"}}>+ Vote</Text>
         </TouchableOpacity>}
       </View>
-      {/* Vote */}
-      {/* <TouchableOpacity style={styles.voteContainerLeft}>
-        <View style={styles.voteContainerLeft}>
-          <Text style={styles.voteText}>Vote</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.voteContainerRight}>
-          <Text style={styles.voteText}>Vote</Text>
-      </TouchableOpacity> */}
-      {/* //Tên người chơi */}
-      {/* <View style={styles.playerNameContainerLeft}>
-        <Text style={styles.playerName}>Thong</Text>
-      </View>
-      <View style={styles.playerNameContainerRight}>
-        <Text style={styles.playerName}>Thongg</Text>
-      </View> 
       {bubbleType === 'left' && answering && (
         <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>
             <Text style={styles.answerTextLeft}>{answer || ''}</Text>
