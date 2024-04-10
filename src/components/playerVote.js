@@ -87,4 +87,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PlayerVote;4
+export default PlayerVote;
