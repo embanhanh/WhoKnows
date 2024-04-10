@@ -43,7 +43,7 @@ const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, ans
       </View>
       <View style={styles.playerNameContainerRight}>
         <Text style={styles.playerName}>Thongg</Text>
-      </View> */}
+      </View> 
       {bubbleType === 'left' && answering && (
         <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>
             <Text style={styles.answerTextLeft}>{answer || ''}</Text>
