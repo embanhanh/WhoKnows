@@ -79,7 +79,8 @@ function Home() {
                     isReady: true,
                     isGhost: false,
                     answering: false,
-                    answer: ''
+                    answer: '',
+                    votes: 0
                 }
             ],
             locked: password === '' ? false : password,
@@ -112,7 +113,17 @@ function Home() {
         findModalVisible(false)
         console.log("join");
         const docRef = doc(database,"rooms", id)
-        await updateDoc(docRef, { roomMembers: [...roomMembers, {Id:user?.uid,isReady: false}], chats: [...chats, {displayName: "Hệ thống", message: `${user.displayName} đã vào phòng`, id: "system"}] })
+        console.log(chats);
+        await updateDoc(docRef, { roomMembers: [...roomMembers, {
+            Id: user?.uid,
+            displayName: user?.displayName,
+            isReady: false,
+            isGhost: false,
+            answering: false,
+            answer: '',
+            votes: 0
+        }], chats: [...chats, {displayName: "Hệ thống", message: `${user.displayName} đã vào phòng`, id: "system"}] 
+        })
     }
     // handle join room with id
     handleJoinRoomWithId = async (idRoom)=>{

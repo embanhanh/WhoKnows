@@ -3,14 +3,31 @@ import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaVi
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import PlayerCard from "./playerCard";
 import PlayerVote from "./playerVote";
+import { doc, updateDoc } from 'firebase/firestore';
+import { database } from '../../firebaseconfig';
 
 function ModalGameVote({
-    handleCloseVoteModal
+    handleCloseVoteModal,
+    roomMembers, 
+    idRoom
 }) {
     const windowWidth = Dimensions.get('window').width;
-    const avatarSize = windowWidth * 0.25; 
+    const avatarSize = windowWidth * 0.25;
+
+    const handleVote = async (member, index, setIsVote)=>{
+        roomMembers[index].votes += 1
+        await updateDoc(doc(database, "rooms", idRoom),{
+            roomMembers: [...roomMembers]
+        })
+        setIsVote(true)
+    }
+
+    const handleCancelVote = async ()=>{
+        await updateDoc(doc(database, "rooms", idRoom),{
+            roomMembers: [...roomMembers]
+        })
+    }
     return ( 
         <Modal
                 animationType="fade"
@@ -27,14 +44,12 @@ function ModalGameVote({
 
                     <View style={styles.voteListContainer}>
                         <View style={styles.voteList}>
-                            <PlayerVote></PlayerVote>
-                            <PlayerVote></PlayerVote>
-                            <PlayerVote></PlayerVote>
-                            <PlayerVote></PlayerVote>
-                            <PlayerVote></PlayerVote>
-                            <PlayerVote></PlayerVote>
-                            <PlayerVote></PlayerVote>
-                            <PlayerVote></PlayerVote>
+                            {
+                                roomMembers.map((member, index)=>
+                                <PlayerVote key={index} member={member} index={index} 
+                                    handleCancelVote={handleCancelVote} handleVote={handleVote}
+                                />)
+                            }
                         </View>
                     </View>
 
@@ -89,7 +104,8 @@ const styles = StyleSheet.create({
         marginBottom: "7%",
         backgroundColor: "#00DDF9",
         marginHorizontal: "5%",
-        justifyContent: "center"
+        justifyContent: "center",
+        width: "90%"
     }, 
 
     voteList: {

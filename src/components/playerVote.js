@@ -1,30 +1,31 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, StyleSheet, Image, Dimensions, TouchableOpacity, Text } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 
-const PlayerVote = () => {
+const PlayerVote = ({member, index, handleVote, handleCancelVote}) => {
     const windowWidth = Dimensions.get('window').width;
     const avatarSize = windowWidth * 0.12;
 
-    const [showButtons, setShowButtons] = useState(false); 
+    const [showButtons, setShowButtons] = useState(false);
+    const [isVote, setIsVote] = useState(false) 
 
     const handlePress = () => {
         setShowButtons(!showButtons); 
     };
 
-  return (
+    return (
     <View style={styles.container}>
       <TouchableOpacity activeOpacity={1} style={{...styles.avatarContainer, width: avatarSize, height: avatarSize }} onPress={handlePress}>
         <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />
       </TouchableOpacity>
 
-      {showButtons && ( // Hiển thị nút chỉ khi showButtons là true
+      {showButtons && ( 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.buttonAccept}>
+                    <TouchableOpacity style={styles.buttonAccept} disabled={isVote} onPress={()=>handleVote(member, index,setIsVote)}>
                         <Icon name="check" style={styles.buttonIcon}></Icon>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonCancel}>
+                    <TouchableOpacity style={styles.buttonCancel} disabled={!isVote} onPress={()=>handleCancelVote(member, index,setIsVote)}>
                         <Icon name="close" style={styles.buttonIcon}></Icon>
                     </TouchableOpacity>
                 </View>

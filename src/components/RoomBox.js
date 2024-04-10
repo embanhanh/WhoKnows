@@ -21,7 +21,7 @@ const RoomBox = ({ id, locked, numPlayers, maxPlayers, roomMembers, handleJoinRo
             <Text flex={1.5} style={styles.textContent}>{numPlayers}/{maxPlayers}</Text>
             <TouchableOpacity style={styles.joinButton}>
                 <View style={styles.backgroundJoinButton}/>
-                <TouchableOpacity style={styles.textButton} onPress={()=>handleJoinRoom(id,roomMembers)}><Text>Vào</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.textButton} onPress={()=>handleJoinRoom(id,roomMembers,chats)}><Text>Vào</Text></TouchableOpacity>
             </TouchableOpacity>
         </View>
     );

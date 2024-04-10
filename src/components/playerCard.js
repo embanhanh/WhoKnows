@@ -1,9 +1,22 @@
 import React from 'react';
-import { View, StyleSheet, Image, Dimensions, ImageBackground, Text } from 'react-native';
+import { View, StyleSheet, Image, Dimensions, ImageBackground, Text, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
-const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, answer, answering}) => {
+const PlayerCard = ({
+  bubbleType, 
+  avatarAlignment, 
+  isManager, 
+  isYou, 
+  isEmpty, 
+  answer, 
+  answering, 
+  isStartVote, 
+  isVoted, 
+  displayName, 
+  handleVote, 
+  index
+}) => {
   const windowWidth = Dimensions.get('window').width;
   const avatarSize = windowWidth * 0.15; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
   const overlaySize = windowWidth * 0.11; // Kích thước overlayContainer dựa trên tỷ lệ màn hình
@@ -27,6 +40,15 @@ const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, ans
         {
           isManager && <Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
         }
+        {(!isStartVote || isVoted || isYou) && <Text numberOfLines={1} ellipsizeMode="tail" 
+            style={{color: "#fff", fontSize: 16, position:"absolute", bottom: "-40%", fontWeight: "600", width: "150%",textAlign: 'center'}}
+          >
+              {displayName}
+          </Text>
+        }
+        {isStartVote && !isVoted && !isYou && <TouchableOpacity onPress={()=>handleVote(index)} style={{backgroundColor: "#21a3fb", padding: 2, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center"}}>
+            <Text style={{fontSize:14, color: "#fff"}}>+ Vote</Text>
+        </TouchableOpacity>}
       </View>
       {/* Vote */}
       {/* <TouchableOpacity style={styles.voteContainerLeft}>
@@ -38,7 +60,7 @@ const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, ans
           <Text style={styles.voteText}>Vote</Text>
       </TouchableOpacity> */}
       {/* //Tên người chơi */}
-      <View style={styles.playerNameContainerLeft}>
+      {/* <View style={styles.playerNameContainerLeft}>
         <Text style={styles.playerName}>Thong</Text>
       </View>
       <View style={styles.playerNameContainerRight}>
@@ -54,6 +76,7 @@ const PlayerCard = ({bubbleType, avatarAlignment, isManager, isYou, isEmpty, ans
             <Text style={styles.answerTextRight}>{answer || ''}</Text>
         </ImageBackground>
       )}
+      
     </View>
   );
 };
