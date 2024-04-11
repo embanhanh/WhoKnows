@@ -25,6 +25,7 @@ import CountDown from "../components/CountDown.js";
 import ModalGameResultGuess from "../components/ModalGameResultGuess.js";
 import ModalGameResult from "../components/ModalGameResult.js";
 import ModalGameVote from "../components/ModalGameVote.js";
+import ModalGameVoteResult from "../components/ModalGameVoteResult.js";
 
 export const idContext = createContext("")
 
@@ -70,6 +71,7 @@ function GameScreen({route}) {
     const [describeVisible, describeModalVisible] = useState(false);
     const [roundVisible, roundModalVisible] = useState(false);
     const [voteVisible, voteModalVisible] = useState(false);
+    const [voteResultVisible, voteResultModalVisible] = useState(false);
     const [checkVisible, checkModalVisible] = useState(false);
     const [guessVisible, guessModalVisible] = useState(false);
     const [guessResultVisible, guessResultModalVisible] = useState(false);
@@ -98,6 +100,10 @@ function GameScreen({route}) {
 
     const handleCloseVoteModal = () =>{
         voteModalVisible(!voteVisible)
+    }
+
+    const handleCloseVoteResultModal = () =>{
+        voteResultModalVisible(!voteResultVisible)
     }
 
     // Fire base
@@ -435,7 +441,7 @@ function GameScreen({route}) {
                         }
     
                         <TouchableOpacity style={styles.rulesButton}>
-                            <Icon name="question" style={styles.rulesIcon} onPress={() => voteModalVisible(!voteVisible)}></Icon>
+                            <Icon name="question" style={styles.rulesIcon} onPress={() => voteResultModalVisible(!voteResultVisible)}></Icon>
                         </TouchableOpacity>
                         
                         <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>
@@ -498,12 +504,20 @@ function GameScreen({route}) {
                                 handleCloseResultModal={handleCloseResultModal}
                             />
                         }
+
                         {       
                             voteVisible && 
                             <ModalGameVote
                                 roomMembers={roomMembers}
                                 handleCloseVoteModal={handleCloseVoteModal}
                                 idRoom={route.params}
+                            />
+                        }
+
+                        {       
+                            voteResultVisible && 
+                            <ModalGameVoteResult
+                                handleCloseVoteResultModal={handleCloseVoteResultModal}
                             />
                         }
                     </View>

@@ -41,7 +41,7 @@ const PlayerCard = ({
           isManager && <Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
         }
         {(!isStartVote || isVoted || isYou) && <Text numberOfLines={1} ellipsizeMode="tail" 
-            style={{color: "#fff", fontSize: 16, position:"absolute", bottom: "-40%", fontWeight: "600", width: "150%",textAlign: 'center'}}
+            style={{color: "#fff", fontSize: 16, position:"absolute", bottom: "-55%", fontWeight: "600", width: "150%",textAlign: 'center'}}
           >
               {displayName}
           </Text>
