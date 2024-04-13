@@ -97,6 +97,7 @@ function Home() {
             finishedCounting: 0,
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
+        await setDoc(doc(database, 'chats',idroom), { chats: []})
     }
     // handle close modal create 
     const handleCloseCreateModal = ()=>{
@@ -124,6 +125,9 @@ function Home() {
             votes: 0
         }], chats: [...chats, {displayName: "Hệ thống", message: `${user.displayName} đã vào phòng`, id: "system"}] 
         })
+        // await updateDoc(doc(database,"chats", id),{
+        //     chats: 
+        // })
     }
     // handle join room with id
     handleJoinRoomWithId = async (idRoom)=>{

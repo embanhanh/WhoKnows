@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
@@ -11,7 +11,19 @@ import PlayerCard from "./playerCard";
 
 function ModalGameVoteResult({
     handleCloseVoteResultModal,
+    roomMembers
 }) {
+    useEffect(()=>{
+        const id = setTimeout(()=>{
+            handleCloseVoteResultModal()
+        }, 5000)
+
+        return ()=>clearTimeout(id)
+    },[])
+
+    const topVotes = [...roomMembers]
+    topVotes.sort((a, b) => b.votes - a.votes)
+
     return ( 
         <Modal
                 animationType="fade"
@@ -29,8 +41,13 @@ function ModalGameVoteResult({
 
                     <View style={styles.playerListContainer}>
                         <View style={styles.playerList}>
-                            <PlayerCard displayName={"HT"}></PlayerCard>
-                            <PlayerCard displayName={"ĐNT"}></PlayerCard>
+                            {
+                                topVotes.map((mb, index)=>{
+                                    if(index<=2)
+                                        return <PlayerCard key={index} displayName={mb.displayName}></PlayerCard>
+                                    return
+                                })
+                            }
                         </View>
                     </View>
 
@@ -53,14 +70,16 @@ const styles = StyleSheet.create({
     owlImage: {
         position: "absolute",
         width: '35%',
-        height: '60%',
-        top: "-57.2%",
+        height: '26%',
+        top: "-24%",
         left: "0%",
     },
 
     voteResultContainer: {
         width: "75%",
-        height: "26%",
+        // height: "26%",
+        flex: 1,
+        maxHeight: "55%",
         borderRadius: RFValue(20),
         backgroundColor:  "#29353B",
         alignItems: "center",
@@ -69,9 +88,9 @@ const styles = StyleSheet.create({
     },
 
     titleContainer: {
-        flex: 2,
         justifyContent: "center",
         alignItems: "center",
+        marginVertical: "5%"
     },
 
     titleText: {
@@ -81,7 +100,7 @@ const styles = StyleSheet.create({
     },
 
     playerListContainer: {
-        flex: 5,
+        flex: 1,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#06776A",
@@ -95,6 +114,7 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         justifyContent: "space-between",
         marginBottom: "7%",
+        height: "auto"
     },
 
     closeButton: {

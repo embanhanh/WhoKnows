@@ -2,10 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import {  RFValue } from 'react-native-responsive-fontsize';
+import { Timestamp, doc, onSnapshot, serverTimestamp } from 'firebase/firestore';
+import { database } from '../../firebaseconfig';
 
-function CountDown( {time, handleAfterCountDown } ) {
+function CountDown( {time, handleAfterCountDown, idRoom, isStart } ) {
     const idRef = useRef()
     const [times, settimes] = useState(time)
+    const [startTime, setStartTime] = useState(0)
     useEffect(()=>{
         settimes(time)
         idRef.current = setInterval(()=>{
@@ -30,6 +33,34 @@ function CountDown( {time, handleAfterCountDown } ) {
             handleAfterCountDown() 
         }
     },[times])
+    // useEffect(()=>{
+    //     const unsubscribe = onSnapshot(doc(database,"times",idRoom), async (data)=>{
+    //         if(data.exists()){
+    //             const duration = await data.data().duration
+    //             const startTime = await data.data().startTime
+    //             setStartTime(startTime)
+    //             if(isStart)
+    //                 settimes(duration)
+    //         }
+    //     })
+    //     return ()=> unsubscribe()
+    // },[])
+
+    // useEffect(()=>{
+    //     idRef.current = setInterval(() => {
+    //         settimes(pre => {
+    //             if(pre > 0 ){
+    //                 return pre - 1
+    //             }else{
+    //                 clearInterval(idRef.current)
+    //                 return pre
+    //             }
+    //         });
+    //     }, 1000);
+
+    //     return () => clearInterval(idRef.current);
+    // },[startTime])
+
     return ( 
         <View style={styles.timeClock}>
             <Icon name="clock-o"  style={styles.clockIcon}></Icon>

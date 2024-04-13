@@ -6,7 +6,7 @@ import Icon3 from 'react-native-vector-icons/Ionicons.js';
 import Icon4 from 'react-native-vector-icons/MaterialCommunityIcons.js';
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import {onSnapshot, doc,deleteDoc, updateDoc, increment, arrayUnion } from "firebase/firestore";
+import {onSnapshot, doc,deleteDoc, updateDoc, increment, arrayUnion, setDoc, Timestamp, serverTimestamp, Firestore } from "firebase/firestore";
 
 
 import styles from "../components/Styles.js";
@@ -24,7 +24,6 @@ import ModalGameRoundEnd from "../components/ModalGameRoundEnd.js";
 import CountDown from "../components/CountDown.js";
 import ModalGameResultGuess from "../components/ModalGameResultGuess.js";
 import ModalGameResult from "../components/ModalGameResult.js";
-import ModalGameVote from "../components/ModalGameVote.js";
 import ModalGameVoteResult from "../components/ModalGameVoteResult.js";
 
 export const idContext = createContext("")
@@ -49,7 +48,6 @@ function GameScreen({route}) {
     const [isStartVote, setIsStartVote] = useState(false)
     const [finishedCounting, setFinishCounting] = useState(0)
     const [isVoted, setIsVoted] = useState(false)
-    const [isShowVoteResult, setVoteResult ] = useState(false)
     const [isEndRound2, setIsEndRound2] = useState(false)   
      //RoomInfo variables
     const answers = roomInfo.answers || []
@@ -98,12 +96,8 @@ function GameScreen({route}) {
         resultModalVisible(!resultVisible)
     }
 
-    const handleCloseVoteModal = () =>{
-        voteModalVisible(!voteVisible)
-    }
-
     const handleCloseVoteResultModal = () =>{
-        voteResultModalVisible(!voteResultVisible)
+        voteResultModalVisible(false)
     }
 
     // Fire base
@@ -155,6 +149,33 @@ function GameScreen({route}) {
         })
         return () => {console.log("GameScreen unmount"); unsubscribe()}
     },[]))
+    
+    // handle ready/cancel/start 
+    const handleReadyCancelStart = async ()=>{
+        const docref = doc(database,"rooms",route.params)
+        if(user.uid === host){
+            console.log('Start game')
+            const num1 = random(memberId.length)
+            roomInfo.roomMembers[num1].isGhost = true
+            if(memberId.length > 5){
+                let num2;
+                do {
+                    num2 = random(memberId.length); 
+                } while (num2 === num1); 
+                roomInfo.roomMembers[num2].isGhost = true
+            }
+            const keyword = keywords[random(keywords.length)]
+            const answer = random(memberId.length)
+            await updateDoc(docref, {isStart:true, roomMembers: [...roomInfo.roomMembers], keyword: keyword, memberAnswer: answer,
+                chats: arrayUnion({displayName: "Hệ thống: ", message: "Bắt đầu vòng 1", id: "system"})
+            })
+            // await updateTime(15)
+        }else{
+            const index = memberId.indexOf(user?.uid)
+            roomInfo.roomMembers[index].isReady = !isReady
+            await updateDoc(docref, {roomMembers: [...roomInfo.roomMembers]})
+        }
+    }
 
     // ---------------Logic Game Start ---------------
     // Start Game
@@ -174,6 +195,13 @@ function GameScreen({route}) {
     // handle Describe
     const handleDescribe = ()=>{
         describeModalVisible(true)
+    }
+    // Update time 
+    const updateTime = async (time)=>{
+        await setDoc(doc(database,'times',route.params),{
+            startTime: serverTimestamp(),
+            duration: time
+        })
     }
     // handle logic sau khi hiện role
     const handleCloseRoleModal = async () =>{
@@ -198,7 +226,6 @@ function GameScreen({route}) {
             console.log("Start Vote");
             setAnswer("...")
             setTime(5)
-            // voteModalVisible(true)
         }else{
             setIsVoted(false)
         }
@@ -275,8 +302,7 @@ function GameScreen({route}) {
                 }) 
             }
             if(isEndRound2){
-                setVoteResult(true)
-                console.log("Result Vote");
+                voteResultModalVisible(true)
             }
         }
     },[finishedCounting]))
@@ -288,32 +314,6 @@ function GameScreen({route}) {
     // random
     const random = (length) =>{
         return Math.floor(Math.random() * length)
-    }
-
-    // handle ready/cancel/start 
-    const handleReadyCancelStart = async ()=>{
-        const docref = doc(database,"rooms",route.params)
-        if(user.uid === host){
-            console.log('Start game')
-            const num1 = random(memberId.length)
-            roomInfo.roomMembers[num1].isGhost = true
-            if(memberId.length > 5){
-                let num2;
-                do {
-                    num2 = random(memberId.length); 
-                } while (num2 === num1); 
-                roomInfo.roomMembers[num2].isGhost = true
-            }
-            const keyword = keywords[random(keywords.length)]
-            const answer = random(memberId.length)
-            await updateDoc(docref, {isStart:true, roomMembers: [...roomInfo.roomMembers], keyword: keyword, memberAnswer: answer,
-                chats: arrayUnion({displayName: "Hệ thống: ", message: "Bắt đầu vòng 1", id: "system"})
-            })
-        }else{
-            const index = memberId.indexOf(user?.uid)
-            roomInfo.roomMembers[index].isReady = !isReady
-            await updateDoc(docref, {roomMembers: [...roomInfo.roomMembers]})
-        }
     }
 
     // handle out room
@@ -335,6 +335,7 @@ function GameScreen({route}) {
         }
         else{
             deleteDoc(docRef)
+            deleteDoc(doc(database,"times", route.params))
         }
     };
 
@@ -366,6 +367,13 @@ function GameScreen({route}) {
         };
     }, []));
 
+    // Test ================================================
+
+    const testFunc = async ()=>{
+        await updateTime(10)
+       
+    }
+
     return ( 
             <idContext.Provider value={route.params}>
                 <ImageBackground source={require('../assets/img/Theme2.jpg')} style={styles.backgroundImage}>
@@ -382,7 +390,7 @@ function GameScreen({route}) {
                                 <Icon name="hourglass"  style={styles.testIcon}></Icon>
                             </TouchableOpacity> */}
                             
-                            <CountDown time={time} handleAfterCountDown={handleAfterCountDown}/> 
+                            <CountDown time={time} isStart={isStart} handleAfterCountDown={handleAfterCountDown} idRoom={route.params}/> 
     
                             {isGhost && isStart &&<Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
                             || isStart && <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>}
@@ -441,7 +449,7 @@ function GameScreen({route}) {
                         }
     
                         <TouchableOpacity style={styles.rulesButton}>
-                            <Icon name="question" style={styles.rulesIcon} onPress={() => voteResultModalVisible(!voteResultVisible)}></Icon>
+                            <Icon name="question" style={styles.rulesIcon} onPress={() => testFunc()}></Icon>
                         </TouchableOpacity>
                         
                         <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>
@@ -506,18 +514,10 @@ function GameScreen({route}) {
                         }
 
                         {       
-                            voteVisible && 
-                            <ModalGameVote
-                                roomMembers={roomMembers}
-                                handleCloseVoteModal={handleCloseVoteModal}
-                                idRoom={route.params}
-                            />
-                        }
-
-                        {       
                             voteResultVisible && 
                             <ModalGameVoteResult
                                 handleCloseVoteResultModal={handleCloseVoteResultModal}
+                                roomMembers={roomInfo.roomMembers}
                             />
                         }
                     </View>
