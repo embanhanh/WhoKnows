@@ -15,7 +15,8 @@ const PlayerCard = ({
   isVoted, 
   displayName, 
   handleVote, 
-  index
+  index,
+  containerWidth
 }) => {
   const windowWidth = Dimensions.get('window').width;
   const avatarSize = windowWidth * 0.15; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
@@ -33,7 +34,7 @@ const PlayerCard = ({
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{...styles.container, width: containerWidth}}>
       <View style={{...newStyles,  alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }}>
         {!isEmpty && <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />}
         {/* {playerName && <Text style={styles.playerName}>{playerName}</Text>} */}
@@ -69,7 +70,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: "50%",
     marginVertical: "4%",
     paddingHorizontal: "5%",
   },

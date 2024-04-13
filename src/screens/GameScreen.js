@@ -403,13 +403,13 @@ function GameScreen({route}) {
                                 (<PlayerCard key={index} bubbleType={index%2==0?"left":"right"} avatarAlignment={index%2==0?"flex-start":"flex-end"}
                                     isManager={member.Id === host} isYou={member.Id === user.uid} displayName={member.displayName}
                                     answer={member.answer} answering={member.answering} isStartVote={isStartVote} isVoted={isVoted}
-                                    handleVote={handleVote} index={index}
+                                    handleVote={handleVote} index={index} containerWidth={"50%"}
                                 ></PlayerCard>)
                             )
                         }
                         {
                             !isStart && emptyMembers.map((e,index)=> 
-                                <PlayerCard key={index} avatarAlignment={(memberId.length + index)%2==0 ?"flex-start":"flex-end"} isEmpty={true}></PlayerCard> 
+                                <PlayerCard key={index} avatarAlignment={(memberId.length + index)%2==0 ?"flex-start":"flex-end"} isEmpty={true} containerWidth={"50%"}></PlayerCard> 
                             )
                         } 
                         </View>
