@@ -29,13 +29,14 @@ function ModalGameVoteResult({
 
                     <View style={styles.playerListContainer}>
                         <View style={styles.playerList}>
-                            <PlayerCard displayName={"HT"}></PlayerCard>
-                            <PlayerCard displayName={"ĐNT"}></PlayerCard>
+                            <PlayerCard containerWidth={"33%"} displayName={"HT"}></PlayerCard>
+                            <PlayerCard containerWidth={"33%"} displayName={"HT"}></PlayerCard>
+                            <PlayerCard containerWidth={"33%"} displayName={"HT"}></PlayerCard>
                         </View>
                     </View>
 
                     <TouchableOpacity style={styles.closeButton} onPress={handleCloseVoteResultModal}>
-                        <Icon name="close"  style={styles.closeIcon}></Icon>
+                        <Icon name="close" style={styles.closeIcon}></Icon>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -52,15 +53,15 @@ const styles = StyleSheet.create({
 
     owlImage: {
         position: "absolute",
-        width: '35%',
-        height: '60%',
-        top: "-57.2%",
+        width: '30%',
+        height: '50%',
+        top: "-47.2%",
         left: "0%",
     },
 
     voteResultContainer: {
-        width: "75%",
-        height: "26%",
+        width: "85%",
+        height: "32%",
         borderRadius: RFValue(20),
         backgroundColor:  "#29353B",
         alignItems: "center",
