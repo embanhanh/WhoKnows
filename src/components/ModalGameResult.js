@@ -1,22 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
 
 function ModalGameResult({
-    resultVisible,
     handleCloseResultModal,
+    winer,
+    keyword,
+    handleAfterShowResult
 }) {
     const windowWidth = Dimensions.get('window').width;
     const avatarSize = windowWidth * 0.2; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
+
+    useEffect(()=>{
+        const timeout = setTimeout(()=>{
+            handleCloseResultModal()
+            handleAfterShowResult()
+        }, 3000)
+
+        return ()=>{
+            clearTimeout(timeout)
+        }
+    },[])
+
     return ( 
         <Modal
                 animationType="fade"
                 transparent={true}
-                visible={resultVisible}
+                visible={true}
                 onRequestClose={handleCloseResultModal}
             >
-            {resultVisible  && <View style={styles.overlay} />}
+            <View style={styles.overlay} />
             <SafeAreaView style={styles.container}>
                 <View style={styles.resultContainer}>
                     <View style={styles.bannerContainer}></View>
@@ -24,12 +38,12 @@ function ModalGameResult({
                     <View style={styles.infoGameContainer}>
                        <View style={styles.keyWordContainer}>
                             <Text style={{fontSize: RFValue(11), fontWeight: "bold", color: "green", marginBottom: "3%"}}>Từ khóa của dân làng</Text>
-                            <Text style={{fontSize: RFValue(15), fontWeight: "bold",}}>Jack Sparrow</Text>
+                            <Text style={{fontSize: RFValue(15), fontWeight: "bold",}}>{keyword}</Text>
                        </View>
 
                        <View style={styles.winContainer}>
                             <Text style={{fontSize: RFValue(11), fontWeight: "bold", color: "purple", marginBottom: "3%"}}>Đội chiến thắng</Text>
-                            <Text style={{fontSize: RFValue(15), fontWeight: "bold",}}>Evil Ghost</Text>
+                            <Text style={{fontSize: RFValue(15), fontWeight: "bold",}}>{winer}</Text>
                        </View>
                     </View>
 

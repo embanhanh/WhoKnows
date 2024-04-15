@@ -94,10 +94,13 @@ function Home() {
             isStartAnswer: false, 
             isStartAnswer2: false,
             isStartVote: false,
+            isEndRound2: false,
+            isGuessKeyword:false,
             finishedCounting: 0,
+            guessKeyword: []
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
-        await setDoc(doc(database, 'chats',idroom), { chats: []})
+        // await setDoc(doc(database, 'chats',idroom), { chats: []})
     }
     // handle close modal create 
     const handleCloseCreateModal = ()=>{

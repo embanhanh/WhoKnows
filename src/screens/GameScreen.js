@@ -48,7 +48,11 @@ function GameScreen({route}) {
     const [isStartVote, setIsStartVote] = useState(false)
     const [finishedCounting, setFinishCounting] = useState(0)
     const [isVoted, setIsVoted] = useState(false)
-    const [isEndRound2, setIsEndRound2] = useState(false)   
+    const [isEndRound2, setIsEndRound2] = useState(false)
+    const [winer, setWiner] = useState() 
+    const [isGuessKeyword, setIsGuessKeyword] = useState(false)  
+    const [isStart, setIsStart] = useState(false)
+    const [round,setRound] = useState(0)
      //RoomInfo variables
     const answers = roomInfo.answers || []
     const roomMembers = roomInfo.roomMembers || []
@@ -63,7 +67,6 @@ function GameScreen({route}) {
         else
             return acc
     },0)
-    const isStart = roomInfo.isStart || false
     //Game Modal
     const [roleVisible, roleModalVisible] = useState(false);
     const [describeVisible, describeModalVisible] = useState(false);
@@ -101,44 +104,62 @@ function GameScreen({route}) {
     }
 
     // Fire base
-    // members
+    // setState
     useFocusEffect(useCallback(()=>{
         const unsubscribe = onSnapshot(doc(database,"rooms",route.params), async (data)=>{
             if(data.exists()){
                 try {
                     setRoomInfo(data.data())
+                    const isStartGame = data.data().isStart
+                    if(preState.current.isStart !== isStartGame){
+                        setIsStart(isStartGame)
+                        preState.current.isStart = isStartGame
+                    }
                     const newHost = data.data().roomMaster
                     if(newHost !== preState.current.host){
                         setHost(newHost)
+                        preState.current.host = newHost
                     }
                     const startVote = data.data().isStartVote
                     if(startVote !== preState.current.isStartVote){
                         setIsStartVote(startVote)
+                        preState.current.isStartVote = startVote
                     }
                     const startAnswer = data.data().isStartAnswer
                     if(startAnswer !== preState.current.isStartAnswer){
                         setIsStartAnswer(startAnswer)
+                        preState.current.isStartAnswer = startAnswer
+                    }
+                    const roundGame = data.data().round
+                    if(roundGame !== preState.current.round){
+                        setRound(roundGame)
+                        preState.current.round = roundGame
                     }
                     const startAnswer2 = data.data().isStartAnswer2
                     if(startAnswer2!==preState.current.isStartAnswer2){
                         setIsStartAnswer2(startAnswer2)
+                        preState.current.isStartAnswer2 = startAnswer2
                     }
                     const newMemberAnswer = data.data().memberAnswer
                     if(preState.current.memberAnswer !== newMemberAnswer){
                         setMemberAnswer(newMemberAnswer)
+                        preState.current.memberAnswer = newMemberAnswer
                     }
                     const newFinishedCounting = data.data().finishedCounting
                     if(preState.current.finishedCounting !== newFinishedCounting){
-                        setFinishCounting(data.data().finishedCounting)
+                        setFinishCounting(newFinishedCounting)
+                        preState.current.finishedCounting = newFinishedCounting
                     } 
-                    preState.current = {
-                        host: newHost,
-                        isStartVote: startVote,
-                        isStartAnswer: startAnswer,
-                        isStartAnswer2: startAnswer2,
-                        memberAnswer: newMemberAnswer,
-                        finishedCounting: newFinishedCounting
-                    }
+                    const endRound2 = data.data().isEndRound2
+                    if(preState.current.isEndRound2 !== endRound2){
+                        setIsEndRound2(endRound2)
+                        preState.current.isEndRound2 = endRound2
+                    } 
+                    const guessKeyword = data.data().isGuessKeyword
+                    if(preState.current.isGuessKeyword !== guessKeyword){
+                        setIsGuessKeyword(guessKeyword)
+                        preState.current.isGuessKeyword = guessKeyword
+                    } 
                 } catch (error) {
                     console.error("Lỗi khi lấy dữ liệu thành viên:", error);
                     Alert.alert("Lỗi", "Lấy dữ liệu thành viên thất bại"); 
@@ -166,10 +187,9 @@ function GameScreen({route}) {
             }
             const keyword = keywords[random(keywords.length)]
             const answer = random(memberId.length)
-            await updateDoc(docref, {isStart:true, roomMembers: [...roomInfo.roomMembers], keyword: keyword, memberAnswer: answer,
+            await updateDoc(docref, {isStart:true, roomMembers: [...roomInfo.roomMembers], keyword: keyword, memberAnswer: answer, round: 1,
                 chats: arrayUnion({displayName: "Hệ thống: ", message: "Bắt đầu vòng 1", id: "system"})
             })
-            // await updateTime(15)
         }else{
             const index = memberId.indexOf(user?.uid)
             roomInfo.roomMembers[index].isReady = !isReady
@@ -196,13 +216,6 @@ function GameScreen({route}) {
     const handleDescribe = ()=>{
         describeModalVisible(true)
     }
-    // Update time 
-    const updateTime = async (time)=>{
-        await setDoc(doc(database,'times',route.params),{
-            startTime: serverTimestamp(),
-            duration: time
-        })
-    }
     // handle logic sau khi hiện role
     const handleCloseRoleModal = async () =>{
         roleModalVisible(false)
@@ -215,9 +228,19 @@ function GameScreen({route}) {
     }
     // handle confirm answer
     const handleConfirm = async (text)=>{
-        if(text !== ""){
+        if(text !== "" && !isGuessKeyword){
             setAnswer(text)
             await updateDoc(doc(database,'rooms',route.params), {finishedCounting: memberId.length })
+        }
+        else if(isGuessKeyword && isGhost){
+            setIsAnswer(false)
+            describeModalVisible(false)
+            roomInfo.roomMembers.forEach(mb=>{
+                if(mb.Id === user.uid){
+                    mb.answer = text
+                }
+            })
+            await updateDoc(doc(database,'rooms',route.params), {roomMembers: [...roomInfo.roomMembers] , guessKeyword: arrayUnion(handleString(text))})
         }
     }
     // Start Vote
@@ -225,7 +248,7 @@ function GameScreen({route}) {
         if(isStartVote){
             console.log("Start Vote");
             setAnswer("...")
-            setTime(5)
+            setTime(10)
         }else{
             setIsVoted(false)
         }
@@ -245,8 +268,8 @@ function GameScreen({route}) {
             setTime(15)
             if(user.uid === memberId[memberAnswer]){
                 describeModalVisible(true)
-                roomMembers[memberAnswer].answering = true
-                updateDoc(docRef, {roomMembers: [...roomMembers]})
+                roomInfo.roomMembers[memberAnswer].answering = true
+                updateDoc(docRef, {roomMembers: [...roomInfo.roomMembers]})
                 setIsAnswer(true)
             }
         }
@@ -260,15 +283,14 @@ function GameScreen({route}) {
         if(answers.length === memberId.length*2 && isStartAnswer2 ){
             console.log("End Round 2");
             updateDoc(docRef, {
-                isStartAnswer2: false, isStartVote: true, 
-                chats: arrayUnion({displayName: "Hệ thống: ", message: "Kết thúc vòng 2", id: "system"})
+                isStartAnswer2: false, isStartVote: true, isEndRound2: true,
+                chats: arrayUnion({displayName: "Hệ thống: ", message: "Kết thúc vòng 2, bắt đầu bình chọn", id: "system"})
             })
-            setIsEndRound2(true) 
         }
     },[isStartAnswer, memberAnswer, isStartAnswer2]))
     // async countdown
     useFocusEffect(useCallback(()=>{
-        if(finishedCounting === memberId.length){
+        if(finishedCounting === memberId.length && isStart){
             setTime(0)
             const docRef = doc(database,'rooms',route.params)
             if(user.uid === memberId[memberAnswer] && (isStartAnswer || isStartAnswer2) && !isStartVote){
@@ -282,7 +304,7 @@ function GameScreen({route}) {
                     finishedCounting: 0
                 })
             }
-            if(user.uid === host && !isStartAnswer && !isStartVote && !isStartAnswer2){
+            if(!isStartAnswer && !isStartVote && !isStartAnswer2 && !isEndRound2){
                 updateDoc(docRef, {isStartAnswer: true, finishedCounting: 0})
             }
             if(!isStartAnswer2 && isStartVote && !isEndRound2){
@@ -296,19 +318,93 @@ function GameScreen({route}) {
                     roomMembers: [...roomInfo.roomMembers],
                     finishedCounting: 0,
                     chats: arrayUnion(
-                        {displayName: "Hệ thống: ", message: "Bắt đầu vòng 2, bắt đầu bình chọn", id: "system"},
+                        {displayName: "Hệ thống: ", message: "Bắt đầu vòng 2", id: "system"},
                         {displayName: "Hệ thống gợi ý", message: roomInfo.keyword.suggest[1], id: "system"}
                     )
                 }) 
             }
-            if(isEndRound2){
+            if(isEndRound2 && !isGuessKeyword){
+                roomInfo.roomMembers.forEach(member => {
+                    member.answer = ""
+                    member.answering = false
+                })
+                updateDoc(docRef,{isStartVote: false,roomMembers: [...roomInfo.roomMembers],finishedCounting: 0,})
                 voteResultModalVisible(true)
+            }
+            if(isGuessKeyword){
+                let ghostWin = false
+                roomInfo.guessKeyword.forEach((text)=>{
+                    if(text === handleString(keyword.key)){
+                        ghostWin = true
+                    }
+                })
+                ghostWin ? setWiner('Evil Ghost') : setWiner('Village')
+                resultModalVisible(true)
             }
         }
     },[finishedCounting]))
+    // handle string
+    const handleString = (string)=>{
+        return string.trim().toLowerCase()
+    }
     // handle after countDown
     const handleAfterCountDown = async ()=>{
         await updateDoc(doc(database,'rooms',route.params), {finishedCounting: increment(1) })
+    }
+    const handleAfterShowVoteResult = async (topVotes)=>{
+        setAnswer('...')
+        let d = 0
+        let ghost = 1
+        let votes = 2
+        if(topVotes.length > 5){
+            ghost = 2
+            votes = 3
+        }
+        for(let i = 0; i < votes; ++i){
+            if(topVotes[i].isGhost){
+                ++d;
+            }
+        }
+        if(d===ghost){
+            roomInfo.roomMembers.forEach(member => {
+                if(member.isGhost){
+                    member.answering = true
+                }
+            })
+            setTime(15)
+            if(isGhost){
+                setIsAnswer(true)
+                describeModalVisible(true)
+            }
+            await updateDoc(doc(database,'rooms',route.params), {
+                isGuessKeyword: true,
+                chats: arrayUnion({displayName: "Hệ thống: ", message: "Mời Evil Ghost đoán từ khóa", id: "system"}),
+                roomMembers: [...roomInfo.roomMembers]
+            })
+        }else{
+            setWiner('Evil Ghost')
+            resultModalVisible(true)
+        }
+    }
+    const handleAfterShowResult = async ()=>{
+        roomInfo.roomMembers.forEach((mb)=>{
+            if(mb.Id !== host){
+                mb.isReady = false
+            }
+            mb.answering = false
+            mb.answer = ''
+            mb.isGhost = false
+        })
+        await updateDoc(doc(database, "rooms",route.params),{
+            isStart: false,
+            isGuessKeyword: false,
+            roomMembers: [...roomInfo.roomMembers],
+            finishedCounting: 0,
+            answers: [], 
+            guessKeyword: [],
+            isEndRound2: false,
+            chats: arrayUnion({displayName: "Hệ thống: ", message: "Kết thúc vòng chơi", id: "system"})
+        })
     }
     // ------------------Logic Game End -----------------
     // random
@@ -334,8 +430,8 @@ function GameScreen({route}) {
             }
         }
         else{
-            deleteDoc(docRef)
-            deleteDoc(doc(database,"times", route.params))
+            await deleteDoc(docRef)
+            await deleteDoc(doc(database,"times", route.params))
         }
     };
 
@@ -370,8 +466,9 @@ function GameScreen({route}) {
     // Test ================================================
 
     const testFunc = async ()=>{
-        await updateTime(10)
-       
+        await updateDoc(doc(database,"rooms",route.params),{
+            "roomMembers.at(0).answering" : true
+        })
     }
 
     return ( 
@@ -385,10 +482,6 @@ function GameScreen({route}) {
                             <TouchableOpacity style={styles.homeButton} onPress={handleHome}>
                                 <Icon name="sign-out"  style={styles.homeIcon}></Icon>
                             </TouchableOpacity>
-    
-                            {/* <TouchableOpacity style={styles.testButton} onPress={() => guessModalVisible(!guessVisible)}>
-                                <Icon name="hourglass"  style={styles.testIcon}></Icon>
-                            </TouchableOpacity> */}
                             
                             <CountDown time={time} isStart={isStart} handleAfterCountDown={handleAfterCountDown} idRoom={route.params}/> 
     
@@ -508,8 +601,10 @@ function GameScreen({route}) {
                         {
                             resultVisible && 
                             <ModalGameResult
-                                resultVisible={resultVisible}
+                                winer={winer}
+                                keyword={keyword.key}
                                 handleCloseResultModal={handleCloseResultModal}
+                                handleAfterShowResult={handleAfterShowResult}
                             />
                         }
 
@@ -518,6 +613,7 @@ function GameScreen({route}) {
                             <ModalGameVoteResult
                                 handleCloseVoteResultModal={handleCloseVoteResultModal}
                                 roomMembers={roomInfo.roomMembers}
+                                handleAfterShowVoteResult={handleAfterShowVoteResult}
                             />
                         }
                     </View>

@@ -11,18 +11,22 @@ import PlayerCard from "./playerCard";
 
 function ModalGameVoteResult({
     handleCloseVoteResultModal,
-    roomMembers
+    roomMembers,
+    handleAfterShowVoteResult
 }) {
+    const topVotes = [...roomMembers]
+    topVotes.sort((a, b) => b.votes - a.votes)
     useEffect(()=>{
         const id = setTimeout(()=>{
             handleCloseVoteResultModal()
         }, 5000)
 
-        return ()=>clearTimeout(id)
+        return ()=>{
+            clearTimeout(id)
+            handleAfterShowVoteResult(topVotes)
+        }
     },[])
 
-    const topVotes = [...roomMembers]
-    topVotes.sort((a, b) => b.votes - a.votes)
 
     return ( 
         <Modal
@@ -43,9 +47,13 @@ function ModalGameVoteResult({
                         <View style={styles.playerList}>
                             {
                                 topVotes.map((mb, index)=>{
-                                    if(index<=2)
+                                    if(index<2){
                                         return <PlayerCard key={index} containerWidth={"33%"} displayName={mb.displayName}></PlayerCard>
-                                    return
+                                    }else if(index === 2 && topVotes.length >= 6){
+                                        return <PlayerCard key={index} containerWidth={"33%"} displayName={mb.displayName}></PlayerCard>
+                                    }else{
+                                        return
+                                    }
                                 })
                             }
                         </View>
