@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Modal, Switch, TextInput, StyleSheet } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome.js';
+import Icon from 'react-native-vector-icons/FontAwesome5.js';
+import { Divider } from 'react-native-paper';
 
 import NumericUpDown from "./NumericUpDown.js";
+import { RFValue } from "react-native-responsive-fontsize";
 
 function ModalCreateRoom({
     createVisible,
@@ -45,60 +47,70 @@ function ModalCreateRoom({
                         <Text style={styles.textCreateTitle}>Tạo Phòng</Text>
                     </View>
 
-                    <View style={styles.createContentContainer}>
-                        <Text style={styles.textCreateContent}>ID phòng: </Text>
-                        <Text style={styles.textCreateContent}>{idroom} </Text>
-                        <TouchableOpacity onPress={handleCoppy}>
-                            <Icon name="copy" style={styles.iconCopy}></Icon>
-                        </TouchableOpacity>
-                    </View>
+                    <Divider style={{ height: "0.6%", backgroundColor: "white", width: "75%", alignSelf: "center", marginBottom: "9%"}}></Divider>
 
-                    <NumericUpDown 
-                        value={maxPlayers}
-                        increment={incrementMaxPlayers}
-                        decrement={decrementMaxPlayers}
-                    />
-
-                    <View style={styles.createPasswordContainer}>
-                        <Text style={styles.textCreateContent}>Mật khẩu phòng:</Text>
-                        <Switch
-                        trackColor={{ false: "#767577", true: "#81b0ff" }}
-                        thumbColor={passwordSwitch ? "#f4f3f4" : "#f4f3f4"}
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={()=>setPasswordSwitch(!passwordSwitch)}
-                        value={passwordSwitch}
-                        />
-                        {passwordSwitch && (
-                            <View style={styles.keyRoom}>
-                                <TextInput
-                                    style={styles.inputPassword}
-                                    onChangeText={(text)=>{
-                                        if(text.length <= 4){
-                                            setPassword(text)
-                                        }
-                                    }}
-                                    value={password}
-                                    keyboardType="numeric"
-                                    maxLength={4}
-                                />
+                    <View style={styles.roomInfoContainer}>
+                        <View style={styles.createContentContainer}>
+                            <Text style={styles.textCreateContent}>ID phòng:</Text>
+                            <View style={styles.idContainer}>
+                                <Text style={styles.textIDRoom}>{idroom}</Text>
                             </View>
-                        )}
-                    </View>
 
-                    <View style={styles.createButtonContainer}>
-                        <TouchableOpacity style={styles.createRoomButton} onPress={()=>handleCreateRoom(idroom, password, maxPlayers)}>
-                            <View style={styles.backgroundBehindText}/>
-                            <Text style={styles.textButton}>
-                                Tạo
-                            </Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity onPress={handleCoppy}>
+                                <Icon name="copy" style={styles.iconCopy}></Icon>
+                            </TouchableOpacity>
+                        </View>
 
-                        <TouchableOpacity style={styles.createRoomButton} onPress={handleCloseCreateModal}>
-                            <View style={styles.backgroundBehindText}/>
-                            <Text style={styles.textButton}>
-                                Hủy
-                            </Text>
-                        </TouchableOpacity>
+                        <NumericUpDown 
+                            value={maxPlayers}
+                            increment={incrementMaxPlayers}
+                            decrement={decrementMaxPlayers}
+                        />
+
+                        <View style={styles.createPasswordContainer}>
+                            <Text style={styles.textCreateContent}>Mật khẩu:</Text>
+                            <Switch
+                            style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}
+                            trackColor={{ false: "#767577", true: "#F8C630" }}
+                            thumbColor={passwordSwitch ? "#f4f3f4" : "#f4f3f4"}
+                            ios_backgroundColor="#3e3e3e"
+                            onValueChange={()=>setPasswordSwitch(!passwordSwitch)}
+                            value={passwordSwitch}
+                            />
+                            {passwordSwitch && (
+                                <View style={styles.keyRoom}>
+                                    <TextInput
+                                        style={styles.inputPassword}
+                                        onChangeText={(text)=>{
+                                            if(text.length <= 4){
+                                                setPassword(text)
+                                            }
+                                        }}
+                                        value={password}
+                                        keyboardType="numeric"
+                                        maxLength={4}
+                                    />
+                                </View>
+                            )}
+                        </View>
+
+                        <View style={styles.buttonContainer}>
+                            <View style={styles.cancelButtonContainer}>
+                                <TouchableOpacity style={styles.cancelRoomButton} onPress={handleCloseCreateModal}>
+                                    <Text style={styles.textButton}>
+                                        Hủy
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            <View style={styles.createButtonContainer}>
+                                <TouchableOpacity style={styles.createRoomButton} onPress={()=>handleCreateRoom(idroom, password, maxPlayers)}>
+                                    <Text style={styles.textButton}>
+                                        Tạo
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
                 </View>
             </Modal>       
@@ -107,89 +119,129 @@ function ModalCreateRoom({
 
 const styles = StyleSheet.create({
     createContainer: {
-        backgroundColor: "#8f9cb0",
+        backgroundColor: "#1E1E1E",
         top: "24%",
-        width: "90%",
-        height: "50%",
+        width: "80%",
+        height: "47%",
         alignSelf: "center",
         justifyContent: "center",
-        borderRadius: 20,
+        borderRadius: RFValue(20),
     },
+
     createTitleContainer: {
-        flex: 1,
-        marginTop: 10,
-        flexDirection: "row",
+        flex: 1.7,
         alignItems: "center",
         justifyContent: "center",
     },
+
     textCreateTitle: {
-        fontSize: 27,
+        fontSize: RFValue(27),
         position: 'absolute',
         fontWeight: "bold",
-        color: "black",
+        color: "white",
     },
+
+    roomInfoContainer: {
+        flex: 5,
+    },
+
     createContentContainer: {
-        flex: 0.75,
+        flex: 0.5,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginLeft: "5%",
-        marginRight: "5%",
-        borderBottomWidth: 0.5,
     },
+
     textCreateContent: {
-        fontSize: 20,
-        color: "black",
+        fontSize: RFValue(16),
+        color: "white",
+        fontWeight: "bold",
+        marginLeft: "12.5%"
     },
-    iconCopy: {
-        fontSize: 25,
-        marginRight: 45,
-    },
-    createPasswordContainer: {
-        flex: 0.75,
-        flexDirection: "row",
+
+    idContainer: {
         alignItems: "center",
-        marginLeft: "5%",
-        marginRight: "5%",
-        borderBottomWidth: 0.5,
+        justifyContent: "center",
+        borderWidth: RFValue(3),
+        borderRadius: RFValue(5),
+        paddingHorizontal: "8%",
+        paddingVertical: "0.5%",
+        borderColor: "#F8C630",
     },
-    inputPassword: {
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 5,
-        marginRight: 5,
-        marginLeft: 10,
-        width: 100,
-        fontSize: 20,
-        textAlign: "center",
-    },
-    createButtonContainer: {
-        flex: 1,
-        marginLeft: 17,
-        marginBottom: 5,
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-    createRoomButton: {
-        position: "relative",
-        paddingVertical: "3%",
-        justifyContent: 'center',
-        alignItems: 'center',
-        minWidth: "40%",
-        marginRight: "5%",
-    },
-    backgroundBehindText: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: "#103b7a",
-        backgroundImage: "linear",
-        borderRadius: 15,
-    },
-    textButton: {
-        fontSize: 20,
+
+    textIDRoom: {
+        fontSize: RFValue(20),
         color: "white",
         fontWeight: "bold",
     },
+
+    iconCopy: {
+        fontSize: RFValue(20),
+        color: "white",
+        marginRight: "12.5%",
+    },
+
+    createPasswordContainer: {
+        flex: 0.5,
+        flexDirection: "row",
+        alignItems: "center",
+    },
+
+    inputPassword: {
+        borderWidth: RFValue(3),
+        borderRadius: RFValue(5),
+        borderColor: "#F8C630",
+        marginLeft: "8%",
+        width: RFValue(85),
+        fontSize: RFValue(17),
+        fontWeight: "bold",
+        color: "white",
+        textAlign: "center",
+    },
+
+    buttonContainer: {
+        flex: 1,
+        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+
+    cancelButtonContainer: {
+        marginLeft: "12%",
+        marginBottom: "2%",
+    },
+
+    createButtonContainer: {
+        marginRight: "11%",
+        marginBottom: "2%",
+    },
+
+    createRoomButton: {
+        position: "relative",
+        paddingVertical: "5%",
+        justifyContent: 'center',
+        alignItems: 'center',
+        minWidth: "53%",
+        backgroundColor: "#1E5F23",
+        borderRadius: RFValue(10),
+    },
+
+    cancelRoomButton: {
+        position: "relative",
+        paddingVertical: "9%",
+        justifyContent: 'center',
+        alignItems: 'center',
+        minWidth: "30%",
+        backgroundColor: "#B51E1E",
+        borderRadius: RFValue(10),
+    },
+
+    textButton: {
+        fontSize: RFValue(17),
+        color: "white",
+        fontWeight: "bold",
+    },
+
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',

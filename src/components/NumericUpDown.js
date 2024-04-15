@@ -1,16 +1,24 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
+import Icon from 'react-native-vector-icons/FontAwesome.js';
+
 
 function NumericUpDown({decrement, increment, value}) {
     return (
         <View style={styles.createContentContainer}>
-            <Text style={styles.textCreateContent}>Số lượng người chơi: </Text>
-            <TouchableOpacity onPress={decrement} style={styles.numberButton}>
-                <Text style={styles.textCreateContent}>-</Text>
+            <Text style={styles.textCreateContent}>Số lượng: </Text>
+
+            <TouchableOpacity onPress={decrement} style={styles.minusButton}>
+                <Icon name="minus" style={styles.iconButton}></Icon>
             </TouchableOpacity>
-            <Text style={styles.textCreateContent}>{value}</Text>
-            <TouchableOpacity onPress={increment} style={styles.numberButton}>
-                <Text style={styles.textCreateContent}>+</Text>
+
+            <View style={styles.numberContainer}>
+                <Text style={styles.textCreateContent}>{value}</Text>
+            </View>
+
+            <TouchableOpacity onPress={increment} style={styles.plusButton}>
+                <Icon name="plus" style={styles.iconButton}></Icon>
             </TouchableOpacity>
         </View>
     );
@@ -22,19 +30,46 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginLeft: "5%",
-        marginRight: "5%",
-        borderBottomWidth: 0.5,
+        marginLeft: "12.5%",
+        marginRight: "12.5%",
     },
+
     textCreateContent: {
-        fontSize: 20,
-        color: "black",
+        fontSize: RFValue(16),
+        color: "white",
+        fontWeight: "bold",
     },
-    numberButton: {
-        backgroundColor: 'lightgray',
-        borderRadius: 5,
-        width: 30,
+
+    numberContainer:{
+        justifyContent: "center",
         alignItems: "center",
+        borderWidth: RFValue(3),
+        borderRadius: RFValue(5),
+        paddingHorizontal: "4%",
+        borderColor: "#F8C630",
+        marginHorizontal: "4%",
+    },
+
+    plusButton: {
+        backgroundColor: 'lightgray',
+        borderRadius: RFValue(5),
+        paddingHorizontal: "4%",
+        paddingVertical: "2%",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    minusButton: {
+        backgroundColor: 'lightgray',
+        borderRadius: RFValue(5),
+        paddingHorizontal: "4%",
+        paddingVertical: "2%",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    iconButton: {
+        fontSize: RFValue(12),
     },
 })
 
