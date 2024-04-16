@@ -11,24 +11,28 @@ const PlayerCard = ({
   isEmpty, 
   answer, 
   answering, 
-  isStartVote, 
   isVoted, 
   displayName, 
   handleVote, 
   index,
-  containerWidth
+  containerWidth, 
+  isStartVote,
+  isGhost,
+  isStart
 }) => {
   const windowWidth = Dimensions.get('window').width;
   const avatarSize = windowWidth * 0.15; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
   const overlaySize = windowWidth * 0.11; // Kích thước overlayContainer dựa trên tỷ lệ màn hình
 
   let newStyles = {};
-  if(isManager){
+  if(isManager && !isStart){
     newStyles = {...styles.avatarContainer}
   }else if(isYou){
     newStyles = {...styles.avatarContainer, borderColor: 'green' }
   } else if(isEmpty){
     newStyles = {...styles.avatarContainer, borderColor: 'gray', backgroundColor: "#333" }
+  }else if(isGhost){
+    newStyles = {...styles.avatarContainer, borderColor: 'purple'}
   }else{
     newStyles = {...styles.avatarContainer, borderColor: 'gray' }
   }
@@ -37,9 +41,8 @@ const PlayerCard = ({
     <View style={{...styles.container, width: containerWidth}}>
       <View style={{...newStyles,  alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }}>
         {!isEmpty && <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />}
-        {/* {playerName && <Text style={styles.playerName}>{playerName}</Text>} */}
         {
-          isManager && <Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
+          isManager && !isStart &&<Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
         }
         {(!isStartVote || isVoted || isYou) && <Text numberOfLines={1} ellipsizeMode="tail" 
             style={{color: "#fff", fontSize: 16, position:"absolute", bottom: "-55%", fontWeight: "600", width: "150%",textAlign: 'center'}}
@@ -51,12 +54,12 @@ const PlayerCard = ({
             <Text style={{fontSize:14, color: "#fff"}}>+ Vote</Text>
         </TouchableOpacity>}
       </View>
-      {bubbleType === 'left' && answering && (
+      {bubbleType === 'left' && (answering || answer !== "") && (
         <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>
             <Text style={styles.answerTextLeft}>{answer || ''}</Text>
         </ImageBackground>
       )}
-      {bubbleType === 'right' && answering &&(
+      {bubbleType === 'right' && (answering || answer !== "") &&(
         <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}>
             <Text style={styles.answerTextRight}>{answer || ''}</Text>
         </ImageBackground>

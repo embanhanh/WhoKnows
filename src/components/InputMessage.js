@@ -29,12 +29,15 @@ function InputMessage({
 
 const styles = StyleSheet.create({
     inputContainer: {
+        position: "absolute",
+        bottom: "-20%",
+        zIndex: 100,
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: "4%",
         marginBottom: "3%",
         width: "95%",
-        height: "100%",
+        height: "25%",
         backgroundColor: "#00FFDF",
         borderRadius: RFValue(15),
         justifyContent: "space-between",
