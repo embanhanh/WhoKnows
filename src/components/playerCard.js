@@ -47,15 +47,19 @@ const PlayerCard = ({
           isManager && !isStart &&<Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
         }
         {(!isStartVote || isVoted || isYou) && <Text numberOfLines={1} ellipsizeMode="tail" 
-            style={{color: "#fff", fontSize: 16, position:"absolute", bottom: "-55%", fontWeight: "600", width: "150%",textAlign: 'center'}}
+            style={{color: "#fff", fontSize: 16, position:"absolute", bottom: "-45%", fontWeight: "600", width: "150%",textAlign: 'center'}}
           >
               {displayName}
           </Text>
         }
         {(!isStart && isReady) && <View style={styles.readyContainer}>
           <Icon name="check" style={styles.readyIcon}></Icon>
-        </View>
-        }
+        </View>}  
+        
+        {(!isStart && !isReady && isYou) && <View style={styles.unReadyContainer}>
+          <Icon name="check" style={styles.unReadyIcon}></Icon>
+        </View>}  
+
         {isStartVote && !isVoted && !isYou && <TouchableOpacity onPress={()=>handleVote(index)} style={{backgroundColor: "#21a3fb", padding: 2, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center"}}>
             <Text style={{fontSize:14, color: "#fff"}}>+ Vote</Text>
         </TouchableOpacity>}
@@ -145,8 +149,8 @@ const styles = StyleSheet.create({
   
   unReadyContainer: {
     position:"absolute", 
-    bottom: "-51%",
-    left: "97%",
+    top: "-20%",
+    left: "90%",
     borderWidth: RFValue(2),
     borderColor: "grey",
     paddingVertical: "2%",
@@ -158,14 +162,14 @@ const styles = StyleSheet.create({
 
   readyContainer: {
     position:"absolute", 
-    bottom: "-50%",
-    left: "97%",
-    paddingVertical: "3%",
-    paddingHorizontal: "4%",
+    top: "-20%",
+    left: "90%",
+    paddingVertical: "6%",
+    paddingHorizontal: "7%",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: RFValue(20),
-    backgroundColor: "#689C3B"
+    backgroundColor: "#D14F08"
   },
 
   unReadyIcon: {

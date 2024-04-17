@@ -109,14 +109,14 @@ const styles = StyleSheet.create({
     joinButton: {
         paddingVertical: "4%",
         paddingHorizontal: "5%",
-        borderRadius: RFValue(15),
+        borderRadius: RFValue(12),
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#1C5C51",
     },
 
     joinIcon: {
-        fontSize: RFValue(18),
+        fontSize: RFValue(14),
         color: "white"
     },
 
