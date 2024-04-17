@@ -15,13 +15,12 @@ const RoomBox = ({ id, locked, numPlayers, maxPlayers, roomMembers, handleJoinRo
 
     return (
         <View style={styles.roomInfoContainer}>
-            <Text flex={3} style={styles.textContent}>ID: {id}</Text>
+            <Text flex={4.5} style={styles.textContent}>ID: {id}</Text>
             {locked ? <Icon flex={1} name="lock" style={styles.iconLock}></Icon> : <Text flex={1}></Text>}
-            <Icons flex={1} name="people-outline" style={styles.iconPeople}></Icons>
-            <Text flex={1.5} style={styles.textContent}>{numPlayers}/{maxPlayers}</Text>
-            <TouchableOpacity style={styles.joinButton}>
-                <View style={styles.backgroundJoinButton}/>
-                <TouchableOpacity style={styles.textButton} onPress={()=>handleJoinRoom(id,roomMembers)}><Text>Vào</Text></TouchableOpacity>
+            <Icons flex={1.5} name="people-outline" style={styles.iconPeople}></Icons>
+            <Text flex={2} style={styles.textContent}>{numPlayers}/{maxPlayers}</Text>
+            <TouchableOpacity style={styles.joinButton} onPress={()=>handleJoinRoom(id,roomMembers)}>
+                <Icon name="arrow-right" style={styles.joinIcon}></Icon>
             </TouchableOpacity>
         </View>
     );
@@ -29,48 +28,41 @@ const RoomBox = ({ id, locked, numPlayers, maxPlayers, roomMembers, handleJoinRo
 
 const styles = StyleSheet.create({
     roomInfoContainer: {
-        paddingVertical: "3%",
+        paddingVertical: "4%",
         paddingHorizontal: "3%",
-
         marginBottom: "7%",
+        marginHorizontal: "3%",
         flexDirection: "row",
         backgroundColor: "#DDDDDD",
-        borderRadius: 15,
+        borderRadius: RFValue(15),
+        borderWidth: RFValue(2),
+        borderColor: "#EF7C06",
         alignItems: "center",
         justifyContent: "space-between",
     },
 
     textContent: {
-        fontSize: 20,
-        color: "black",
-    },
-
-    textButton: {
-        fontSize: 20,
-        color: "white",
+        fontSize: RFValue(15),
         fontWeight: "bold",
+        color: "black",
+        width: "50%",
     },
 
     joinButton: {
-        position: "relative",
         paddingVertical: "3%",
+        paddingHorizontal: "4%",
+        borderRadius: RFValue(15),
         justifyContent: "center",
         alignItems: "center",
-        minWidth: "20%",
+        backgroundColor: "#1C5C51",
     },
 
-    backgroundJoinButton: {
-        backgroundColor: "#103b7a",
-        borderRadius: 15,
-        position: "absolute",
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
+    joinIcon: {
+        fontSize: RFValue(12),
+        color: "white"
     },
 
     iconPeople: {
-        marginLeft: 25,
         fontSize: RFValue(20),
     },
 

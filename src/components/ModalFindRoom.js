@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Modal,  TextInput,  ScrollView, StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { Divider } from 'react-native-paper';
 
 
 import RoomBox from "../components/RoomBox.js";
@@ -25,38 +26,38 @@ function ModalFindRoom({
             >
                 {findVisible && <View style={styles.overlay} />}
                 <View style={styles.findContainer}>
-                    <View style={styles.findTitleContainer}>
-                        <Text style={styles.textCreateTitle}>Tìm Phòng</Text>
-                        <TouchableOpacity onPress={handleCloseFindModal}>
-                            <Icon name="close" style={styles.iconClose}></Icon>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity style={styles.closeButton} onPress={handleCloseFindModal}>
+                        <Icon name="close"  style={styles.closeIcon}></Icon>
+                    </TouchableOpacity>
                     <View style={styles.findInputContainer}>
                         <View style={styles.idInputText}>
-                        <TextInput style={styles.id}
-                            placeholder="Nhập ID phòng"
-                            keyboardType="default"
-                            maxLength={4}
-                            value={idRoom}
-                            onChangeText={(text) => setIdRoom(text)}
-                        />
+                            <TextInput style={styles.id}
+                                placeholder="Nhập ID Phòng..."
+                                keyboardType="default"
+                                maxLength={4}
+                                value={idRoom}
+                                onChangeText={(text) => setIdRoom(text)}
+                            />
                         </View>
                         <TouchableOpacity style={styles.joinButton} onPress={()=>handleJoinRoomWithId(idRoom)}>
-                            <View style={styles.backgroundJoinButton}/>
-                            <Text style={styles.textButton}>
-                                Vào
-                            </Text>
+                            <Icon name="arrow-right" style={styles.joinIcon}></Icon>
                         </TouchableOpacity>
                     </View>
+
+                    <Divider style={{ height: "0.6%", backgroundColor: "white", width: "80%", alignSelf: "center", marginTop: "9%"}}></Divider>
+
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.titleText}>Danh sách phòng</Text>
+                    </View>
+
                     <View style={styles.findListRoomContainer}>
-                        <ScrollView style={styles.scrollView}>
+                        <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                             {roomData.map((room, index) => (
                                 <RoomBox key={index} id={room.id} locked={room.locked} handleJoinRoom={handleJoinRoom} 
                                     numPlayers={room.roomMembers?.length} roomMembers={room.roomMembers}  maxPlayers={room.maxPlayers} />
                             ))}
                         </ScrollView>
                     </View>
-                    
                 </View>
             </Modal>
     );
@@ -64,97 +65,101 @@ function ModalFindRoom({
 
 const styles = StyleSheet.create({
     findContainer: {
-        top: "8%",
-        backgroundColor: "#022529",
-        maxWidth: "90%",
-        maxHeight: "70%",
+        backgroundColor: "#1E1E1E",
+        top: "20%",
+        width: "75%",
+        height: "57%",
         alignSelf: "center",
         justifyContent: "center",
-        borderRadius: 20,
+        borderRadius: RFValue(15),
     },
+
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
     },
-    findTitleContainer: {
-        flex: 1,
-        height: '100%',
-        marginTop: 5,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    textCreateTitle: {
-        fontSize: 27,
-        position: 'absolute',
-        fontWeight: "bold",
-        color: "white",
-    },
-    iconClose: {
-        fontSize: 40,
-        marginLeft: "85%",
-        color: "white",
-    },
+
     findInputContainer: {
         flex: 1,
-        height: '100%',
         flexDirection: "row",
-        alignItems: "center",
+        alignItems: "flex-end",
         justifyContent: "space-between",
-        marginBottom: "7%",
-        marginLeft: "5%",
-        marginRight: "5%",
+        marginHorizontal: "10%",
+        position: "relative",
     },
+
     idInputText: {
-        paddingVertical: "3%",
+        paddingVertical: "2%",
         paddingHorizontal: "3%",
-        width: "75%",
+        width: "77%",
         flexDirection: "row",
-        backgroundColor: "#10666e",
-        borderRadius: RFValue(20),
+        backgroundColor: "#E0E0E0",
+        borderRadius: RFValue(10),
         alignItems: "center",
         justifyContent: "space-between",
     },
+
     id: {
-        fontSize: 18,
-        width: "70%",
+        fontSize: RFValue(16),
+        fontWeight: "bold",
+        width: "100%",
         marginLeft: "3%",
     },
+
     joinButton: {
-        position: "relative",
-        paddingVertical: "3%",
+        paddingVertical: "4%",
+        paddingHorizontal: "5%",
+        borderRadius: RFValue(15),
         justifyContent: "center",
         alignItems: "center",
-        minWidth: "17%",
-        marginRight: "3%",
+        backgroundColor: "#1C5C51",
     },
-    backgroundJoinButton: {
-        backgroundColor: "#103b7a",
-        borderRadius: 15,
-        position: "absolute",
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
+
+    joinIcon: {
+        fontSize: RFValue(18),
+        color: "white"
     },
-    textButton: {
-        fontSize: 20,
-        color: "white",
-        fontWeight: "bold",
+
+    titleContainer: {
+        flex: 0.8,
+        alignItems: "center",
+        justifyContent: "center",
     },
+
     findListRoomContainer: {
-        flex: 5,
-        marginTop: -10,
-        marginLeft: "5%",
-        marginRight: "5%",
-        marginBottom: "5%",
-        flexDirection: "row",
+        flex: 4,
     },
+
+    titleText: {
+        fontSize: RFValue(20),
+        fontWeight: "bold",
+        color: "white"
+    },
+
     scrollView: {
-        backgroundColor: "#10666e",
+        backgroundColor: "#121212",
         paddingHorizontal: "3%",
         paddingVertical: "5%",
-        borderRadius: RFValue(20),
+        borderRadius: RFValue(15),
+        marginHorizontal: "10%",
+        marginBottom: "10%",
+    },
+
+    closeButton: {
+        backgroundColor: "#181818",
+        borderRadius: RFValue(30),
+        paddingHorizontal: "2.5%", 
+        paddingVertical: "2%", 
+        position: "absolute",
+        top: "-2%",
+        right: "-4%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    closeIcon: {
+        fontSize: RFValue(14),
+        color: "white",
     },
 })
 
