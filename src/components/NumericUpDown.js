@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         borderRadius: RFValue(5),
         paddingHorizontal: "4%",
         borderColor: "#F8C630",
-        marginHorizontal: "4%",
+        marginHorizontal: "5%",
     },
 
     plusButton: {
