@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image, Dimensions, ImageBackground, Text, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import Icon from 'react-native-vector-icons/FontAwesome.js';
 
 const PlayerCard = ({
   bubbleType, 
@@ -49,6 +50,10 @@ const PlayerCard = ({
           >
               {displayName}
           </Text>
+        }
+        {(!isStartVote || isVoted || isYou) && <View style={styles.readyContainer}>
+          <Icon name="check" style={styles.readyIcon}></Icon>
+        </View>
         }
         {isStartVote && !isVoted && !isYou && <TouchableOpacity onPress={()=>handleVote(index)} style={{backgroundColor: "#21a3fb", padding: 2, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center"}}>
             <Text style={{fontSize:14, color: "#fff"}}>+ Vote</Text>
@@ -137,58 +142,39 @@ const styles = StyleSheet.create({
     top: "-25%",
   },
   
-  playerNameContainerLeft: {
-    flex: 1,
-    position: 'absolute',
-    top: "100%",
-    right: "80%",
-    maxWidth: "100%",
+  unReadyContainer: {
+    position:"absolute", 
+    bottom: "-51%",
+    left: "97%",
+    borderWidth: RFValue(2),
+    borderColor: "grey",
+    paddingVertical: "2%",
+    paddingHorizontal: "3%",
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: RFValue(20),
   },
 
-  playerNameContainerRight: {
-    position: 'absolute',
-    top: "100%",
-    left: "80%",
-    maxWidth: "100%",
+  readyContainer: {
+    position:"absolute", 
+    bottom: "-50%",
+    left: "97%",
+    paddingVertical: "3%",
+    paddingHorizontal: "4%",
     alignItems: "center",
-  },
-
-  playerName: {
-    color: "white",
-    fontSize: 13,
-  },
-
-  voteContainerRight: {
-    position: 'absolute',
-    alignItems:"center",
     justifyContent: "center",
-    top: "100%",
-    left: "23%",
-    paddingHorizontal: "5%",
-    paddingVertical: "5%",
-    //Width: "40",
-    backgroundColor: "blue",
-    borderRadius: RFValue(10), 
-    borderColor: "red",
-    //borderWidth: "1",
-
+    borderRadius: RFValue(20),
+    backgroundColor: "#689C3B"
   },
 
-  voteContainerLeft: {
-    position: 'absolute',
-    top: "100%",
-    right: "23%",
-    //maxWidth: "100%",
-    backgroundColor: "blue",
-    borderRadius: RFValue(10), 
-    borderColor: "red",
+  unReadyIcon: {
+    fontSize: RFValue(10),
+    color: "grey"
   },
-
-  voteText: {
-    color: "white",
-    fontSize: 13,
+  
+  readyIcon: {
+    fontSize: RFValue(10),
+    color: "#0C0F30",
   },
 });
 

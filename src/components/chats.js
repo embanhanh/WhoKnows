@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+
     chatBox: {
         borderRadius: RFValue(20),
         width: "90%",

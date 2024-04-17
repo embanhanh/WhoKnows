@@ -25,7 +25,7 @@ import CountDown from "../components/CountDown.js";
 import ModalGameResultGuess from "../components/ModalGameResultGuess.js";
 import ModalGameResult from "../components/ModalGameResult.js";
 import ModalGameVoteResult from "../components/ModalGameVoteResult.js";
-import ChatBox from "../components/Chats.js";
+import ChatBox from "../components/chats.js";
 
 export const idContext = createContext("")
 
