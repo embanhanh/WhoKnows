@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
@@ -8,12 +8,14 @@ import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons.js';
 import PagerView from 'react-native-pager-view';
 import PlayerCard from "./playerCard";
+import userContext from "../AuthContext/AuthProvider";
 
 function ModalGameVoteResult({
     handleCloseVoteResultModal,
     roomMembers,
     handleAfterShowVoteResult
 }) {
+    const {user} = useContext(userContext)
     const topVotes = [...roomMembers]
     topVotes.sort((a, b) => b.votes - a.votes)
     useEffect(()=>{
@@ -48,9 +50,9 @@ function ModalGameVoteResult({
                             {
                                 topVotes.map((mb, index)=>{
                                     if(index<2){
-                                        return <PlayerCard key={index} containerWidth={"33%"} displayName={mb.displayName}></PlayerCard>
+                                        return <PlayerCard key={index} containerWidth={"33%"} displayName={mb.displayName} isYou={user.uid === mb.Id} isGhost={mb.isGhost}></PlayerCard>
                                     }else if(index === 2 && topVotes.length >= 6){
-                                        return <PlayerCard key={index} containerWidth={"33%"} displayName={mb.displayName}></PlayerCard>
+                                        return <PlayerCard key={index} containerWidth={"33%"} displayName={mb.displayName} isYou={user.uid === mb.Id} isGhost={mb.isGhost}></PlayerCard>
                                     }else{
                                         return
                                     }

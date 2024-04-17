@@ -317,17 +317,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: "5%",
     },
-    chatBoxContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    chatBox: {
-        borderRadius: RFValue(20),
-        width: "90%",
-        marginBottom: "7%",
-        backgroundColor: "#171D63",
-    },
     gameToolsContainer: {
         flex: 1,
         justifyContent: "center",

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useCallback } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, Modal, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import {  collection, onSnapshot, query, doc, setDoc,updateDoc } from "firebase/firestore";
+import {  collection, onSnapshot, query, doc, setDoc,updateDoc, arrayUnion } from "firebase/firestore";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import styles from "../components/Styles.js";
@@ -78,29 +78,33 @@ function Home() {
                     displayName: user?.displayName,
                     isReady: true,
                     isGhost: false,
-                    answering: false,
                     answer: '',
                     votes: 0
                 }
             ],
             locked: password === '' ? false : password,
             maxPlayers,
-            chats:[],
+            // chats:[],
             answers: [],
             round:0,
             isStart: false,
             keyword: {},
             memberAnswer: 0,
             isStartAnswer: false, 
-            isStartAnswer2: false,
+            // isStartAnswer2: false,
             isStartVote: false,
             isEndRound2: false,
             isGuessKeyword:false,
-            finishedCounting: 0,
-            guessKeyword: []
+            finishedCounting: false,
+            guessKeyword: [], 
+            isShowVoteResult: false
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
-        // await setDoc(doc(database, 'chats',idroom), { chats: []})
+        await setDoc(doc(database,'times', idroom),{
+            startTime: Date.now(),
+            duration: 0
+        })
+        await setDoc(doc(database, 'chats',idroom), { chats: []})
     }
     // handle close modal create 
     const handleCloseCreateModal = ()=>{
@@ -112,25 +116,23 @@ function Home() {
         findModalVisible(!findVisible)
     }
     // handle join room
-    handleJoinRoom = async (id, roomMembers, chats) => {
+    handleJoinRoom = async (id, roomMembers) => {
         navigation.navigate('GameScreen', id)
         findModalVisible(false)
         console.log("join");
         const docRef = doc(database,"rooms", id)
-        console.log(chats);
         await updateDoc(docRef, { roomMembers: [...roomMembers, {
-            Id: user?.uid,
-            displayName: user?.displayName,
-            isReady: false,
-            isGhost: false,
-            answering: false,
-            answer: '',
-            votes: 0
-        }], chats: [...chats, {displayName: "Hệ thống", message: `${user.displayName} đã vào phòng`, id: "system"}] 
+                Id: user?.uid,
+                displayName: user?.displayName,
+                isReady: false,
+                isGhost: false,
+                answer: '',
+                votes: 0
+            }], 
         })
-        // await updateDoc(doc(database,"chats", id),{
-        //     chats: 
-        // })
+        await updateDoc(doc(database,"chats", id),{
+            chats: arrayUnion({displayName: 'Hệ thống', message: `${user.displayName} đã vào phòng`, id: "system"})
+        })
     }
     // handle join room with id
     handleJoinRoomWithId = async (idRoom)=>{
