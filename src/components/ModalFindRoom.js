@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     },
 
     titleText: {
-        fontSize: RFValue(20),
+        fontSize: RFValue(18),
         fontWeight: "bold",
         color: "white"
     },

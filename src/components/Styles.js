@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     backgroundBehindText: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: "#6938EF",
-        backgroundImage: "linear",
         borderRadius: 15,
     },
     textButton: {

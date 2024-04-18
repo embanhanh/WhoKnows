@@ -11,6 +11,7 @@ import {  database } from "../../firebaseconfig";
 import userContext from "../AuthContext/AuthProvider.js";
 import ModalCreateRoom from "../components/ModalCreateRoom.js";
 import ModalFindRoom from "../components/ModalFindRoom.js";
+import ModalGameLobbyPass from "../components/ModalLobbyPass.js";
 
 function Home() {
     const {user} = useContext(userContext)
@@ -21,6 +22,7 @@ function Home() {
     const [modalVisible, setModalVisible] = useState(false);
     const [createVisible, createModalVisible] = useState(false);
     const [findVisible, findModalVisible] = useState(false);
+    const [lobbyPassVisible, lobbyPassModalVisible] = useState(false);
     // Room data
     const [roomData, setRooms] = useState([]);
 
@@ -115,6 +117,10 @@ function Home() {
     const handleCloseFindModal = () =>{
         findModalVisible(!findVisible)
     }
+    //handle close modal import lobby password
+    const handleCloseLobbyPassModal = () =>{
+        lobbyPassModalVisible(!lobbyPassVisible)
+    }
     // handle join room
     handleJoinRoom = async (id, roomMembers) => {
         navigation.navigate('GameScreen', id)
@@ -173,7 +179,7 @@ function Home() {
                         <TouchableOpacity style={styles.mainButton} onPress={handlePlayNow}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
-                                Chơi Ngay
+                                Chơi Ngay !!
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -239,6 +245,14 @@ function Home() {
                     handleJoinRoomWithId={handleJoinRoomWithId}
                     roomData={roomData}
                     handleJoinRoom={handleJoinRoom}
+                />
+            }
+
+            {
+                lobbyPassVisible && 
+                <ModalGameLobbyPass
+                    lobbyPassVisible={lobbyPassVisible}
+                    handleCloseLobbyPassModal={handleCloseLobbyPassModal}
                 />
             }
         </ImageBackground>
