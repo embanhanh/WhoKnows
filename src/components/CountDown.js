@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     timeLeft: {
         width: "65%",
         fontSize: RFValue(18),
+        fontWeight: "bold",
         color: "white",
     },
 })

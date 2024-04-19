@@ -74,10 +74,8 @@ function GameScreen({route}) {
     const [roundVisible, roundModalVisible] = useState(false);
     const [voteVisible, voteModalVisible] = useState(false);
     const [voteResultVisible, voteResultModalVisible] = useState(false);
-    const [checkVisible, checkModalVisible] = useState(false);
     const [guessVisible, guessModalVisible] = useState(false);
     const [guessResultVisible, guessResultModalVisible] = useState(false);
-    const [winLoseVisible, winLoseModalVisible] = useState(false);
     const [resultVisible, resultModalVisible] = useState(false);
 
     const handleCloseDescribeModal = () =>{

@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     findContainer: {
         backgroundColor: "#1E1E1E",
         top: "20%",
-        width: "75%",
+        width: "80%",
         height: "57%",
         alignSelf: "center",
         justifyContent: "center",
