@@ -20,7 +20,8 @@ const PlayerCard = ({
   isStartVote,
   isGhost,
   isStart, 
-  isReady
+  isReady,
+  playerNumber,
 }) => {
   const windowWidth = Dimensions.get('window').width;
   const avatarSize = windowWidth * 0.15; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
@@ -39,45 +40,59 @@ const PlayerCard = ({
     newStyles = {...styles.avatarContainer, borderColor: 'gray' }
   }
 
-  return (
-    <View style={{...styles.container, width: containerWidth}}>
-      <View style={{...newStyles,  alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }}>
-        {!isEmpty && <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />}
-        {
-          isManager && !isStart &&<Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
-        }
-        {(!isStartVote || isVoted || isYou) && <Text numberOfLines={1} ellipsizeMode="tail" 
-            style={{color: "#fff", fontSize: 16, position:"absolute", bottom: "-45%", fontWeight: "600", width: "150%",textAlign: 'center'}}
-          >
-              {displayName}
-          </Text>
-        }
-        {(!isStart && isReady) && <View style={styles.readyContainer}>
-          <Icon name="check" style={styles.readyIcon}></Icon>
-        </View>}  
-        
-        {(!isStart && !isReady && isYou) && <View style={styles.unReadyContainer}>
-          <Icon name="check" style={styles.unReadyIcon}></Icon>
-        </View>}  
+    return (
+      <View style={{...styles.container, width: containerWidth}}>
+        <View style={{...newStyles,  alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }}>
+          {!isEmpty && <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />}
+          {
+            isManager && !isStart &&<Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
+          }
 
-        {isStartVote && !isVoted && !isYou && <TouchableOpacity onPress={()=>handleVote(index)} style={{backgroundColor: "#21a3fb", padding: 2, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center"}}>
-            <Text style={{fontSize:14, color: "#fff"}}>+ Vote</Text>
-        </TouchableOpacity>}
+          {(!isStartVote || isVoted || isYou) && <Text numberOfLines={1} ellipsizeMode="tail" 
+              style={{color: "#fff", fontSize: 16, position:"absolute", bottom: "-50%", fontWeight: "600", width: "150%",textAlign: 'center'}}
+            >
+              {displayName}
+            </Text>
+          }
+
+          {!isEmpty && <View style={{position: "absolute", width: "43%", height: "58%", top: "-30%", right: "85%"}}>
+              <ImageBackground 
+                source={require('../assets/img/NumberOfPlayer.png')} 
+                style={[styles.numberBackground]}
+              >
+                <View style={styles.numberContainer}>
+                  <Text style={styles.numberText}>{playerNumber}</Text>
+                </View>
+              </ImageBackground>
+            </View>
+          }
+
+          {(!isStart && isReady) && <View style={styles.readyContainer}>
+            <Icon name="check" style={styles.readyIcon}></Icon>
+          </View>}  
+          
+          {(!isStart && !isReady && !isEmpty) && <View style={styles.unReadyContainer}>
+            <Icon name="check" style={styles.unReadyIcon}></Icon>
+          </View>}  
+
+          {isStartVote && !isVoted && !isYou && <TouchableOpacity onPress={()=>handleVote(index)} style={{backgroundColor: "#21a3fb", padding: 2, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center"}}>
+              <Text style={{fontSize:14, color: "#fff"}}>+ Vote</Text>
+          </TouchableOpacity>}
+        </View>
+        {bubbleType === 'left' && (answering || answer !== "") && (
+          <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>
+              <Text style={styles.answerTextLeft}>{answer || ''}</Text>
+          </ImageBackground>
+        )}
+        {bubbleType === 'right' && (answering || answer !== "") &&(
+          <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}>
+              <Text style={styles.answerTextRight}>{answer || ''}</Text>
+          </ImageBackground>
+        )}
+        
       </View>
-      {bubbleType === 'left' && (answering || answer !== "") && (
-        <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>
-            <Text style={styles.answerTextLeft}>{answer || ''}</Text>
-        </ImageBackground>
-      )}
-      {bubbleType === 'right' && (answering || answer !== "") &&(
-        <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}>
-            <Text style={styles.answerTextRight}>{answer || ''}</Text>
-        </ImageBackground>
-      )}
-      
-    </View>
-  );
-};
+    );
+  };
 
 const styles = StyleSheet.create({
   container: {
@@ -181,6 +196,23 @@ const styles = StyleSheet.create({
     fontSize: RFValue(10),
     color: "#0C0F30",
   },
+
+  numberBackground: {
+    resizeMode: 'contain',
+    justifyContent: "center", 
+    alignItems: "center", 
+  },
+
+  numberContainer: {
+    width: "60%", 
+    height: "75%", 
+    alignItems: "center", 
+  },
+
+  numberText: {
+    fontSize: RFValue(12),
+    fontWeight: "bold",
+  }
 });
 
 export default PlayerCard;

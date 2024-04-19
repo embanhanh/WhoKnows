@@ -738,7 +738,7 @@ function GameScreen({route}) {
                                     isManager={member.Id === host} isYou={member.Id === user.uid} displayName={member.displayName}  isVoted={isVoted}
                                     answer={member.answer} answering={((isStartVote || isStartAnswer)&&member.Id === memberId[memberAnswer])||(isGuessKeyword && member.isGhost)} 
                                     handleVote={handleVote} index={index} containerWidth={"50%"} isStartVote={isStartVote} isGhost={isGhost && member.isGhost} isStart={isStart}
-                                    isReady={member.isReady}
+                                    isReady={member.isReady} playerNumber={index + 1}
                                 ></PlayerCard>)
                             )
                         }

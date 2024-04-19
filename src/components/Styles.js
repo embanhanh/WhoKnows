@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
         height: '100%',
         resizeMode: "cover",
     },
+    
     findRoomButton: {
         position: "relative",
         paddingVertical: "3%",
