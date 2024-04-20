@@ -1,7 +1,7 @@
 import React, { useState, useContext, useCallback } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, Modal, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import {  collection, onSnapshot, query, doc, setDoc,updateDoc, arrayUnion } from "firebase/firestore";
+import {  collection, onSnapshot, query, doc, setDoc,updateDoc, arrayUnion, increment } from "firebase/firestore";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import styles from "../components/Styles.js";
@@ -27,10 +27,9 @@ function Home() {
     const handleProfile = () => {
         navigation.navigate('Profile');
     };
-
     //Firebase
     useFocusEffect(useCallback(() => {
-        const q = query(collection(database, "rooms")); 
+        const q = query(collection(database, "roominfo")); 
         const unsubscribe = onSnapshot(q, async (data) => {
             if (data) {
                 setRooms(data.docs?.map((doc) => doc.data()));
@@ -46,12 +45,12 @@ function Home() {
     // Handle Logic
     // handle play now
     const handlePlayNow = async () => {
-        const newRoom = roomData.filter((room)=>room.locked === false && room.roomMembers?.length !== room.maxPlayers)
+        const newRoom = roomData.filter((room)=>room.locked === false && room.currentPlayers !== room.maxPlayers && !room.isStart)
         if(newRoom.length === 0){
             await handleCreateRoom(generateRandomString(4),false,4)
         }else {
             const roomSelected = newRoom[Math.floor(Math.random()*newRoom.length)]
-            await handleJoinRoom(roomSelected.id, roomSelected.roomMembers)
+            await handleJoinRoom(roomSelected.idroom)
         }
     };
     //Modal Create room --- LOGIC
@@ -70,7 +69,6 @@ function Home() {
         navigation.navigate("GameScreen",idroom)
         createModalVisible(false)
         const roomInfo = {
-            id: idroom,
             roomMaster: user?.uid,
             roomMembers: [
                 { 
@@ -82,16 +80,13 @@ function Home() {
                     votes: 0
                 }
             ],
-            locked: password === '' ? false : password,
             maxPlayers,
-            // chats:[],
             answers: [],
             round:0,
             isStart: false,
             keyword: {},
             memberAnswer: 0,
             isStartAnswer: false, 
-            // isStartAnswer2: false,
             isStartVote: false,
             isEndRound2: false,
             isGuessKeyword:false,
@@ -105,6 +100,13 @@ function Home() {
             duration: 0
         })
         await setDoc(doc(database, 'chats',idroom), { chats: []})
+        await setDoc(doc(database, "roominfo", idroom),{
+            idroom,
+            maxPlayers,
+            locked: password === '' ? false : password,
+            currentPlayers: 1,
+            isStart: false
+        })
     }
     // handle close modal create 
     const handleCloseCreateModal = ()=>{
@@ -116,32 +118,39 @@ function Home() {
         findModalVisible(!findVisible)
     }
     // handle join room
-    handleJoinRoom = async (id, roomMembers) => {
-        navigation.navigate('GameScreen', id)
-        findModalVisible(false)
-        console.log("join");
-        const docRef = doc(database,"rooms", id)
-        await updateDoc(docRef, { roomMembers: [...roomMembers, {
-                Id: user?.uid,
-                displayName: user?.displayName,
-                isReady: false,
-                isGhost: false,
-                answer: '',
-                votes: 0
-            }], 
-        })
-        await updateDoc(doc(database,"chats", id),{
-            chats: arrayUnion({displayName: 'Hệ thống', message: `${user.displayName} đã vào phòng`, id: "system"})
-        })
+    handleJoinRoom = async (id, locked) => {
+        if(!locked){
+            navigation.navigate('GameScreen', id)
+            findModalVisible(false)
+            console.log("join");
+            const docRef = doc(database,"rooms", id)
+            await updateDoc(docRef, { roomMembers: arrayUnion({
+                    Id: user?.uid,
+                    displayName: user?.displayName,
+                    isReady: false,
+                    isGhost: false,
+                    answer: '',
+                    votes: 0
+                }) 
+            })
+            await updateDoc(doc(database,"chats", id),{
+                chats: arrayUnion({displayName: 'Hệ thống', message: `${user.displayName} đã vào phòng`, id: "system"})
+            })
+            await updateDoc(doc(database,"roominfo", id),{
+                currentPlayers: increment(1)
+            })
+        }else{
+            console.log("Nhập mk phòng");
+        }
     }
     // handle join room with id
     handleJoinRoomWithId = async (idRoom)=>{
         if(idRoom.length === 4){
             let flag = -1
             for( let i=0;i<roomData.length;i++){
-                if(roomData[i].id === idRoom){
+                if(roomData[i].idroom === idRoom && !roomData[i].isStart){
                     flag = i
-                    handleJoinRoom(idRoom,roomData[i].roomMembers)
+                    handleJoinRoom(idRoom, roomData[i].locked)
                     break
                 }
             }

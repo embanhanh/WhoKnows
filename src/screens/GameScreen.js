@@ -58,7 +58,6 @@ function GameScreen({route}) {
     const answers = roomInfo.answers || []
     const roomMembers = roomInfo.roomMembers || []
     const memberId = roomInfo.roomMembers?.map((member)=>member.Id) || []
-    // const chats = roomInfo.chats || []
     const emptyMembers = new Array((roomInfo?.maxPlayers-memberId.length) || 0)
     emptyMembers.fill(1)
     const isReady = roomInfo.roomMembers?.find((member)=>member.Id === user.uid)?.isReady || false
@@ -195,6 +194,9 @@ function GameScreen({route}) {
             await updateDoc(doc(database,"times",route.params),{
                 startTime: Date.now(),
                 duration: 15
+            })
+            await updateDoc(doc(database,"roominfo",route.params),{
+                isStart: true
             })
         }else{
             const index = memberId.indexOf(user?.uid)
@@ -436,9 +438,11 @@ function GameScreen({route}) {
             }else{
                 await updateDoc(docRef, { roomMembers: [...roomInfo.roomMembers] })
             }
+            await updateDoc(doc(database,"roominfo", route.params), {currentPlayers: increment(-1)})
         }
         else{
             await deleteDoc(docRef)
+            await deleteDoc(doc(database,"roominfo", route.params))
             await deleteDoc(doc(database,"times", route.params))
             await deleteDoc(doc(database,"chats", route.params))
         }
@@ -467,7 +471,8 @@ function GameScreen({route}) {
     // Test ================================================
 
     const testFunc = async ()=>{
-        console.log(new Date().getTime()/1000);
+        const test = increment(roomInfo.maxPlayers)
+        console.log(test);
     }
 
     const handleCloseRoleModal = async () =>{

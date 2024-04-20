@@ -9,7 +9,7 @@ import { doc,updateDoc } from 'firebase/firestore';
 import userContext from '../AuthContext/AuthProvider';
 import { database } from '../../firebaseconfig';
 
-const RoomBox = ({ id, locked, numPlayers, maxPlayers, roomMembers, handleJoinRoom }) => {
+const RoomBox = ({ id, locked, numPlayers, maxPlayers, handleJoinRoom }) => {
     const {user} = useContext(userContext)
     const navigation = useNavigation();
 
@@ -19,7 +19,7 @@ const RoomBox = ({ id, locked, numPlayers, maxPlayers, roomMembers, handleJoinRo
             {locked ? <Icon flex={1} name="lock" style={styles.iconLock}></Icon> : <Text flex={1}></Text>}
             <Icons flex={1.5} name="people-outline" style={styles.iconPeople}></Icons>
             <Text flex={2} style={styles.textContent}>{numPlayers}/{maxPlayers}</Text>
-            <TouchableOpacity style={styles.joinButton} onPress={()=>handleJoinRoom(id,roomMembers)}>
+            <TouchableOpacity style={styles.joinButton} onPress={()=>handleJoinRoom(id, locked)}>
                 <Icon name="arrow-right" style={styles.joinIcon}></Icon>
             </TouchableOpacity>
         </View>
