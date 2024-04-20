@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     backgroundBehindText: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: "#6938EF",
-        backgroundImage: "linear",
         borderRadius: 15,
     },
     textButton: {
@@ -150,6 +149,7 @@ const styles = StyleSheet.create({
         height: '100%',
         resizeMode: "cover",
     },
+    
     findRoomButton: {
         position: "relative",
         paddingVertical: "3%",

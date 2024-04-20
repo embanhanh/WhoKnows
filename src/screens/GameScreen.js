@@ -73,10 +73,8 @@ function GameScreen({route}) {
     const [roundVisible, roundModalVisible] = useState(false);
     const [voteVisible, voteModalVisible] = useState(false);
     const [voteResultVisible, voteResultModalVisible] = useState(false);
-    const [checkVisible, checkModalVisible] = useState(false);
     const [guessVisible, guessModalVisible] = useState(false);
     const [guessResultVisible, guessResultModalVisible] = useState(false);
-    const [winLoseVisible, winLoseModalVisible] = useState(false);
     const [resultVisible, resultModalVisible] = useState(false);
 
     const handleCloseDescribeModal = () =>{
@@ -745,7 +743,7 @@ function GameScreen({route}) {
                                     isManager={member.Id === host} isYou={member.Id === user.uid} displayName={member.displayName}  isVoted={isVoted}
                                     answer={member.answer} answering={((isStartVote || isStartAnswer)&&member.Id === memberId[memberAnswer])||(isGuessKeyword && member.isGhost)} 
                                     handleVote={handleVote} index={index} containerWidth={"50%"} isStartVote={isStartVote} isGhost={isGhost && member.isGhost} isStart={isStart}
-                                    isReady={member.isReady}
+                                    isReady={member.isReady} playerNumber={index + 1}
                                 ></PlayerCard>)
                             )
                         }

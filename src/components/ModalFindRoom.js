@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     findContainer: {
         backgroundColor: "#1E1E1E",
         top: "20%",
-        width: "75%",
+        width: "80%",
         height: "57%",
         alignSelf: "center",
         justifyContent: "center",
@@ -109,14 +109,14 @@ const styles = StyleSheet.create({
     joinButton: {
         paddingVertical: "4%",
         paddingHorizontal: "5%",
-        borderRadius: RFValue(15),
+        borderRadius: RFValue(12),
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#1C5C51",
     },
 
     joinIcon: {
-        fontSize: RFValue(18),
+        fontSize: RFValue(14),
         color: "white"
     },
 
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     },
 
     titleText: {
-        fontSize: RFValue(20),
+        fontSize: RFValue(18),
         fontWeight: "bold",
         color: "white"
     },

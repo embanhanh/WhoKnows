@@ -15,7 +15,7 @@ const RoomBox = ({ id, locked, numPlayers, maxPlayers, handleJoinRoom }) => {
 
     return (
         <View style={styles.roomInfoContainer}>
-            <Text flex={4.5} style={styles.textContent}>ID: {id}</Text>
+            <Text flex={5} style={styles.textContent}>ID: {id}</Text>
             {locked ? <Icon flex={1} name="lock" style={styles.iconLock}></Icon> : <Text flex={1}></Text>}
             <Icons flex={1.5} name="people-outline" style={styles.iconPeople}></Icons>
             <Text flex={2} style={styles.textContent}>{numPlayers}/{maxPlayers}</Text>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     },
 
     iconLock: {
-        fontSize: RFValue(20),
+        fontSize: RFValue(15),
     },
 });
 
