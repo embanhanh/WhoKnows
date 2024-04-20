@@ -71,7 +71,6 @@ function GameScreen({route}) {
     const [roleVisible, roleModalVisible] = useState(false);
     const [describeVisible, describeModalVisible] = useState(false);
     const [roundVisible, roundModalVisible] = useState(false);
-    const [voteVisible, voteModalVisible] = useState(false);
     const [voteResultVisible, voteResultModalVisible] = useState(false);
     const [guessVisible, guessModalVisible] = useState(false);
     const [guessResultVisible, guessResultModalVisible] = useState(false);
