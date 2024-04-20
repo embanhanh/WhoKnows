@@ -36,8 +36,8 @@ function CountDown( {time, handleAfterCountDown, idRoom, isStart } ) {
     useEffect(()=>{
         const unsubscribe = onSnapshot(doc(database,"times",idRoom), async (data)=>{
             if(data.exists()){
-                const duration = await data.data().duration
-                const startTime = await data.data().startTime
+                const duration =  data.data().duration
+                const startTime =  data.data().startTime
                 settimes(duration)
                 setStartTime(startTime)
             }

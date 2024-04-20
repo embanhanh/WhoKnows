@@ -94,7 +94,6 @@ function Home() {
             isGuessKeyword:false,
             finishedCounting: false,
             guessKeyword: [], 
-            isShowVoteResult: false
         }
         await setDoc(doc(database, 'rooms',idroom), roomInfo)
         await setDoc(doc(database,'times', idroom),{

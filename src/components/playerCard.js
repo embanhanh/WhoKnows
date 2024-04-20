@@ -22,6 +22,7 @@ const PlayerCard = ({
   isStart, 
   isReady,
   playerNumber,
+  isShowVoteResult
 }) => {
   const windowWidth = Dimensions.get('window').width;
   const avatarSize = windowWidth * 0.15; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
@@ -71,7 +72,7 @@ const PlayerCard = ({
             <Icon name="check" style={styles.readyIcon}></Icon>
           </View>}  
           
-          {(!isStart && !isReady && !isEmpty) && <View style={styles.unReadyContainer}>
+          {(!isStart && !isReady && !isEmpty && !isShowVoteResult) && <View style={styles.unReadyContainer}>
             <Icon name="check" style={styles.unReadyIcon}></Icon>
           </View>}  
 
