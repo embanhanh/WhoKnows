@@ -42,6 +42,23 @@ function Profile() {
 
     const handleConfirm = async(newName) => {
         if (newName.trim() !== '') {
+            if (newName.length > 10) {
+                Alert.alert('Thông báo', 'Tên quá dài. Vui lòng nhập tên có tối đa 10 ký tự.');
+                return;
+            }
+
+            if (newName.length < 3) {
+                Alert.alert('Thông báo', 'Tên quá ngắn. Vui lòng nhập tên có tối thiểu 3 ký tự.');
+                return;
+            }
+    
+            // Kiểm tra từ ngữ độc hại
+            const harmfulWords = ["Lon", "Cac", "Me", "Loz", "Cak", "Kak"]; // Thay thế các từ ngữ độc hại bằng danh sách thực tế
+            const containsHarmfulWord = harmfulWords.some(word => newName.toLowerCase().includes(word.toLowerCase()));
+            if (containsHarmfulWord) {
+                Alert.alert('Thông báo', 'Tên chứa từ ngữ độc hại. Vui lòng nhập tên khác.');
+                return;
+            }
             await updateDisplayName(newName);
             handleCloseEditModal();
         } else {
