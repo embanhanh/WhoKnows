@@ -1,17 +1,16 @@
 import React, { useState, useContext, useCallback } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, Modal, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import {  collection, onSnapshot, query, doc, setDoc,updateDoc, arrayUnion, increment } from "firebase/firestore";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import styles from "../components/Styles.js";
 import LogoGame from "../components/logoGame.js";
 import LoadingScreen from './LoadingScreen.js';
-import {  database } from "../../firebaseconfig";
 import userContext from "../AuthContext/AuthProvider.js";
 import ModalCreateRoom from "../components/ModalCreateRoom.js";
 import ModalFindRoom from "../components/ModalFindRoom.js";
 import ModalGameLobbyPass from "../components/ModalLobbyPass.js";
+import { socket } from "../util/index.js";
 
 function Home() {
     const {user} = useContext(userContext)
@@ -25,34 +24,20 @@ function Home() {
     const [lobbyPassVisible, lobbyPassModalVisible] = useState(false);
     // Room data
     const [roomData, setRooms] = useState([]);
+    const [dataRoom, setDataRoom] = useState({})
 
     const handleProfile = () => {
         navigation.navigate('Profile');
     };
-    //Firebase
-    useFocusEffect(useCallback(() => {
-        const q = query(collection(database, "roominfo")); 
-        const unsubscribe = onSnapshot(q, async (data) => {
-            if (data) {
-                setRooms(data.docs?.map((doc) => doc.data()));
-                console.log("rooms:", user?.displayName, roomData)
-            }
-        }, (error) => {
-            Alert.alert("Error: ", error.message);
-        });
-
-        return () => { console.log("Home unmount"); unsubscribe();}
-    }, []));
-
-    // Handle Logic
-    // handle play now
-    const handlePlayNow = async () => {
-        const newRoom = roomData.filter((room)=>room.locked === false && room.currentPlayers !== room.maxPlayers && !room.isStart)
+    // // Handle Logic
+    // // handle play now
+    const handlePlayNow = () => {
+        const newRoom = roomData.filter((room)=>room.locked === false && room.roomMembers?.lenth !== room.maxPlayers && !room.isStart)
         if(newRoom.length === 0){
-            await handleCreateRoom(generateRandomString(4),false,4)
+            handleCreateRoom(generateRandomString(4),false,4)
         }else {
             const roomSelected = newRoom[Math.floor(Math.random()*newRoom.length)]
-            await handleJoinRoom(roomSelected.idroom)
+            handleJoinRoom(roomSelected.idroom, roomSelected.locked)
         }
     };
     //Modal Create room --- LOGIC
@@ -68,47 +53,9 @@ function Home() {
     }
     // handle create room
     handleCreateRoom = async (idroom, password, maxPlayers) =>{
+        socket.emit('create-room',{idroom,password,maxPlayers, userId: user.uid, userName: user.displayName})
         navigation.navigate("GameScreen",idroom)
         createModalVisible(false)
-        const roomInfo = {
-            roomMaster: user?.uid,
-            roomMembers: [
-                { 
-                    Id: user?.uid,
-                    displayName: user?.displayName,
-                    isReady: true,
-                    isGhost: false,
-                    answer: '',
-                    votes: 0
-                }
-            ],
-            maxPlayers,
-            answers: [],
-            round:0,
-            isStart: false,
-            keyword: {},
-            memberAnswer: 0,
-            isStartAnswer: false, 
-            isStartVote: false,
-            isEndRound2: false,
-            isGuessKeyword:false,
-            finishedCounting: false,
-            guessKeyword: [], 
-            isShowVoteResult: false
-        }
-        await setDoc(doc(database, 'rooms',idroom), roomInfo)
-        await setDoc(doc(database,'times', idroom),{
-            startTime: Date.now(),
-            duration: 0
-        })
-        await setDoc(doc(database, 'chats',idroom), { chats: []})
-        await setDoc(doc(database, "roominfo", idroom),{
-            idroom,
-            maxPlayers,
-            locked: password === '' ? false : password,
-            currentPlayers: 1,
-            isStart: false
-        })
     }
     // handle close modal create 
     const handleCloseCreateModal = ()=>{
@@ -124,44 +71,36 @@ function Home() {
         lobbyPassModalVisible(!lobbyPassVisible)
     }
     // handle join room
-    handleJoinRoom = async (id, locked) => {
+    handleJoinRoom = (id, locked) => {
         if(!locked){
+            socket.emit('join-room',{id,userId: user.uid, userName: user.displayName})
             navigation.navigate('GameScreen', id)
             findModalVisible(false)
-            console.log("join");
-            const docRef = doc(database,"rooms", id)
-            await updateDoc(docRef, { roomMembers: arrayUnion({
-                    Id: user?.uid,
-                    displayName: user?.displayName,
-                    isReady: false,
-                    isGhost: false,
-                    answer: '',
-                    votes: 0
-                }) 
-            })
-            await updateDoc(doc(database,"chats", id),{
-                chats: arrayUnion({displayName: 'Hệ thống', message: `${user.displayName} đã vào phòng`, id: "system"})
-            })
-            await updateDoc(doc(database,"roominfo", id),{
-                currentPlayers: increment(1)
-            })
         }else{
-            console.log("Nhập mk phòng");
+            lobbyPassModalVisible(true)
+            setDataRoom({locked,idroom: id})
         }
     }
-    // handle join room with id
-    handleJoinRoomWithId = async (idRoom)=>{
+    // handle confirm pass
+    const handleConfirmPass = (pass)=>{
+        if(pass === dataRoom.locked){
+            socket.emit('join-room',{id: dataRoom.idroom,userId: user.uid, userName: user.displayName})
+            navigation.navigate('GameScreen', dataRoom.idroom)
+            findModalVisible(false)
+            lobbyPassModalVisible(false)
+        }else{
+            Alert.alert("Mật khẩu không chính xác")
+        }
+    }
+    // // handle join room with id
+    handleJoinRoomWithId = (idRoom)=>{
         if(idRoom.length === 4){
-            let flag = -1
-            for( let i=0;i<roomData.length;i++){
-                if(roomData[i].idroom === idRoom && !roomData[i].isStart){
-                    flag = i
-                    handleJoinRoom(idRoom, roomData[i].locked)
-                    break
-                }
+            const room = roomData.find((room)=>room.idroom === idRoom && !room.isStart)
+            if(room){
+                handleJoinRoom(idRoom, room.locked)
+            }else{
+                Alert.alert("Phòng không tồn tại")
             }
-            if(flag === -1)
-            Alert.alert("Phòng không tồn tại")
         }
         else{
             Alert.alert("ID phòng phải có 4 kí tự")
@@ -171,6 +110,18 @@ function Home() {
     if(isloading){
         return <LoadingScreen/>
     }
+    // socket io
+    useFocusEffect(useCallback(()=>{
+        const listen = socket.on('room-list',(rooms)=>{
+            setRooms(rooms)
+        })
+
+        socket.emit("room-list")
+
+        return ()=>{
+            socket.off('room-list',listen)
+        }
+    },[]))
 
     return ( 
         <ImageBackground source={require('../assets/img/HomeScreen.jpg')} style={styles.backgroundImage}>
@@ -260,8 +211,8 @@ function Home() {
             {
                 lobbyPassVisible && 
                 <ModalGameLobbyPass
-                    lobbyPassVisible={lobbyPassVisible}
                     handleCloseLobbyPassModal={handleCloseLobbyPassModal}
+                    handleConfirmPass={handleConfirmPass}
                 />
             }
         </ImageBackground>

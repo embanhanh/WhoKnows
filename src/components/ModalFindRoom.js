@@ -54,12 +54,12 @@ function ModalFindRoom({
                         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                             {roomData.map((room, index) =>(!room.isStart && (
                                 <RoomBox key={index} id={room.idroom} locked={room.locked} handleJoinRoom={handleJoinRoom} 
-                                    numPlayers={room.currentPlayers} maxPlayers={room.maxPlayers} />
+                                    numPlayers={room.roomMembers.length} maxPlayers={room.maxPlayers} />
                             )))}
                         </ScrollView>
                     </View>
                 </View>
-            </Modal>
+        </Modal>
     );
 }
 
