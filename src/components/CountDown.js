@@ -1,9 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import {  RFValue } from 'react-native-responsive-fontsize';
-import { Timestamp, doc, onSnapshot, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { database } from '../../firebaseconfig';
 import { socket } from '../util';
 
 function CountDown( ) {

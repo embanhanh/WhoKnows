@@ -103,10 +103,8 @@ function GameScreen({route}) {
     useFocusEffect(useCallback(()=>{
         if(roomInfo.isStart){
            roomInfo.roomMembers.forEach(mb => {
-               if(mb.Id === user.uid && mb.isGhost){
-                    setIsGhost(true)
-               }else{
-                    setIsGhost(false)
+               if(mb.Id === user.uid){
+                    mb.isGhost ? setIsGhost(true) : setIsGhost(false)
                }
            })
            roleModalVisible(true)
@@ -211,12 +209,12 @@ function GameScreen({route}) {
                             <Image source={require('../assets/img/RoomInfo.png')} style={styles.roomImage}></Image>
                             <Text style={styles.textRoomNumber}>ID phòng: {route.params}</Text>
                             <Text style={styles.textWord}>{roomInfo.isStart && !isGhost && keyword.key}</Text>
-                            <TouchableOpacity style={styles.homeButton} onPress={handleHome}>
-                                <Icon name="sign-out"  style={styles.homeIcon}></Icon>
+                            <TouchableOpacity style={styles.homeButton} onPress={handleHome} disabled={roomInfo.isStart}>
+                                <Icon name="sign-out"  style={styles.homeIcon} ></Icon>
                             </TouchableOpacity>
-                            
-                            <CountDown/> 
-    
+
+                            <CountDown /> 
+
                             {isGhost && roomInfo.isStart &&<Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
                             || roomInfo.isStart && <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>}
                         </View>
@@ -258,7 +256,7 @@ function GameScreen({route}) {
                         }
     
                         <TouchableOpacity style={styles.rulesButton}>
-                            <Icon name="question" style={styles.rulesIcon} onPress={() => testFunc()}></Icon>
+                            <Icon name="question" style={styles.rulesIcon} ></Icon>
                         </TouchableOpacity>
                         
                         <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>
