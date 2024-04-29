@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import * as Animatable from 'react-native-animatable';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 
@@ -8,20 +9,20 @@ function ModalGameDescribeInput({
     handleCloseDescribeModal,
     handleConfirm
 }) {
-    const windowWidth = Dimensions.get('window').width;
-    const avatarSize = windowWidth * 0.25; 
-
     const [text, setText] = useState('')
     return ( 
         <Modal
-                animationType="fade"
+                animationType="none"
                 transparent={true}
                 visible={true}
                 onRequestClose={handleCloseDescribeModal}
             >
             <View style={styles.overlay} />
             <SafeAreaView style={styles.container}>
-                <View style={styles.describeContainer}>
+                <Animatable.View 
+                        animation="bounceIn" 
+                        duration={500} 
+                        style={styles.describeContainer}>
                     <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
                     <Text style={styles.titleModal}>Mô tả từ khóa</Text>
                     <View style={styles.inputContainer}>
@@ -45,7 +46,7 @@ function ModalGameDescribeInput({
                     <TouchableOpacity style={styles.closeButton} onPress={handleCloseDescribeModal}>
                         <Icon name="close"  style={styles.closeIcon}></Icon>
                     </TouchableOpacity>
-                </View>
+                </Animatable.View>
             </SafeAreaView>
         </Modal>
     );

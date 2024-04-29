@@ -2,6 +2,8 @@ import React from 'react';
 import { View, StyleSheet, Image, Dimensions, ImageBackground, Text, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+
+import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 
 const PlayerCard = ({
@@ -81,9 +83,9 @@ const PlayerCard = ({
           </TouchableOpacity>}
         </View>
         {bubbleType === 'left' && (answering || answer !== "") && (
-          <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>
+            <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>
               <Text style={styles.answerTextLeft}>{answer || ''}</Text>
-          </ImageBackground>
+            </ImageBackground>
         )}
         {bubbleType === 'right' && (answering || answer !== "") &&(
           <ImageBackground source={require('../assets/img/Right.png')} style={styles.rightBubbleChat}>

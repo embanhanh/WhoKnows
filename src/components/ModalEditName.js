@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Alert, View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-
+import * as Animatable from 'react-native-animatable';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 
@@ -10,19 +10,20 @@ function ModalEditName({
     handleConfirm
 }) {
     const [newName, setNewName] = useState('');
-    const windowWidth = Dimensions.get('window').width;
-    const avatarSize = windowWidth * 0.25; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
 
     return ( 
         <Modal
-            animationType="fade"
+            animationType="none"
             transparent={true}
             visible={true}
             onRequestClose={handleCloseEditModal}
         >
             <View style={styles.overlay} />
             <SafeAreaView style={styles.container}>
-                <View style={styles.describeContainer}>
+                <Animatable.View 
+                        animation="bounceIn" 
+                        duration={1000} 
+                        style={styles.editNameContainer}>
                     <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
                     <Text style={styles.titleModal}>Đổi Tên</Text>
                     <View style={styles.inputContainer}>
@@ -45,7 +46,7 @@ function ModalEditName({
                     <TouchableOpacity style={styles.closeButton} onPress={handleCloseEditModal}>
                         <Icon name="close"  style={styles.closeIcon}></Icon>
                     </TouchableOpacity>
-                </View>
+                </Animatable.View>
             </SafeAreaView>
         </Modal>
     );
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
         left: "-3%",
     },
 
-    describeContainer: {
+    editNameContainer: {
         position: "relative",
         width: "75%",
         height: "25%",
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
 
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
     },
 })
 

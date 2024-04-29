@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions } from "react-native";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
+import * as Animatable from 'react-native-animatable';
+
 function ModalGameRole({
     handleCloseRoleModal,
     isGhost,
@@ -22,14 +24,17 @@ function ModalGameRole({
 
     return ( 
         <Modal
-                animationType="fade"
+                animationType="none"
                 transparent={true}
                 visible={true}
                 onRequestClose={handleCloseRoleModal}
             >
                 <View style={styles.overlay} />
                 {isGhost ? (
-                    <View style={styles.container}>
+                    <Animatable.View 
+                            animation="bounceIn" 
+                            duration={1000}
+                            style={styles.container}>
                         <View style={{...styles.infoRole, backgroundColor: "#79209F"}}>
                             <Text style={{...styles.infoText, fontSize: RFValue(25), fontWeight: "bold", marginTop: "13%"}}>The Ghost</Text>
                             <Text style={{...styles.infoText, fontSize: RFValue(13), fontStyle: "italic", marginTop: "5%"}}>"Một thực thể tà ác có khả năng sao chép</Text>
@@ -39,8 +44,11 @@ function ModalGameRole({
                         <View style={{...styles.avatarContainer, width: avatarSize, height: avatarSize, borderColor:'#472A9D', backgroundColor: "#1F287C" }}>
                             <Image source={require('../assets/img/role-Ghost.png')} style={styles.avatar}/>
                         </View>
-                    </View>):(
-                    <View style={styles.container}>
+                    </Animatable.View>):(
+                    <Animatable.View 
+                            animation="bounceIn" 
+                            duration={1000}
+                            style={styles.container}>
                         <View style={styles.infoRole}>
                             <Text style={{...styles.infoText, fontSize: RFValue(25), fontWeight: "bold", marginTop: "13%"}}>The Villager</Text>
                             <Text style={{...styles.infoText, fontSize: RFValue(13), fontStyle: "italic", marginTop: "4%"}}>"Một người dân với nhiệm vụ phải tìm ra</Text>
@@ -51,7 +59,7 @@ function ModalGameRole({
                         <View style={{...styles.avatarContainer, width: avatarSize, height: avatarSize }}>
                             <Image source={require('../assets/img/role-Villager.png')} style={styles.avatar}/>
                         </View>
-                    </View>)
+                    </Animatable.View>)
                 }
             </Modal>
     );
