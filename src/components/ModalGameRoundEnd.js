@@ -46,7 +46,7 @@ function ModalGameRoundEnd({
 
                                     <View style={styles.resultContainer}>
                                         <ScrollView style={styles.resultList}>
-                                            {history.map((answer, index)=>{
+                                            {history?.map((answer, index)=>{
                                                 if(index<members){
                                                     return <Text key={index} style={styles.resultText}>{`${answer.displayName}: ${answer.answer}`}</Text>
                                                 }

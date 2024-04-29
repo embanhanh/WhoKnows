@@ -13,7 +13,6 @@ import userContext from "../AuthContext/AuthProvider";
 function ModalGameVoteResult({
     handleCloseVoteResultModal,
     roomMembers,
-    handleAfterShowVoteResult
 }) {
     const {user} = useContext(userContext)
     const topVotes = [...roomMembers]
@@ -25,7 +24,6 @@ function ModalGameVoteResult({
 
         return ()=>{
             clearTimeout(id)
-            handleAfterShowVoteResult(topVotes)
         }
     },[])
 

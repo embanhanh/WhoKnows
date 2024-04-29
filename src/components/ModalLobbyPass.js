@@ -1,36 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 
 function ModalGameLobbyPass({
-    lobbyPassVisible,
     handleCloseLobbyPassModal,
+    handleConfirmPass
 }) {
+    const [pass, setPass] = useState('')
+
     const windowWidth = Dimensions.get('window').width;
     const avatarSize = windowWidth * 0.25; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
     return ( 
         <Modal
                 animationType="fade"
                 transparent={true}
-                visible={lobbyPassVisible}
+                visible={true}
                 onRequestClose={handleCloseLobbyPassModal}
             >
-            {lobbyPassVisible  && <View style={styles.overlay} />}
+            <View style={styles.overlay} />
             <SafeAreaView style={styles.container}>
                 <View style={styles.describeContainer}>
                     <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
                     <Text style={styles.titleModal}>Nhập mật khẩu</Text>
                     <View style={styles.inputContainer}>
                         <TextInput
+                            textContentType="password"
                             style={styles.textInput}
                             placeholder="Mật khẩu: ABCD"
+                            value={pass}
+                            onChangeText={(text)=>{setPass(text)}}
+                            maxLength={4}
                         />
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.mainButton}>
+                        <TouchableOpacity style={styles.mainButton} onPress={()=>handleConfirmPass(pass)}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Xác nhận

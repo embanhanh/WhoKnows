@@ -7,7 +7,6 @@ function ModalGameResult({
     handleCloseResultModal,
     winer,
     keyword,
-    handleAfterShowResult
 }) {
     const windowWidth = Dimensions.get('window').width;
     const avatarSize = windowWidth * 0.2; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
@@ -15,8 +14,7 @@ function ModalGameResult({
     useEffect(()=>{
         const timeout = setTimeout(()=>{
             handleCloseResultModal()
-            handleAfterShowResult()
-        }, 3000)
+        }, 5000)
 
         return ()=>{
             clearTimeout(timeout)

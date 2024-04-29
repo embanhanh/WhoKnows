@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
+import { useNetInfo } from '@react-native-community/netinfo'
 import { setDoc, doc, deleteDoc, collection, getDocs } from "firebase/firestore";
 
 import Home from './src/screens/Home';
@@ -18,6 +19,7 @@ import Profile from './src/screens/Profile';
 const Stack = createStackNavigator()
 
 export default function App() {
+  const netinfo = useNetInfo();
   const [user, setUser] = useState(null)
   const [isloading, setIsloading] = useState(true)
   const [keyword, setKeyword] = useState([])
@@ -54,6 +56,10 @@ export default function App() {
   useEffect(()=>{
     getKeywords()
   },[])
+
+  if(!netinfo.isConnected){
+    return <LoadingScreen />;
+  }
 
   if(isloading){
     return <LoadingScreen />;

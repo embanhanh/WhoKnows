@@ -15,7 +15,7 @@ const PlayerCard = ({
   isVoted, 
   displayName, 
   handleVote, 
-  index,
+  userId,
   containerWidth, 
   isStartVote,
   isGhost,
@@ -76,7 +76,7 @@ const PlayerCard = ({
             <Icon name="check" style={styles.unReadyIcon}></Icon>
           </View>}  
 
-          {isStartVote && !isVoted && !isYou && <TouchableOpacity onPress={()=>handleVote(index)} style={{backgroundColor: "#21a3fb", padding: 2, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center"}}>
+          {isStartVote && !isVoted && !isYou && <TouchableOpacity onPress={()=>handleVote(userId)} style={{backgroundColor: "#21a3fb", padding: 2, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center"}}>
               <Text style={{fontSize:14, color: "#fff"}}>+ Vote</Text>
           </TouchableOpacity>}
         </View>
