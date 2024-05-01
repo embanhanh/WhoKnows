@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Who Knows",
-    "slug": "ChatApp",
+    "slug": "who-knows",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
@@ -21,13 +21,19 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.embanhanh.whoknows"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "910c90e8-b1cd-436c-b716-ac96b2cf86ff"
+      }
+    }
   }
 }

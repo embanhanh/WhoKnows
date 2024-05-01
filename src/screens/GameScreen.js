@@ -1,11 +1,9 @@
 import React,{useState, useContext, useCallback, createContext } from "react";
-import { View, Text, TouchableOpacity, Alert, StyleSheet, ImageBackground, Image, Keyboard} from "react-native";
+import { View, Text, TouchableOpacity, ImageBackground, Image, Keyboard} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon3 from 'react-native-vector-icons/Ionicons.js';
 import Icon4 from 'react-native-vector-icons/MaterialCommunityIcons.js';
-
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-
 
 import styles from "../components/Styles.js";
 import PlayerCard from "../components/playerCard.js";
@@ -78,7 +76,6 @@ function GameScreen({route}) {
         voteResultModalVisible(false)
     }
 
-    // setState
     useFocusEffect(useCallback(()=>{
         const listen = socket.on('player-joined',(roomInfo)=>{
             setRoomInfo(roomInfo)
@@ -98,7 +95,6 @@ function GameScreen({route}) {
         }
     }
 
-    // ---------------Logic Game Start ---------------
     // Start Game
     useFocusEffect(useCallback(()=>{
         if(roomInfo.isStart){
@@ -133,7 +129,6 @@ function GameScreen({route}) {
     const handleHideTextInput = () => {
         setShowTextInput(false);
     };
-
     
     useFocusEffect(useCallback(() => {
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleHideTextInput);
@@ -142,8 +137,6 @@ function GameScreen({route}) {
             keyboardDidHideListener.remove();
         };
     }, []));
-
-    // Test ================================================
 
     const handleCloseRoleModal = async () =>{
         roleModalVisible(false)
