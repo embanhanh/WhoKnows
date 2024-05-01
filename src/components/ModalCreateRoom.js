@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Modal, Switch, TextInput, StyleSheet } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome5.js';
 import { Divider } from 'react-native-paper';
+import { RFValue } from "react-native-responsive-fontsize";
 
 import NumericUpDown from "./NumericUpDown.js";
-import { RFValue } from "react-native-responsive-fontsize";
+import Icon from 'react-native-vector-icons/FontAwesome5.js';
+import * as Animatable from 'react-native-animatable';
 
 function ModalCreateRoom({
     createVisible,
@@ -28,21 +29,23 @@ function ModalCreateRoom({
         }
     };
 
-    const handleCoppy = ()=>{
+    const handleCopy = () => {
         
-    }
+    };
 
     console.log("Create");
 
     return ( 
         <Modal
-                animationType="fade"
+                animationType="none"
                 transparent={true}
                 visible={createVisible}
                 onRequestClose={handleCloseCreateModal}
             >
                 {createVisible && <View style={styles.overlay} />}
-                <View style={styles.createContainer}>
+                <Animatable.View animation="bounceIn" 
+                                duration={1000} 
+                                style={styles.createContainer}>
                     <View style={styles.createTitleContainer}>
                         <Text style={styles.textCreateTitle}>Tạo Phòng</Text>
                     </View>
@@ -56,7 +59,7 @@ function ModalCreateRoom({
                                 <Text style={styles.textIDRoom}>{idroom}</Text>
                             </View>
 
-                            <TouchableOpacity onPress={handleCoppy}>
+                            <TouchableOpacity onPress={handleCopy}>
                                 <Icon name="copy" style={styles.iconCopy}></Icon>
                             </TouchableOpacity>
                         </View>
@@ -112,7 +115,7 @@ function ModalCreateRoom({
                             </View>
                         </View>
                     </View>
-                </View>
+                </Animatable.View>
             </Modal>       
     );
 }

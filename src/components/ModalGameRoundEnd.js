@@ -7,25 +7,27 @@ import { Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons.js';
 import PagerView from 'react-native-pager-view';
+import * as Animatable from 'react-native-animatable';
 
 function ModalGameRoundEnd({
     history,
     handleCloseRoundModal,
     members
 }) {
-    const windowWidth = Dimensions.get('window').width;
-    const avatarSize = windowWidth * 0.25; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
     const ref = useRef();
     return ( 
         <Modal
-                animationType="fade"
+                animationType="none"
                 transparent={true}
                 visible={true}
                 onRequestClose={handleCloseRoundModal}
             >
             <View style={styles.overlay} />
             <SafeAreaView style={styles.container}>
-                <View style={styles.describeContainer}>
+                <Animatable.View 
+                            animation="bounceIn" 
+                            duration={1000}
+                            style={styles.roundEndContainer}>
                     <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
                     <View style={styles.titleContainer}>
                         <Text style={styles.titleText}>Lịch sử</Text>
@@ -86,7 +88,7 @@ function ModalGameRoundEnd({
                     <TouchableOpacity style={styles.closeButton} onPress={handleCloseRoundModal}>
                         <Icon name="close"  style={styles.closeIcon}></Icon>
                     </TouchableOpacity>
-                </View>
+                </Animatable.View>
             </SafeAreaView>
         </Modal>
     );
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
         left: "5%",
     },
 
-    describeContainer: {
+    roundEndContainer: {
         width: "75%",
         height: "55%",
         borderRadius: RFValue(20),

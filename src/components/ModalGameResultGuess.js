@@ -2,28 +2,31 @@ import React from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
+import * as Animatable from 'react-native-animatable';
+
 function ModalGameResultGuess({
     guessResultVisible,
     handleCloseGuessResultModal,
 }) {
-    const windowWidth = Dimensions.get('window').width;
-    const avatarSize = windowWidth * 0.25; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
     return ( 
         <Modal
-                animationType="fade"
+                animationType="none"
                 transparent={true}
                 visible={guessResultVisible}
                 onRequestClose={handleCloseGuessResultModal}
             >
             {guessResultVisible  && <View style={styles.overlay} />}
             <SafeAreaView style={styles.container}>
-                <View style={styles.describeContainer}>
+                <Animatable.View 
+                        animation="bounceIn" 
+                        duration={1000}
+                        style={styles.resultGuessContainer}>
                     <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
                     <Text style={styles.titleModal}>Đoán từ khóa</Text>
                     <View style={styles.inputContainer}>
                         <Text style={styles.textInput}>VCL</Text>
                     </View>
-                </View>
+                </Animatable.View>
             </SafeAreaView>
         </Modal>
     );
@@ -44,7 +47,7 @@ const styles = StyleSheet.create({
         left: "-3%",
     },
 
-    describeContainer: {
+    resultGuessContainer: {
         position: "relative",
         width: "75%",
         height: "20%",

@@ -1,14 +1,11 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-import { Divider } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons.js';
-import PagerView from 'react-native-pager-view';
 import PlayerCard from "./playerCard";
 import userContext from "../AuthContext/AuthProvider";
+import * as Animatable from 'react-native-animatable';
 
 function ModalGameVoteResult({
     handleCloseVoteResultModal,
@@ -30,14 +27,17 @@ function ModalGameVoteResult({
 
     return ( 
         <Modal
-                animationType="fade"
+                animationType="none"
                 transparent={true}
                 visible={true}
                 onRequestClose={handleCloseVoteResultModal}
             >
             <View style={styles.overlay} />
             <SafeAreaView style={styles.container}>
-                <View style={styles.voteResultContainer}>
+                <Animatable.View 
+                            animation="bounceIn" 
+                            duration={1000}
+                            style={styles.voteResultContainer}>
                     <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
                     <View style={styles.titleContainer}>
                         <Text style={styles.titleText}>Kẻ bị tình nghi</Text>
@@ -66,7 +66,7 @@ function ModalGameVoteResult({
                     <TouchableOpacity style={styles.closeButton} onPress={handleCloseVoteResultModal}>
                         <Icon name="close" style={styles.closeIcon}></Icon>
                     </TouchableOpacity>
-                </View>
+                </Animatable.View>
             </SafeAreaView>
         </Modal>
     );

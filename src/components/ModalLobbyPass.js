@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import * as Animatable from 'react-native-animatable';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 
@@ -14,14 +15,17 @@ function ModalGameLobbyPass({
     const avatarSize = windowWidth * 0.25; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
     return ( 
         <Modal
-                animationType="fade"
+                animationType="none"
                 transparent={true}
                 visible={true}
                 onRequestClose={handleCloseLobbyPassModal}
             >
             <View style={styles.overlay} />
             <SafeAreaView style={styles.container}>
-                <View style={styles.describeContainer}>
+                <Animatable.View 
+                            animation="bounceIn" 
+                            duration={1000}
+                            style={styles.describeContainer}>
                     <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
                     <Text style={styles.titleModal}>Nhập mật khẩu</Text>
                     <View style={styles.inputContainer}>
@@ -47,7 +51,7 @@ function ModalGameLobbyPass({
                     <TouchableOpacity style={styles.closeButton} onPress={handleCloseLobbyPassModal}>
                         <Icon name="close"  style={styles.closeIcon}></Icon>
                     </TouchableOpacity>
-                </View>
+                </Animatable.View>
             </SafeAreaView>
         </Modal>
     );

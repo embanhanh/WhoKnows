@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+
 import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
+import * as Animatable from 'react-native-animatable';
 
 function ModalGameResult({
     handleCloseResultModal,
@@ -23,14 +25,17 @@ function ModalGameResult({
 
     return ( 
         <Modal
-                animationType="fade"
+                animationType="none"
                 transparent={true}
                 visible={true}
                 onRequestClose={handleCloseResultModal}
             >
             <View style={styles.overlay} />
             <SafeAreaView style={styles.container}>
-                <View style={styles.resultContainer}>
+                <Animatable.View 
+                        animation="bounceIn" 
+                        duration={1000} 
+                        style={styles.resultContainer}>
                     <View style={styles.bannerContainer}></View>
                     <Image source={require('../assets/img/Banner.png')} style={styles.resultImage}></Image>
                     <View style={styles.infoGameContainer}>
@@ -61,7 +66,7 @@ function ModalGameResult({
                             </View>
                         </View>
                     </View>
-                </View>
+                </Animatable.View>
             </SafeAreaView>
         </Modal>
     );

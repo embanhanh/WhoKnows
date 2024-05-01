@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Modal,  TextInput,  ScrollView, StyleSheet } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome.js';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Divider } from 'react-native-paper';
+import * as Animatable from 'react-native-animatable';
 
-
+import Icon from 'react-native-vector-icons/FontAwesome.js';
 import RoomBox from "../components/RoomBox.js";
 
 function ModalFindRoom({
@@ -19,13 +19,16 @@ function ModalFindRoom({
     console.log("find");
     return ( 
         <Modal
-                animationType="fade"
+                animationType="none"
                 transparent={true}
                 visible={findVisible}
                 onRequestClose={handleCloseFindModal}
             >
                 {findVisible && <View style={styles.overlay} />}
-                <View style={styles.findContainer}>
+                <Animatable.View 
+                        animation="bounceIn" 
+                        duration={1000} 
+                        style={styles.findRoomContainer}>
                     <TouchableOpacity style={styles.closeButton} onPress={handleCloseFindModal}>
                         <Icon name="close"  style={styles.closeIcon}></Icon>
                     </TouchableOpacity>
@@ -58,13 +61,13 @@ function ModalFindRoom({
                             )))}
                         </ScrollView>
                     </View>
-                </View>
+                </Animatable.View>
         </Modal>
     );
 }
 
 const styles = StyleSheet.create({
-    findContainer: {
+    findRoomContainer: {
         backgroundColor: "#1E1E1E",
         top: "20%",
         width: "80%",
