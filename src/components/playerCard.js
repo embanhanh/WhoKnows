@@ -7,6 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 
 const PlayerCard = ({
+  avatar,
   bubbleType, 
   avatarAlignment, 
   isManager, 
@@ -46,7 +47,7 @@ const PlayerCard = ({
     return (
       <View style={{...styles.container, width: containerWidth}}>
         <View style={{...newStyles,  alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }}>
-          {!isEmpty && <Image source={require('../assets/img/Manager.jpg')} style={styles.avatar} />}
+          {!isEmpty && <Image source={avatar} style={styles.avatar} />}
           {
             isManager && !isStart &&<Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
           }

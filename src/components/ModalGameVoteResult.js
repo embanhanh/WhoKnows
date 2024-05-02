@@ -49,11 +49,11 @@ function ModalGameVoteResult({
                                 topVotes.map((mb, index)=>{
                                     if(index<2){
                                         return <PlayerCard key={index} containerWidth={"33%"} displayName={mb.displayName} 
-                                                isYou={user.uid === mb.Id} isGhost={mb.isGhost} isShowVoteResult={true}>
+                                                isYou={user.uid === mb.Id} isGhost={mb.isGhost} isShowVoteResult={true} avatar={mb.photoURL}>
                                             </PlayerCard>
                                     }else if(index === 2 && topVotes.length >= 6){
                                         return <PlayerCard key={index} containerWidth={"33%"} displayName={mb.displayName} 
-                                                isYou={user.uid === mb.Id} isGhost={mb.isGhost} isShowVoteResult={true}>
+                                                isYou={user.uid === mb.Id} isGhost={mb.isGhost} isShowVoteResult={true} avatar={mb.photoURL}>
                                             </PlayerCard>
                                     }else{
                                         return

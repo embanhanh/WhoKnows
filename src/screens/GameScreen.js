@@ -232,7 +232,7 @@ function GameScreen({route}) {
                                     isManager={member.Id === roomInfo.roomMaster} isYou={member.Id === user.uid} displayName={member.displayName}  isVoted={isVoted}
                                     answer={member.answer} answering={((roomInfo.isStartVote || roomInfo.isStartAnswer)&&member.Id === roomInfo.roomMembers[roomInfo.memberAnswer]?.Id)||(roomInfo.isGuessKeyword && member.isGhost)} 
                                     handleVote={handleVote} userId={member.Id} containerWidth={"50%"} isStartVote={roomInfo.isStartVote} isGhost={isGhost && member.isGhost} isStart={roomInfo.isStart}
-                                    isReady={member.isReady} playerNumber={index + 1}
+                                    isReady={member.isReady} playerNumber={index + 1} avatar={member.photoURL}
                                 ></PlayerCard>)
                             )
                         }

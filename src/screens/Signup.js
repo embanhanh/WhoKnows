@@ -21,16 +21,19 @@ function SignUp({ navigation }) {
         if(email !== "" && password !== "" && confirmPassword !== "" && password === confirmPassword) {
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                
-                // Lấy thông tin người dùng đã đăng ký
                 const user = userCredential.user;
-    
-                // Lấy tên từ email (phần trước kí tự "@")
                 const displayName = email.substring(0, email.indexOf('@'));
-                
-                // Cập nhật displayName cho người dùng
+                const importAll = (r) => {
+                    let images = {};
+                    r.keys().map((item) => { images[item.replace('./', '')] = r(item); });
+                    return images;
+                };
+                const imageFiles = importAll(require.context('../assets/avatar', false, /\.(png|jpe?g|svg)$/));
+                const random = Math.floor(Math.random()*Object.keys(imageFiles).length)
+                const urlAvatar = imageFiles[Object.keys(imageFiles)[random]]
                 await updateProfile(user, {
-                    displayName: displayName
+                    displayName: displayName,
+                    photoURL: urlAvatar
                 });
 
                 Alert.alert("Đăng ký thành công", "Bạn đã vào trang chủ");

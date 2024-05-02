@@ -53,7 +53,7 @@ function Home() {
     }
     // handle create room
     handleCreateRoom = async (idroom, password, maxPlayers) =>{
-        socket.emit('create-room',{idroom,password,maxPlayers, userId: user.uid, userName: user.displayName})
+        socket.emit('create-room',{idroom,password,maxPlayers, userId: user.uid, userName: user.displayName, userAvatar: user.photoURL})
         navigation.navigate("GameScreen",idroom)
         createModalVisible(false)
     }
@@ -73,7 +73,7 @@ function Home() {
     // handle join room
     handleJoinRoom = (id, locked) => {
         if(!locked){
-            socket.emit('join-room',{id,userId: user.uid, userName: user.displayName})
+            socket.emit('join-room',{id,userId: user.uid, userName: user.displayName, userAvatar: user.photoURL})
             navigation.navigate('GameScreen', id)
             findModalVisible(false)
         }else{
@@ -84,7 +84,7 @@ function Home() {
     // handle confirm pass
     const handleConfirmPass = (pass)=>{
         if(pass === dataRoom.locked){
-            socket.emit('join-room',{id: dataRoom.idroom,userId: user.uid, userName: user.displayName})
+            socket.emit('join-room',{id: dataRoom.idroom,userId: user.uid, userName: user.displayName, userAvatar: user.photoURL})
             navigation.navigate('GameScreen', dataRoom.idroom)
             findModalVisible(false)
             lobbyPassModalVisible(false)

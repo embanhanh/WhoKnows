@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions } from "react-native";
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 import * as Animatable from 'react-native-animatable';
 

@@ -1,4 +1,4 @@
-import {  ActivityIndicator, View } from 'react-native';
+import {  ActivityIndicator, View, AppState } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -28,15 +28,15 @@ export default function App() {
       async authuser =>{
         if(authuser){
           setUser(authuser)
-          console.log(authuser?.uid)
-          const userRef = doc(database, 'user',authuser?.uid)
-          setDoc(userRef,{
-              // displayName : authuser?.displayName,
-              // email: authuser?.email,
-              // phoneNumber: authuser?.phoneNumber,
-              // photoURL: authuser?.photoURL,
-              // userId: authuser?.uid
-          },{merge: true})
+          // console.log(authuser?.uid)
+          // const userRef = doc(database, 'user',authuser?.uid)
+          // setDoc(userRef,{
+          //     // displayName : authuser?.displayName,
+          //     // email: authuser?.email,
+          //     // phoneNumber: authuser?.phoneNumber,
+          //     // photoURL: authuser?.photoURL,
+          //     // userId: authuser?.uid
+          // },{merge: true})
         } else{
           console.log("out");
           setUser(null)
@@ -45,7 +45,6 @@ export default function App() {
       }
     )
     return () => {
-      console.log('out app');
       unsubscribe()
     }
   },[user])
@@ -58,6 +57,18 @@ export default function App() {
 
   useEffect(()=>{
     getKeywords()
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        nextAppState.match(/inactive|background/)
+      ) {
+        console.log(nextAppState);
+      }
+    });
+
+    return ()=>{
+      console.log('out app');
+      subscription.remove();
+    }
   },[])
 
   if(!netinfo.isConnected){

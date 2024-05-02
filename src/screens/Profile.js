@@ -1,5 +1,5 @@
 import React, { useState, useContext, useCallback } from "react";
-import { Alert,View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
+import { Alert,View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Image } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import { doc, deleteDoc } from "firebase/firestore";
 import { signOut, updateProfile,onAuthStateChanged } from "firebase/auth";
@@ -10,6 +10,7 @@ import styles from "../components/Styles.js";
 import { auth, database } from "../../firebaseconfig";
 import userContext from "../AuthContext/AuthProvider";
 import ModalEditName from "../components/ModalEditName.js";
+import ModalAvatar from "../components/ModalAvatar.js";
 
 function Profile() {
     const {user} = useContext(userContext)
@@ -17,6 +18,8 @@ function Profile() {
 
     const [editVisible, setEditVisible] = useState(false);
     const [userName, setUserName] = useState(user?.displayName)
+    const [avatar, setAvatar] = useState(user?.photoURL)
+    const [isModalAvatar, setModalAvatar] = useState(false)
 
     const handleHome = () => {
         navigation.navigate('Home');
@@ -34,7 +37,6 @@ function Profile() {
             });
             await user.reload();
             setUserName(user?.displayName)
-            Alert.alert("Thông báo", "Tên đã được cập nhật thành công.");
         } catch (error) {
             Alert.alert("Lỗi", "Đã xảy ra lỗi khi cập nhật tên: " + error.message);
         }
@@ -66,8 +68,29 @@ function Profile() {
         }
     };
 
+    const handleConfirmAvatar = async (avatar)=>{
+        try {
+            if(avatar && avatar !== user?.photoURL){
+                await updateProfile(user, {
+                    photoURL: avatar
+                });
+                await user.reload();
+                setAvatar(user?.photoURL)
+            }
+            setModalAvatar(false)
+        } catch (error) {
+            Alert.alert("Lỗi", "Đã xảy ra lỗi khi cập nhật tên: " + error.message);
+        }
+    }
+
+    const handleCloseModal = ()=>{
+        setModalAvatar(false)
+    } 
+
     return ( 
         <View style={styles.profileContainer} >
+            {/* Modal avatar nằm đây */}
+            {isModalAvatar && <ModalAvatar handleClose={handleCloseModal} confirmAvatar={handleConfirmAvatar}/>}
             <View style={styles.headerProfile}>
                 <Text style={styles.textHeader}>Hồ sơ</Text>
             </View>
@@ -110,9 +133,9 @@ function Profile() {
             </View>
 
             <View style={styles.cardContainer}>
-                <View style={styles.avatar}>
-
-                </View>
+                <TouchableOpacity style={styles.avatar} onPress={()=>setModalAvatar(true)}>
+                    <Image source={avatar || null} style={{flex: 1, width: "100%", borderRadius: 999}}></Image>
+                </TouchableOpacity>
 
                 <View style={styles.displayUserName}>
                     <Text style={styles.textProfile}>
