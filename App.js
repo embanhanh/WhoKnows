@@ -29,14 +29,14 @@ export default function App() {
         if(authuser){
           setUser(authuser)
           console.log(authuser?.uid)
-          // const userRef = doc(database, 'user',authuser?.uid)
-          // setDoc(userRef,{
-          //     displayName : authuser?.displayName,
-          //     email: authuser?.email,
-          //     phoneNumber: authuser?.phoneNumber,
-          //     photoURL: authuser?.photoURL,
-          //     userId: authuser?.uid
-          // },{merge: true})
+          const userRef = doc(database, 'user',authuser?.uid)
+          setDoc(userRef,{
+              // displayName : authuser?.displayName,
+              // email: authuser?.email,
+              // phoneNumber: authuser?.phoneNumber,
+              // photoURL: authuser?.photoURL,
+              // userId: authuser?.uid
+          },{merge: true})
         } else{
           console.log("out");
           setUser(null)
@@ -44,7 +44,10 @@ export default function App() {
         setIsloading(false)
       }
     )
-    return () => unsubscribe()
+    return () => {
+      console.log('out app');
+      unsubscribe()
+    }
   },[user])
 
   const getKeywords = async ()=>{

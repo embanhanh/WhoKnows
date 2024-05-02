@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { signInWithEmailAndPassword } from 'firebase/auth'
 
 import styles from "../components/Styles.js";
-import LoginTitle from "../components/loginTitle.js";
 import LogoGame from "../components/logoGame.js";
 import { auth } from "../../firebaseconfig.js"
 import LoadingScreen from "./LoadingScreen.js";

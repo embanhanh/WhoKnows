@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         position: "absolute",
         bottom: "-20%",
-        zIndex: 100,
+        zIndex: 200,
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: "4%",

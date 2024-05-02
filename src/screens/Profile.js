@@ -16,7 +16,7 @@ function Profile() {
     const navigation = useNavigation();
 
     const [editVisible, setEditVisible] = useState(false);
-    const [userName, setUserName] = useState(user.displayName)
+    const [userName, setUserName] = useState(user?.displayName)
 
     const handleHome = () => {
         navigation.navigate('Home');
@@ -33,7 +33,7 @@ function Profile() {
                 displayName: newName
             });
             await user.reload();
-            setUserName(user.displayName)
+            setUserName(user?.displayName)
             Alert.alert("Thông báo", "Tên đã được cập nhật thành công.");
         } catch (error) {
             Alert.alert("Lỗi", "Đã xảy ra lỗi khi cập nhật tên: " + error.message);

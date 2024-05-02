@@ -1,5 +1,5 @@
 import React,{useState, useContext, useCallback, createContext } from "react";
-import { View, Text, TouchableOpacity, ImageBackground, Image, Keyboard} from "react-native";
+import { View, Text, TouchableOpacity, ImageBackground, Image, Keyboard,  BackHandler, Alert} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon3 from 'react-native-vector-icons/Ionicons.js';
 import Icon4 from 'react-native-vector-icons/MaterialCommunityIcons.js';
@@ -77,13 +77,10 @@ function GameScreen({route}) {
     }
 
     useFocusEffect(useCallback(()=>{
-        const listen = socket.on('player-joined',(roomInfo)=>{
+        socket.on('player-joined',(roomInfo)=>{
             setRoomInfo(roomInfo)
         })
         
-        return ()=>{
-            // socket.leave(route.params)
-        }
     },[]))
     
     // handle ready/cancel/start 
@@ -114,9 +111,14 @@ function GameScreen({route}) {
         describeModalVisible(true)
     }
     // handle out room
-    const handleHome = async () => {
-        socket.emit('out-room',{idroom:route.params, userId: user.uid, userName: user.displayName})
-        navigation.navigate('Home');
+    const handleHome = () => {
+        if(!roomInfo.isStart){
+            socket.emit('out-room',{idroom:route.params, userId: user.uid, userName: user.displayName})
+            navigation.navigate('Home');
+        }else{
+            Alert.alert('Không thể rời phòng khi đã bắt đầu vòng chơi')
+        }
+        return true
     };
 
     //Input message variable
@@ -132,11 +134,22 @@ function GameScreen({route}) {
     
     useFocusEffect(useCallback(() => {
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleHideTextInput);
-
+        
         return () => {
             keyboardDidHideListener.remove();
         };
     }, []));
+
+    useFocusEffect(useCallback(()=>{
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            handleHome,
+        );
+
+        return () => {
+            backHandler.remove();
+        };
+    },[roomInfo.isStart]))
 
     const handleCloseRoleModal = async () =>{
         roleModalVisible(false)
@@ -192,17 +205,16 @@ function GameScreen({route}) {
             }
         }
     },[roomInfo.isGuessKeyword]))
-    
 
     return ( 
             <idContext.Provider value={route.params}>
-                <ImageBackground source={require('../assets/img/Theme2.jpg')} style={styles.backgroundImage}>
+                <ImageBackground source={require('../assets/img/Theme2.jpg')} style={styles.backgroundImage} >
                     <View style={styles.container}>
                         <View style={styles.roomInfo}>
                             <Image source={require('../assets/img/RoomInfo.png')} style={styles.roomImage}></Image>
                             <Text style={styles.textRoomNumber}>ID phòng: {route.params}</Text>
                             <Text style={styles.textWord}>{roomInfo.isStart && !isGhost && keyword.key}</Text>
-                            <TouchableOpacity style={styles.homeButton} onPress={handleHome} disabled={roomInfo.isStart}>
+                            <TouchableOpacity style={styles.homeButton} onPress={handleHome}>
                                 <Icon name="sign-out"  style={styles.homeIcon} ></Icon>
                             </TouchableOpacity>
 

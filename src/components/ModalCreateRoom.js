@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Modal, Switch, TextInput, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Modal, Switch, TextInput, StyleSheet, KeyboardAvoidingView } from "react-native";
 import { Divider } from 'react-native-paper';
 import { RFValue } from "react-native-responsive-fontsize";
-
-import NumericUpDown from "./NumericUpDown.js";
 import Icon from 'react-native-vector-icons/FontAwesome5.js';
 import * as Animatable from 'react-native-animatable';
+import * as Clipboard from 'expo-clipboard';
+
+import NumericUpDown from "./NumericUpDown.js";
 
 function ModalCreateRoom({
     createVisible,
@@ -18,6 +19,10 @@ function ModalCreateRoom({
     const [password, setPassword] = useState('')
     const [maxPlayers, setMaxPlayers] = useState(4)
 
+    const handleCopy = async () => {
+        await Clipboard.setStringAsync(idroom);
+    };
+
     const incrementMaxPlayers = () => {
         if (maxPlayers < 8) {
             setMaxPlayers(maxPlayers + 1);
@@ -29,94 +34,88 @@ function ModalCreateRoom({
         }
     };
 
-    const handleCopy = () => {
-        
-    };
-
-    console.log("Create");
-
     return ( 
         <Modal
-                animationType="none"
-                transparent={true}
-                visible={createVisible}
-                onRequestClose={handleCloseCreateModal}
-            >
-                {createVisible && <View style={styles.overlay} />}
-                <Animatable.View animation="bounceIn" 
-                                duration={1000} 
-                                style={styles.createContainer}>
-                    <View style={styles.createTitleContainer}>
-                        <Text style={styles.textCreateTitle}>Tạo Phòng</Text>
+            animationType="none"
+            transparent={true}
+            visible={createVisible}
+            onRequestClose={handleCloseCreateModal}
+        >
+            {createVisible && <View style={styles.overlay} />}
+            <Animatable.View animation="bounceIn" 
+                            duration={1000} 
+                            style={styles.createContainer}>
+                <View style={styles.createTitleContainer}>
+                    <Text style={styles.textCreateTitle}>Tạo Phòng</Text>
+                </View>
+
+                <Divider style={{ height: "0.6%", backgroundColor: "white", width: "75%", alignSelf: "center", marginBottom: "9%"}}></Divider>
+
+                <View style={styles.roomInfoContainer}>
+                    <View style={styles.createContentContainer}>
+                        <Text style={styles.textCreateContent}>ID phòng:</Text>
+                        <View style={styles.idContainer}>
+                            <Text style={styles.textIDRoom}>{idroom}</Text>
+                        </View>
+
+                        <TouchableOpacity onPress={handleCopy}>
+                            <Icon name="copy" style={styles.iconCopy}></Icon>
+                        </TouchableOpacity>
                     </View>
 
-                    <Divider style={{ height: "0.6%", backgroundColor: "white", width: "75%", alignSelf: "center", marginBottom: "9%"}}></Divider>
+                    <NumericUpDown 
+                        value={maxPlayers}
+                        increment={incrementMaxPlayers}
+                        decrement={decrementMaxPlayers}
+                    />
 
-                    <View style={styles.roomInfoContainer}>
-                        <View style={styles.createContentContainer}>
-                            <Text style={styles.textCreateContent}>ID phòng:</Text>
-                            <View style={styles.idContainer}>
-                                <Text style={styles.textIDRoom}>{idroom}</Text>
+                    <View style={styles.createPasswordContainer}>
+                        <Text style={styles.textCreateContent}>Mật khẩu:</Text>
+                        <Switch
+                        style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}
+                        trackColor={{ false: "#767577", true: "#F8C630" }}
+                        thumbColor={passwordSwitch ? "#f4f3f4" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={()=>setPasswordSwitch(!passwordSwitch)}
+                        value={passwordSwitch}
+                        />
+                        {passwordSwitch && (
+                            <View style={styles.keyRoom}>
+                                <TextInput
+                                    style={styles.inputPassword}
+                                    onChangeText={(text)=>{
+                                        if(text.length <= 4){
+                                            setPassword(text)
+                                        }
+                                    }}
+                                    value={password}
+                                    keyboardType="numeric"
+                                    maxLength={4}
+                                />
                             </View>
+                        )}
+                    </View>
 
-                            <TouchableOpacity onPress={handleCopy}>
-                                <Icon name="copy" style={styles.iconCopy}></Icon>
+                    <View style={styles.buttonContainer}>
+                        <View style={styles.cancelButtonContainer}>
+                            <TouchableOpacity style={styles.cancelRoomButton} onPress={handleCloseCreateModal}>
+                                <Text style={styles.textButton}>
+                                    Hủy
+                                </Text>
                             </TouchableOpacity>
                         </View>
 
-                        <NumericUpDown 
-                            value={maxPlayers}
-                            increment={incrementMaxPlayers}
-                            decrement={decrementMaxPlayers}
-                        />
-
-                        <View style={styles.createPasswordContainer}>
-                            <Text style={styles.textCreateContent}>Mật khẩu:</Text>
-                            <Switch
-                            style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}
-                            trackColor={{ false: "#767577", true: "#F8C630" }}
-                            thumbColor={passwordSwitch ? "#f4f3f4" : "#f4f3f4"}
-                            ios_backgroundColor="#3e3e3e"
-                            onValueChange={()=>setPasswordSwitch(!passwordSwitch)}
-                            value={passwordSwitch}
-                            />
-                            {passwordSwitch && (
-                                <View style={styles.keyRoom}>
-                                    <TextInput
-                                        style={styles.inputPassword}
-                                        onChangeText={(text)=>{
-                                            if(text.length <= 4){
-                                                setPassword(text)
-                                            }
-                                        }}
-                                        value={password}
-                                        keyboardType="numeric"
-                                        maxLength={4}
-                                    />
-                                </View>
-                            )}
-                        </View>
-
-                        <View style={styles.buttonContainer}>
-                            <View style={styles.cancelButtonContainer}>
-                                <TouchableOpacity style={styles.cancelRoomButton} onPress={handleCloseCreateModal}>
-                                    <Text style={styles.textButton}>
-                                        Hủy
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={styles.createButtonContainer}>
-                                <TouchableOpacity style={styles.createRoomButton} onPress={()=>handleCreateRoom(idroom, password, maxPlayers)}>
-                                    <Text style={styles.textButton}>
-                                        Tạo
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
+                        <View style={styles.createButtonContainer}>
+                            <TouchableOpacity style={styles.createRoomButton} onPress={()=>handleCreateRoom(idroom, password, maxPlayers)}>
+                                <Text style={styles.textButton}>
+                                    Tạo
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                </Animatable.View>
-            </Modal>       
+                </View>
+            </Animatable.View>
+        </Modal>
     );
 }
 
