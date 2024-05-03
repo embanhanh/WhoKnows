@@ -25,7 +25,7 @@ function ModalGameLobbyPass({
                 <Animatable.View 
                             animation="bounceIn" 
                             duration={1000}
-                            style={styles.describeContainer}>
+                            style={styles.lobbyPassContainer}>
                     <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
                     <Text style={styles.titleModal}>Nhập mật khẩu</Text>
                     <View style={styles.inputContainer}>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         left: "-3%",
     },
 
-    describeContainer: {
+    lobbyPassContainer: {
         position: "relative",
         width: "75%",
         height: "25%",

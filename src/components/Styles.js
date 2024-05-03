@@ -209,10 +209,19 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     avatar: {
-        width: "30%",
+        width: "31.5%",
         height: "50%",
-        borderRadius: RFValue(50),
+        borderRadius: RFValue(100),
         backgroundColor: "white",
+        overflow: 'hidden',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 1, 
+        shadowRadius: 1,
+        elevation: 8,
     },
 
     textProfile: {

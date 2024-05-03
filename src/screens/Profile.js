@@ -134,7 +134,12 @@ function Profile() {
 
             <View style={styles.cardContainer}>
                 <TouchableOpacity style={styles.avatar} onPress={()=>setModalAvatar(true)}>
-                    <Image source={avatar || null} style={{flex: 1, width: "100%", borderRadius: 999}}></Image>
+                    <Image source={avatar || null} style={{ 
+                        width: "100%", 
+                        height: "100%", 
+                        borderRadius: 100, 
+                        overflow: 'hidden',
+                    }}></Image>
                 </TouchableOpacity>
 
                 <View style={styles.displayUserName}>
