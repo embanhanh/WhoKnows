@@ -1,6 +1,6 @@
 import React,{useContext, useState} from 'react';
-import { Modal, ScrollView, Image, StyleSheet,View, TouchableOpacity, Button, SafeAreaView, Text } from "react-native";
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { Modal, Image, StyleSheet,View, TouchableOpacity, SafeAreaView, Text } from "react-native";
+import {  RFValue } from 'react-native-responsive-fontsize';
 import userContext from '../AuthContext/AuthProvider';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
@@ -15,7 +15,7 @@ function ModalAvatar({ handleClose, confirmAvatar }) {
     };
     const imageFiles = importAll(require.context('../assets/avatar', false, /\.(png|jpe?g|svg)$/));
 
-    const [selectedImage, setSelectedImage] = useState(user.photoURL);
+    const [selectedImage, setSelectedImage] = useState(Number(user.photoURL));
 
     const selectAvatar = (avatar) => {
         setSelectedImage(avatar);

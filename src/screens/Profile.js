@@ -1,10 +1,9 @@
-import React, { useState, useContext, useCallback } from "react";
-import { Alert,View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Image } from "react-native";
+import React, { useState, useContext } from "react";
+import { Alert,View, Text, TouchableOpacity, Image } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import { doc, deleteDoc } from "firebase/firestore";
-import { signOut, updateProfile,onAuthStateChanged } from "firebase/auth";
+import { signOut, updateProfile } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
-import { useFocusEffect } from "@react-navigation/native";
 
 import styles from "../components/Styles.js";
 import { auth, database } from "../../firebaseconfig";
@@ -15,10 +14,16 @@ import ModalAvatar from "../components/ModalAvatar.js";
 function Profile() {
     const {user} = useContext(userContext)
     const navigation = useNavigation();
+    const importAll = (r) => {
+        let images = {};
+        r.keys().map((item) => { images[item.replace('./', '')] = r(item); });
+        return images;
+    };
+    const imageFiles = importAll(require.context('../assets/avatar', false, /\.(png|jpe?g|svg)$/));
 
     const [editVisible, setEditVisible] = useState(false);
     const [userName, setUserName] = useState(user?.displayName)
-    const [avatar, setAvatar] = useState(user?.photoURL)
+    const [avatar, setAvatar] = useState(Number(user?.photoURL))
     const [isModalAvatar, setModalAvatar] = useState(false)
 
     const handleHome = () => {
@@ -31,7 +36,6 @@ function Profile() {
 
     const updateDisplayName = async (newName) => {
         try {
-            // const user = auth.currentUser;
             await updateProfile(user, {
                 displayName: newName
             });
@@ -54,8 +58,7 @@ function Profile() {
                 return;
             }
     
-            // Kiểm tra từ ngữ độc hại
-            const harmfulWords = ["Lon", "Cac", "Me", "Loz", "Cak", "Kak"]; // Thay thế các từ ngữ độc hại bằng danh sách thực tế
+            const harmfulWords = ["Lon", "Cac", "Me", "Loz", "Cak", "Kak"]; 
             const containsHarmfulWord = harmfulWords.some(word => newName.toLowerCase().includes(word.toLowerCase()));
             if (containsHarmfulWord) {
                 Alert.alert('Thông báo', 'Tên chứa từ ngữ độc hại. Vui lòng nhập tên khác.');
@@ -71,11 +74,11 @@ function Profile() {
     const handleConfirmAvatar = async (avatar)=>{
         try {
             if(avatar && avatar !== user?.photoURL){
+                setAvatar(avatar)
                 await updateProfile(user, {
                     photoURL: avatar
                 });
                 await user.reload();
-                setAvatar(user?.photoURL)
             }
             setModalAvatar(false)
         } catch (error) {
@@ -89,7 +92,6 @@ function Profile() {
 
     return ( 
         <View style={styles.profileContainer} >
-            {/* Modal avatar nằm đây */}
             {isModalAvatar && <ModalAvatar handleClose={handleCloseModal} confirmAvatar={handleConfirmAvatar}/>}
             <View style={styles.headerProfile}>
                 <Text style={styles.textHeader}>Hồ sơ</Text>
@@ -134,7 +136,7 @@ function Profile() {
 
             <View style={styles.cardContainer}>
                 <TouchableOpacity style={styles.avatar} onPress={()=>setModalAvatar(true)}>
-                    <Image source={avatar || null} style={{ 
+                    <Image source={avatar || 32} style={{ 
                         width: "100%", 
                         height: "100%", 
                         borderRadius: 100, 
