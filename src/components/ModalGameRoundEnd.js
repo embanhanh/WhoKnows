@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
-import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, Text, Modal, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { RFValue } from 'react-native-responsive-fontsize';
 import { Divider } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';

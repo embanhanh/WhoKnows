@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { View, Text, Modal, StyleSheet, Image, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
+import { RFValue } from 'react-native-responsive-fontsize';
 import * as Animatable from 'react-native-animatable';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';
@@ -10,9 +10,6 @@ function ModalGameLobbyPass({
     handleConfirmPass
 }) {
     const [pass, setPass] = useState('')
-
-    const windowWidth = Dimensions.get('window').width;
-    const avatarSize = windowWidth * 0.25; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
     return ( 
         <Modal
                 animationType="none"

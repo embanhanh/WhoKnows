@@ -1,10 +1,8 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import MessageLine from "./MessageLine";
-import { useContext, useEffect, useRef, useState } from "react";
-import { onSnapshot, doc, updateDoc } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
 import InputMessage from "./InputMessage";
 import { RFValue } from 'react-native-responsive-fontsize';
-import { database } from "../../firebaseconfig";
 import { socket } from "../util";
 import userContext from "../AuthContext/AuthProvider";
 

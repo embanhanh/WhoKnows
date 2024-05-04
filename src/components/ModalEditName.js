@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Alert, View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { View, Text, Modal, StyleSheet, Image, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
+import { RFValue } from 'react-native-responsive-fontsize';
 import * as Animatable from 'react-native-animatable';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';

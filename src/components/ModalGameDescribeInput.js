@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { View, Text, Modal, StyleSheet, Image, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
+import { RFValue } from 'react-native-responsive-fontsize';
 import * as Animatable from 'react-native-animatable';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 
 function ModalGameDescribeInput({
+    title,
     handleCloseDescribeModal,
     handleConfirm
 }) {
@@ -24,7 +25,7 @@ function ModalGameDescribeInput({
                         duration={500} 
                         style={styles.describeContainer}>
                     <Image source={require('../assets/img/owl.png')} style={styles.owlImage}></Image>
-                    <Text style={styles.titleModal}>Mô tả từ khóa</Text>
+                    <Text style={styles.titleModal}>{title}</Text>
                     <View style={styles.inputContainer}>
                         <TextInput
                             value={text}

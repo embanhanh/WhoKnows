@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import mainStyles from './mainstyle.js';
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 import * as Font from 'expo-font';
 

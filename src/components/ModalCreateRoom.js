@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Modal, Switch, TextInput, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { View, Text, TouchableOpacity, Modal, Switch, TextInput, StyleSheet } from "react-native";
 import { Divider } from 'react-native-paper';
 import { RFValue } from "react-native-responsive-fontsize";
 import Icon from 'react-native-vector-icons/FontAwesome5.js';

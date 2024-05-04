@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { View, Text, Modal, StyleSheet, Image, Dimensions,SafeAreaView } from "react-native";
+import { RFValue } from 'react-native-responsive-fontsize';
 
-import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
 import * as Animatable from 'react-native-animatable';
 
 function ModalGameResult({

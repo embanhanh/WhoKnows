@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Modal,  TextInput,  ScrollView, StyleSheet } from "react-native";
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { RFValue } from 'react-native-responsive-fontsize';
 import { Divider } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 

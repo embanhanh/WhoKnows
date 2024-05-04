@@ -3,15 +3,11 @@ import { View, StyleSheet, Text, TouchableOpacity, } from 'react-native';
 import { useNavigation } from "@react-navigation/core";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icons from 'react-native-vector-icons/Ionicons.js';
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-import { doc,updateDoc } from 'firebase/firestore';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 import userContext from '../AuthContext/AuthProvider';
-import { database } from '../../firebaseconfig';
 
 const RoomBox = ({ id, locked, numPlayers, maxPlayers, handleJoinRoom }) => {
-    const {user} = useContext(userContext)
-    const navigation = useNavigation();
 
     return (
         <View style={styles.roomInfoContainer}>

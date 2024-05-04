@@ -1,7 +1,6 @@
-// Trong file MessageLine.js
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 const MessageLine = ({ displayName, message, role }) => {
     let newStyles = {};

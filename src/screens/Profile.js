@@ -105,22 +105,6 @@ function Profile() {
                     <Text style={styles.textTools}>Trang Chủ</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.tools} onPress={()=>{
-                    console.log(user);
-                }}>
-                    <View style={styles.square}>    
-                        <Icon name="trophy" style={styles.iconTools}></Icon>
-                    </View>
-                    <Text style={styles.textTools}>Lịch Sử</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.tools}>
-                    <View style={styles.square}>    
-                        <Icon name="key" style={styles.iconTools}></Icon>
-                    </View>
-                    <Text style={styles.textTools}>Đổi Mật Khẩu</Text>
-                </TouchableOpacity>
-
                 <TouchableOpacity style={styles.tools} onPress={async() => {
                         await signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))
                         const refDoc = doc(database,"user",user?.uid)

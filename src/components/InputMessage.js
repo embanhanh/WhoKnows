@@ -2,7 +2,7 @@
 import React,{useState } from "react";
 import { View, TouchableOpacity, StyleSheet, TextInput} from "react-native";
 import Icon3 from 'react-native-vector-icons/Ionicons.js';
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 
 function InputMessage({
@@ -13,7 +13,6 @@ function InputMessage({
         <View style={styles.inputContainer}>
             <TextInput
                 autoFocus
-                // ref={textInputRef}
                 style={styles.textInput}
                 placeholder="Nhập tin nhắn..."
                 onChangeText={(text) => setInputMessage(text)}

@@ -1,4 +1,4 @@
-import React,{useState, useContext, useCallback, createContext } from "react";
+import React,{useState, useContext, useCallback } from "react";
 import { View, Text, TouchableOpacity, ImageBackground, Image, Keyboard,  BackHandler, Alert} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon3 from 'react-native-vector-icons/Ionicons.js';
@@ -11,16 +11,12 @@ import userContext from "../AuthContext/AuthProvider.js";
 import ModalGameRole from "../components/ModalGameRole.js";
 import ModalGameDescribeInput from "../components/ModalGameDescribeInput.js";
 import keywordContext from "../AuthContext/KeywordProvider.js";
-import ModalGameGuessWord from "../components/ModalGameGuessWord.js";
 import ModalGameRoundEnd from "../components/ModalGameRoundEnd.js";
 import CountDown from "../components/CountDown.js";
-import ModalGameResultGuess from "../components/ModalGameResultGuess.js";
 import ModalGameResult from "../components/ModalGameResult.js";
 import ModalGameVoteResult from "../components/ModalGameVoteResult.js";
 import ChatBox from "../components/chats.js";
 import { socket } from "../util/index.js";
-
-export const idContext = createContext("")
 
 function GameScreen({route}) {
     const navigation = useNavigation();
@@ -48,24 +44,15 @@ function GameScreen({route}) {
     const [describeVisible, describeModalVisible] = useState(false);
     const [roundVisible, roundModalVisible] = useState(false);
     const [voteResultVisible, voteResultModalVisible] = useState(false);
-    const [guessVisible, guessModalVisible] = useState(false);
-    const [guessResultVisible, guessResultModalVisible] = useState(false);
+
     const [resultVisible, resultModalVisible] = useState(false);
 
     const handleCloseDescribeModal = () =>{
         describeModalVisible(false)
     }
 
-    const handleCloseGuessModal = () =>{
-        guessModalVisible(!guessVisible)
-    }
-
     const handleCloseRoundModal = () =>{
         roundModalVisible(!roundVisible)
-    }
-
-    const handleCloseGuessResultModal = () =>{
-        guessResultModalVisible(!guessResultVisible)
     }
 
     const handleCloseResultModal = () =>{
@@ -207,132 +194,115 @@ function GameScreen({route}) {
     },[roomInfo.isGuessKeyword]))
 
     return ( 
-            <idContext.Provider value={route.params}>
-                <ImageBackground source={require('../assets/img/Theme2.jpg')} style={styles.backgroundImage} >
-                    <View style={styles.container}>
-                        <View style={styles.roomInfo}>
-                            <Image source={require('../assets/img/RoomInfo.png')} style={styles.roomImage}></Image>
-                            <Text style={styles.textRoomNumber}>ID phòng: {route.params}</Text>
-                            <Text style={styles.textWord}>{roomInfo.isStart && !isGhost && keyword.key}</Text>
-                            <TouchableOpacity style={styles.homeButton} onPress={handleHome}>
-                                <Icon name="sign-out"  style={styles.homeIcon} ></Icon>
-                            </TouchableOpacity>
+            <ImageBackground source={require('../assets/img/Theme2.jpg')} style={styles.backgroundImage} >
+                <View style={styles.container}>
+                    <View style={styles.roomInfo}>
+                        <Image source={require('../assets/img/RoomInfo.png')} style={styles.roomImage}></Image>
+                        <Text style={styles.textRoomNumber}>ID phòng: {route.params}</Text>
+                        <Text style={styles.textWord}>{roomInfo.isStart && !isGhost && keyword.key}</Text>
+                        <TouchableOpacity style={styles.homeButton} onPress={handleHome}>
+                            <Icon name="sign-out"  style={styles.homeIcon} ></Icon>
+                        </TouchableOpacity>
 
-                            <CountDown /> 
+                        <CountDown /> 
 
-                            {isGhost && roomInfo.isStart &&<Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
-                            || roomInfo.isStart && <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>}
-                        </View>
-    
-                    <View style={styles.playContainer}> 
-                        <View style={styles.joinedPlayer}>
-                        {
-                            roomInfo.roomMembers?.map((member,index)=>
-                                (<PlayerCard key={index} bubbleType={index%2==0?"left":"right"} avatarAlignment={index%2==0?"flex-start":"flex-end"}
-                                    isManager={member.Id === roomInfo.roomMaster} isYou={member.Id === user.uid} displayName={member.displayName}  isVoted={isVoted}
-                                    answer={member.answer} answering={((roomInfo.isStartVote || roomInfo.isStartAnswer)&&member.Id === roomInfo.roomMembers[roomInfo.memberAnswer]?.Id)||(roomInfo.isGuessKeyword && member.isGhost)} 
-                                    handleVote={handleVote} userId={member.Id} containerWidth={"50%"} isStartVote={roomInfo.isStartVote} isGhost={isGhost && member.isGhost} isStart={roomInfo.isStart}
-                                    isReady={member.isReady} playerNumber={index + 1} avatar={member.photoURL}
-                                ></PlayerCard>)
-                            )
-                        }
-                        {
-                            !roomInfo.isStart && emptyMembers.map((e,index)=> 
-                                <PlayerCard key={index} avatarAlignment={(memberId.length + index)%2==0 ?"flex-start":"flex-end"} isEmpty={true} containerWidth={"50%"}></PlayerCard> 
-                            )
-                        } 
-                        </View>
-                        <ChatBox idRoom={route.params} host={roomInfo.roomMaster} showTextInput={showTextInput} setShowTextInput={setShowTextInput}/>
+                        {isGhost && roomInfo.isStart &&<Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
+                        || roomInfo.isStart && <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>}
                     </View>
-    
-                    <View style={styles.gameToolsContainer}>
-                        {roomInfo.isStart ?
-                            <TouchableOpacity style={isAnswer? [styles.toolsButton,{backgroundColor: "#ffa500"}]:styles.toolsButton} 
-                                onPress={handleDescribe} disabled={!isAnswer}
-                            >
-                                <Icon name="pencil"  style={styles.toolsIcon}></Icon>
-                            </TouchableOpacity> :
-                            <TouchableOpacity style={user.uid === roomInfo.roomMaster && (countReady !== memberId.length /*|| countReady < 4*/)?styles.toolsButton:[styles.toolsButton, {backgroundColor: "#ffa500"}]}
-                                disabled={user.uid === roomInfo.roomMaster && (countReady !== memberId.length /*|| countReady < 4*/) }
-                                onPress={handleReadyCancelStart}
-                            >
-                                <Text style={styles.startText}>{user.uid === roomInfo.roomMaster && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
-                            </TouchableOpacity>
-                        }
-    
-                        <TouchableOpacity style={styles.rulesButton}>
-                            <Icon name="question" style={styles.rulesIcon} ></Icon>
-                        </TouchableOpacity>
-                        
-                        <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>
-                            <Icon4 name="clipboard-text-clock"  style={styles.historyIcon}></Icon4>
-                        </TouchableOpacity>
-    
-                        <TouchableOpacity style={styles.messageButton} onPress={handleShowTextInput}>
-                            <Icon3 name="chatbubble-ellipses-sharp" style={styles.messageIcon}></Icon3>
-                        </TouchableOpacity>
-    
-                        {
-                            roleVisible && 
-                            <ModalGameRole
-                                isGhost={isGhost}
-                                handleCloseRoleModal={handleCloseRoleModal}
-                            />
-                        }
-    
-                        {
-                            describeVisible && 
-                            <ModalGameDescribeInput
-                                handleCloseDescribeModal={handleCloseDescribeModal}
-                                handleConfirm={handleConfirm}
-                            />
-                        }
-    
-                        {
-                            guessVisible && 
-                            <ModalGameGuessWord
-                                guessVisible={guessVisible}
-                                handleCloseGuessModal={handleCloseGuessModal}
-                            />
-                        }
-    
-                        {
-                            roundVisible && 
-                            <ModalGameRoundEnd
-                                members={roomInfo.roomMembers.length}
-                                history={roomInfo.answers}
-                                handleCloseRoundModal={handleCloseRoundModal}
-                            />
-                        }
-    
-                        {
-                            guessResultVisible && 
-                            <ModalGameResultGuess
-                                guessResultVisible={guessResultVisible}
-                                handleCloseGuessResultModal={handleCloseGuessResultModal}
-                            />
-                        }
-    
-                        {
-                            resultVisible && 
-                            <ModalGameResult
-                                winer={roomInfo.winer}
-                                keyword={keyword.key}
-                                handleCloseResultModal={handleCloseResultModal}
-                            />
-                        }
 
-                        {       
-                            voteResultVisible && 
-                            <ModalGameVoteResult
-                                handleCloseVoteResultModal={handleCloseVoteResultModal}
-                                roomMembers={roomInfo.roomMembers}
-                            />
-                        }
+                <View style={styles.playContainer}> 
+                    <View style={styles.joinedPlayer}>
+                    {
+                        roomInfo.roomMembers?.map((member,index)=>
+                            (<PlayerCard key={index} bubbleType={index%2==0?"left":"right"} avatarAlignment={index%2==0?"flex-start":"flex-end"}
+                                isManager={member.Id === roomInfo.roomMaster} isYou={member.Id === user.uid} displayName={member.displayName}  isVoted={isVoted}
+                                answer={member.answer} answering={((roomInfo.isStartVote || roomInfo.isStartAnswer)&&member.Id === roomInfo.roomMembers[roomInfo.memberAnswer]?.Id)||(roomInfo.isGuessKeyword && member.isGhost)} 
+                                handleVote={handleVote} userId={member.Id} containerWidth={"50%"} isStartVote={roomInfo.isStartVote} isGhost={isGhost && member.isGhost} isStart={roomInfo.isStart}
+                                isReady={member.isReady} playerNumber={index + 1} avatar={member.photoURL}
+                            ></PlayerCard>)
+                        )
+                    }
+                    {
+                        !roomInfo.isStart && emptyMembers.map((e,index)=> 
+                            <PlayerCard key={index} avatarAlignment={(memberId.length + index)%2==0 ?"flex-start":"flex-end"} isEmpty={true} containerWidth={"50%"}></PlayerCard> 
+                        )
+                    } 
                     </View>
+                    <ChatBox idRoom={route.params} host={roomInfo.roomMaster} showTextInput={showTextInput} setShowTextInput={setShowTextInput}/>
                 </View>
-            </ImageBackground>
-        </idContext.Provider>
+
+                <View style={styles.gameToolsContainer}>
+                    {roomInfo.isStart ?
+                        <TouchableOpacity style={isAnswer? [styles.toolsButton,{backgroundColor: "#ffa500"}]:styles.toolsButton} 
+                            onPress={handleDescribe} disabled={!isAnswer}
+                        >
+                            <Icon name="pencil"  style={styles.toolsIcon}></Icon>
+                        </TouchableOpacity> :
+                        <TouchableOpacity style={user.uid === roomInfo.roomMaster && (countReady !== memberId.length /*|| countReady < 4*/)?styles.toolsButton:[styles.toolsButton, {backgroundColor: "#ffa500"}]}
+                            disabled={user.uid === roomInfo.roomMaster && (countReady !== memberId.length /*|| countReady < 4*/) }
+                            onPress={handleReadyCancelStart}
+                        >
+                            <Text style={styles.startText}>{user.uid === roomInfo.roomMaster && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
+                        </TouchableOpacity>
+                    }
+
+                    <TouchableOpacity style={styles.rulesButton}>
+                        <Icon name="question" style={styles.rulesIcon} ></Icon>
+                    </TouchableOpacity>
+                    
+                    <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>
+                        <Icon4 name="clipboard-text-clock"  style={styles.historyIcon}></Icon4>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.messageButton} onPress={handleShowTextInput}>
+                        <Icon3 name="chatbubble-ellipses-sharp" style={styles.messageIcon}></Icon3>
+                    </TouchableOpacity>
+
+                    {
+                        roleVisible && 
+                        <ModalGameRole
+                            isGhost={isGhost}
+                            handleCloseRoleModal={handleCloseRoleModal}
+                        />
+                    }
+
+                    {
+                        describeVisible && 
+                        <ModalGameDescribeInput
+                            title={(isGhost && roomInfo.isGuessKeyword) ? 'Đoán từ khóa' : 'Mô tả từ khóa'}
+                            handleCloseDescribeModal={handleCloseDescribeModal}
+                            handleConfirm={handleConfirm}
+                        />
+                    }
+
+                    {
+                        roundVisible && 
+                        <ModalGameRoundEnd
+                            members={roomInfo.roomMembers.length}
+                            history={roomInfo.answers}
+                            handleCloseRoundModal={handleCloseRoundModal}
+                        />
+                    }
+
+                    {
+                        resultVisible && 
+                        <ModalGameResult
+                            winer={roomInfo.winer}
+                            keyword={keyword.key}
+                            handleCloseResultModal={handleCloseResultModal}
+                        />
+                    }
+
+                    {       
+                        voteResultVisible && 
+                        <ModalGameVoteResult
+                            handleCloseVoteResultModal={handleCloseVoteResultModal}
+                            roomMembers={roomInfo.roomMembers}
+                        />
+                    }
+                </View>
+            </View>
+        </ImageBackground>
     );
 }
 

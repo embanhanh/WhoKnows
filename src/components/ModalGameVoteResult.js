@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useRef } from "react";
-import { View, Text, Modal, StyleSheet, Image, Dimensions, TextInput, SafeAreaView, TouchableOpacity } from "react-native";
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import React, { useContext, useEffect } from "react";
+import { View, Text, Modal, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
+import { RFValue } from 'react-native-responsive-fontsize';
 
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import PlayerCard from "./playerCard";

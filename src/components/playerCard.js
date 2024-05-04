@@ -3,7 +3,6 @@ import { View, StyleSheet, Image, Dimensions, ImageBackground, Text, Button } fr
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 
-import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 
 const PlayerCard = ({
@@ -27,27 +26,32 @@ const PlayerCard = ({
   playerNumber,
   isShowVoteResult
 }) => {
-  const windowWidth = Dimensions.get('window').width;
-  const avatarSize = windowWidth * 0.15; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
-  const overlaySize = windowWidth * 0.11; // Kích thước overlayContainer dựa trên tỷ lệ màn hình
+    const windowWidth = Dimensions.get('window').width;
+    const avatarSize = windowWidth * 0.15; 
 
-  let newStyles = {};
-  if(isManager && !isStart){
-    newStyles = {...styles.avatarContainer}
-  }else if(isYou){
-    newStyles = {...styles.avatarContainer, borderColor: 'green' }
-  } else if(isEmpty){
-    newStyles = {...styles.avatarContainer, borderColor: 'gray', backgroundColor: "#333" }
-  }else if(isGhost){
-    newStyles = {...styles.avatarContainer, borderColor: 'purple'}
-  }else{
-    newStyles = {...styles.avatarContainer, borderColor: 'gray' }
-  }
+    let newStyles = {};
+    if(isManager && !isStart){
+      newStyles = {...styles.avatarContainer}
+    }else if(isYou){
+      newStyles = {...styles.avatarContainer, borderColor: 'green' }
+    } else if(isEmpty){
+      newStyles = {...styles.avatarContainer, borderColor: 'gray', backgroundColor: "#333" }
+    }else if(isGhost){
+      newStyles = {...styles.avatarContainer, borderColor: 'purple'}
+    }else{
+      newStyles = {...styles.avatarContainer, borderColor: 'gray' }
+    }
+    const importAll = (r) => {
+      let images = {};
+      r.keys().map((item) => { images[item.replace('./', '')] = r(item); });
+      return images;
+    };
+    const imageFiles = importAll(require.context('../assets/avatar', false, /\.(png|jpe?g|svg)$/));
 
     return (
       <View style={{...styles.container, width: containerWidth}}>
         <View style={{...newStyles,  alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }}>
-          {!isEmpty && <Image source={avatar} style={styles.avatar} />}
+          {!isEmpty && <Image source={Number(avatar)} style={styles.avatar} />}
           {
             isManager && !isStart &&<Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
           }

@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import { View, Text, TextInput, TouchableOpacity, Pressable, SafeAreaView, Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-//import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 import styles from "../components/Styles.js";
