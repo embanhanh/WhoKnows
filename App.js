@@ -11,6 +11,7 @@ import Signup from './src/screens/Signup';
 import { auth,database } from './firebaseconfig';
 import userContext from './src/AuthContext/AuthProvider';
 import keywordContext from './src/AuthContext/KeywordProvider';
+import avatarContext from './src/AuthContext/AvatarProvider';
 import GameScreen from './src/screens/GameScreen';
 import LoadingScreen from './src/screens/LoadingScreen';
 import Profile from './src/screens/Profile';
@@ -22,6 +23,8 @@ export default function App() {
   const [user, setUser] = useState(null)
   const [isloading, setIsloading] = useState(true)
   const [keyword, setKeyword] = useState([])
+  const [urlAvatar, setUrlAvatar] = useState([])
+
   useEffect(()=>{
     const unsubscribe = onAuthStateChanged(auth,
       async authuser =>{
@@ -45,8 +48,17 @@ export default function App() {
     setKeyword(keywords.docs.map(keyword => keyword.data()))
   }
 
+  const getUrlAvatar = async ()=>{
+    const docRef = collection(database,"urlImages")
+    const urlAvatar = await getDocs(docRef)
+    const final = urlAvatar.docs.map(avatars => avatars.data())
+    setUrlAvatar(final[0]?.avatar)
+  }
+
+
   useEffect(()=>{
     getKeywords()
+    getUrlAvatar()
 
     return ()=>{
       console.log('out app');
@@ -62,21 +74,23 @@ export default function App() {
   }
 
   return (
-    <keywordContext.Provider value={keyword}>
-      <userContext.Provider value={{user}}>
-        <NavigationContainer >
-          <Stack.Navigator screenOptions={{headerShown: false}} >
-            {
-              user ? (<><Stack.Screen name='Home' component={Home}></Stack.Screen>
-              <Stack.Screen name='GameScreen' component={GameScreen}></Stack.Screen>
-              <Stack.Screen name='Profile' component={Profile}></Stack.Screen></>) :
-              (<><Stack.Screen name='Signin' component={Signin} ></Stack.Screen>
-              <Stack.Screen name='Signup' component={Signup} ></Stack.Screen></>)
-            }  
-          </Stack.Navigator>
-        </NavigationContainer>
-      </userContext.Provider>
-    </keywordContext.Provider>
+    <avatarContext.Provider value={urlAvatar}>
+      <keywordContext.Provider value={keyword}>
+        <userContext.Provider value={{user}}>
+          <NavigationContainer >
+            <Stack.Navigator screenOptions={{headerShown: false}} >
+              {
+                user ? (<><Stack.Screen name='Home' component={Home}></Stack.Screen>
+                <Stack.Screen name='GameScreen' component={GameScreen}></Stack.Screen>
+                <Stack.Screen name='Profile' component={Profile}></Stack.Screen></>) :
+                (<><Stack.Screen name='Signin' component={Signin} ></Stack.Screen>
+                <Stack.Screen name='Signup' component={Signup} ></Stack.Screen></>)
+              }  
+            </Stack.Navigator>
+          </NavigationContainer>
+        </userContext.Provider>
+      </keywordContext.Provider>
+    </avatarContext.Provider>
   );
 }
 

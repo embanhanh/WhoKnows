@@ -246,7 +246,9 @@ function GameScreen({route}) {
                         </TouchableOpacity>
                     }
 
-                    <TouchableOpacity style={styles.rulesButton}>
+                    <TouchableOpacity style={styles.rulesButton} onPress={()=>{
+                        socket.emit('log-roominfo',{roomid: route.params})
+                    }}>
                         <Icon name="question" style={styles.rulesIcon} ></Icon>
                     </TouchableOpacity>
                     

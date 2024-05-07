@@ -41,17 +41,11 @@ const PlayerCard = ({
     }else{
       newStyles = {...styles.avatarContainer, borderColor: 'gray' }
     }
-    const importAll = (r) => {
-      let images = {};
-      r.keys().map((item) => { images[item.replace('./', '')] = r(item); });
-      return images;
-    };
-    const imageFiles = importAll(require.context('../assets/avatar', false, /\.(png|jpe?g|svg)$/));
 
     return (
       <View style={{...styles.container, width: containerWidth}}>
         <View style={{...newStyles,  alignSelf: avatarAlignment, width: avatarSize, height: avatarSize }}>
-          {!isEmpty && <Image source={Number(avatar)} style={styles.avatar} />}
+          {!isEmpty && <Image source={{uri: avatar}} style={styles.avatar} />}
           {
             isManager && !isStart &&<Image source={require('../assets/img/Crown.png')} style={styles.overlay} />
           }
@@ -83,7 +77,8 @@ const PlayerCard = ({
             <Icon name="check" style={styles.unReadyIcon}></Icon>
           </View>}  
 
-          {isStartVote && !isVoted && !isYou && <TouchableOpacity onPress={()=>handleVote(userId)} style={{backgroundColor: "#21a3fb", padding: 2, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center"}}>
+          {isStartVote && !isVoted && !isYou && 
+          <TouchableOpacity onPress={()=>{handleVote(userId); }} style={{backgroundColor: "#21a3fb", padding: 2, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center"}}>
               <Text style={{fontSize:14, color: "#fff"}}>+ Vote</Text>
           </TouchableOpacity>}
         </View>

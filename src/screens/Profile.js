@@ -14,16 +14,10 @@ import ModalAvatar from "../components/ModalAvatar.js";
 function Profile() {
     const {user} = useContext(userContext)
     const navigation = useNavigation();
-    const importAll = (r) => {
-        let images = {};
-        r.keys().map((item) => { images[item.replace('./', '')] = r(item); });
-        return images;
-    };
-    const imageFiles = importAll(require.context('../assets/avatar', false, /\.(png|jpe?g|svg)$/));
 
     const [editVisible, setEditVisible] = useState(false);
     const [userName, setUserName] = useState(user?.displayName)
-    const [avatar, setAvatar] = useState(Number(user?.photoURL))
+    const [avatar, setAvatar] = useState(user?.photoURL)
     const [isModalAvatar, setModalAvatar] = useState(false)
 
     const handleHome = () => {
@@ -120,7 +114,9 @@ function Profile() {
 
             <View style={styles.cardContainer}>
                 <TouchableOpacity style={styles.avatar} onPress={()=>setModalAvatar(true)}>
-                    <Image source={avatar || 32} style={{ 
+                    <Image source={ 
+                        {uri: avatar}
+                    } style={{ 
                         width: "100%", 
                         height: "100%", 
                         borderRadius: 100, 

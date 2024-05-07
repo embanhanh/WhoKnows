@@ -4,18 +4,14 @@ import {  RFValue } from 'react-native-responsive-fontsize';
 import userContext from '../AuthContext/AuthProvider';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
+import avatarContext from '../AuthContext/AvatarProvider';
 
 
 function ModalAvatar({ handleClose, confirmAvatar }) {
     const {user} = useContext(userContext)
-    const importAll = (r) => {
-        let images = {};
-        r.keys().map((item) => { images[item.replace('./', '')] = r(item); });
-        return images;
-    };
-    const imageFiles = importAll(require.context('../assets/avatar', false, /\.(png|jpe?g|svg)$/));
+    const urlAvatar = useContext(avatarContext)
 
-    const [selectedImage, setSelectedImage] = useState(Number(user.photoURL));
+    const [selectedImage, setSelectedImage] = useState(user.photoURL);
 
     const selectAvatar = (avatar) => {
         setSelectedImage(avatar);
@@ -25,22 +21,6 @@ function ModalAvatar({ handleClose, confirmAvatar }) {
         confirmAvatar(selectedImage);
         handleClose();
     };
-    
-    const images = Object.keys(imageFiles).map((key) => {
-        return (
-            <TouchableOpacity  key={key} onPress={()=>selectAvatar(imageFiles[key])}>
-                <Image
-                    source={imageFiles[key]}
-                    style={{ width: 50, 
-                            height: 50, 
-                            borderRadius: 50, 
-                            marginTop: "30%", 
-                            borderWidth: selectedImage === imageFiles[key] ? 2 : 0,
-                            borderColor: selectedImage === imageFiles[key] ? 'yellow' : 'transparent'}}
-                />  
-            </TouchableOpacity>
-        );
-    });
 
     return ( 
         <Modal
@@ -61,7 +41,19 @@ function ModalAvatar({ handleClose, confirmAvatar }) {
                     </View>
 
                     <View style={styles.avatarListContainer}>
-                        {images}
+                        {urlAvatar?.map((url)=>(
+                            <TouchableOpacity  key={url} onPress={()=>selectAvatar(url)}>
+                                <Image
+                                    source={{uri: url}}
+                                    style={{ width: 50, 
+                                            height: 50, 
+                                            borderRadius: 50, 
+                                            marginTop: "30%", 
+                                            borderWidth: selectedImage === url ? 2 : 0,
+                                            borderColor: selectedImage === url ? 'yellow' : 'transparent'}}
+                                />  
+                        </TouchableOpacity>
+                        ))}
                     </View>
 
                     <View style={styles.buttonContainer}>

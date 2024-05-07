@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import { View, Text, TextInput, TouchableOpacity, Pressable, SafeAreaView, Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -7,8 +7,10 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import styles from "../components/Styles.js";
 import LoginTitle from "../components/loginTitle.js";
 import { auth } from "../../firebaseconfig.js";
+import avatarContext from "../AuthContext/AvatarProvider.js";
 
 function SignUp({ navigation }) {
+    const urlAvatar = useContext(avatarContext)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -22,17 +24,11 @@ function SignUp({ navigation }) {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
                 const displayName = email.substring(0, email.indexOf('@'));
-                const importAll = (r) => {
-                    let images = {};
-                    r.keys().map((item) => { images[item.replace('./', '')] = r(item); });
-                    return images;
-                };
-                const imageFiles = importAll(require.context('../assets/avatar', false, /\.(png|jpe?g|svg)$/));
-                const random = Math.floor(Math.random()*Object.keys(imageFiles).length)
-                const urlAvatar = imageFiles[Object.keys(imageFiles)[random]]
+                const random = Math.floor(Math.random()*urlAvatar.length)
+                const photoURL = urlAvatar[random]
                 await updateProfile(user, {
                     displayName: displayName,
-                    photoURL: urlAvatar
+                    photoURL: photoURL
                 });
 
                 Alert.alert("Đăng ký thành công", "Bạn đã vào trang chủ");
