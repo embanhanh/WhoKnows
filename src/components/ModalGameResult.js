@@ -12,6 +12,8 @@ function ModalGameResult({
     const windowWidth = Dimensions.get('window').width;
     const avatarSize = windowWidth * 0.2; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
 
+    const textColor = winer === 'Village' ? '#507033' : '#4E3E92';
+
     useEffect(()=>{
         const timeout = setTimeout(()=>{
             handleCloseResultModal()
@@ -36,16 +38,16 @@ function ModalGameResult({
                         duration={1000} 
                         style={styles.resultContainer}>
                     <View style={styles.bannerContainer}></View>
-                    <Image source={require('../assets/img/Banner.png')} style={styles.resultImage}></Image>
+                    <Image source={require('../assets/img/Banner1.png')} style={styles.resultImage}></Image>
                     <View style={styles.infoGameContainer}>
                        <View style={styles.keyWordContainer}>
-                            <Text style={{fontSize: RFValue(11), fontWeight: "bold", color: "green", marginBottom: "3%"}}>Từ khóa của dân làng</Text>
-                            <Text style={{fontSize: RFValue(15), fontWeight: "bold",}}>{keyword}</Text>
+                            <Text style={{fontSize: RFValue(11), fontWeight: "bold", color: "white", marginBottom: "5%"}}>Từ khóa của dân làng</Text>
+                            <Text style={{fontSize: RFValue(25), fontWeight: "bold", color: "white"}}>{keyword}</Text>
                        </View>
 
                        <View style={styles.winContainer}>
-                            <Text style={{fontSize: RFValue(11), fontWeight: "bold", color: "purple", marginBottom: "3%"}}>Đội chiến thắng</Text>
-                            <Text style={{fontSize: RFValue(15), fontWeight: "bold",}}>{winer}</Text>
+                            <Text style={{fontSize: RFValue(11), fontWeight: "bold", color: "white", marginBottom: "5%"}}>Đội chiến thắng</Text>
+                            <Text style={{fontSize: RFValue(25), fontWeight: "bold", color: textColor}}>{winer}</Text>
                        </View>
                     </View>
 
@@ -58,9 +60,8 @@ function ModalGameResult({
                     </View>
 
                     <View style={styles.ghostContainer}>
-
                         <View View style={styles.ghostTeam}>
-                            <View style={{...styles.avatarContainer, width: avatarSize, height: avatarSize, borderColor:"black", top: "-41%", backgroundColor: "#4E3E92" }}>
+                            <View style={{...styles.avatarContainer, width: avatarSize, height: avatarSize, borderColor:"#121212", top: "-41%", backgroundColor: "#4E3E92" }}>
                                 <Image source={require('../assets/img/role-Ghost.png')} style={styles.avatar}/>
                             </View>
                         </View>
@@ -81,27 +82,26 @@ const styles = StyleSheet.create({
     resultContainer: {
         position: "relative",
         width: "85%",
-        height: "70%",
-        borderRadius: RFValue(20),
-        backgroundColor:  "#ECD1AB",
+        height: "80%",
+        borderRadius: RFValue(15),
+        backgroundColor:  "#1E1E1E",
         alignItems: "center",
         justifyContent: "center",
-        borderWidth: RFValue(3),
     },
 
     bannerContainer:{
-        flex: 1,
+        flex: 0.5,
     },
 
     resultImage: {
         position: "absolute",
-        width: '104%',
-        height: '16%',
+        width: '103%',
+        height: '14%',
         top: "-7%",
     },
 
     infoGameContainer: {
-        flex: 1,
+        flex: 2,
         flexDirection: "row",
     },
 
@@ -129,10 +129,8 @@ const styles = StyleSheet.create({
         height: "85%",
         paddingHorizontal: "40%",
         marginTop: "18%",
-        backgroundColor: "#699A3D",
-        borderWidth: RFValue(2),
-        borderColor: "black",
-        borderRadius: RFValue(20),
+        backgroundColor: "#121212",
+        borderRadius: RFValue(10),
     },
 
     ghostContainer:{
@@ -147,23 +145,21 @@ const styles = StyleSheet.create({
         width: "90%",
         height: "60%",
         paddingHorizontal: "40%",
-        marginTop: "16%",
-        backgroundColor: "#4E3E92",
-        borderWidth: RFValue(2),
-        borderColor: "black",
-        borderRadius: RFValue(20),
+        marginTop: "20%",
+        backgroundColor: "#121212",
+        borderRadius: RFValue(10),
     },
 
     avatarContainer: {
         position: "absolute",
         borderRadius: 60, 
-        borderWidth: RFValue(2), 
-        backgroundColor: "#699A3D",
-        borderColor:   'black',  
+        backgroundColor: "#507033",     
         alignItems: 'center',
         justifyContent: 'center',
+        borderWidth: RFValue(3),
+        borderColor: "#121212",
         top: "-23%",
-        left: "335%",
+        left: "300%",
     },
 
     avatar: {
@@ -174,7 +170,7 @@ const styles = StyleSheet.create({
 
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
     },
 })
 
