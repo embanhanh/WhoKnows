@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Pressable, Alert, SafeAreaView } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,6 +11,7 @@ import LoadingScreen from "./LoadingScreen.js";
 
 function Signin({ navigation }) {
 
+    const passwordRef = useRef(null)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false);
@@ -53,17 +54,20 @@ function Signin({ navigation }) {
                                 textContentType="emailAddress"
                                 value={email}
                                 onChangeText={(text) => setEmail(text)}
+                                onSubmitEditing={()=>{ passwordRef.current.focus() }}
                     />
                 </View>
 
                 <View style={styles.inputText}>
                     <Icon name="lock" style={styles.icon}></Icon>
                     <TextInput style={styles.pass} 
+                                ref={passwordRef}
                                 placeholder="Mật khẩu"
                                 secureTextEntry={!showPassword}
                                 textContentType="password"
                                 value={password}
                                 onChangeText={(text) => setPassword(text)}
+                                onSubmitEditing={handleLogin}
                     />
                     <TouchableOpacity style={styles.toggleButton} onPress={toggleShowPassword}>
                         <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" />

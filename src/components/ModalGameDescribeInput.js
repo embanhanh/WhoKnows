@@ -32,6 +32,7 @@ function ModalGameDescribeInput({
                             style={styles.textInput}
                             placeholder="Nhập mô tả..."
                             onChangeText={(text)=>setText(text)}
+                            onSubmitEditing={()=>handleConfirm(text)}
                         />
                     </View>
 

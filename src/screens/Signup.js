@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useRef, useState} from "react";
 import { View, Text, TextInput, TouchableOpacity, Pressable, SafeAreaView, Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,6 +11,8 @@ import avatarContext from "../AuthContext/AvatarProvider.js";
 
 function SignUp({ navigation }) {
     const urlAvatar = useContext(avatarContext)
+    const pass1 = useRef(null)
+    const pass2 = useRef(null)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -61,17 +63,20 @@ function SignUp({ navigation }) {
                                 textContentType="emailAddress"
                                 value={email}
                                 onChangeText={(text) => setEmail(text)}
+                                onSubmitEditing={()=>{ pass1.current.focus() }}
                     />
                 </View>
 
                 <View style={styles.inputText}>
                     <Icon name="lock" style={styles.icon}></Icon>
                     <TextInput style={styles.pass} 
+                                    ref={pass1}
                                     placeholder="Mật khẩu"
                                     secureTextEntry={!showPassword}
                                     textContentType="password"
                                     value={password}
                                     onChangeText={(text) => setPassword(text)}
+                                    onSubmitEditing={()=>{ pass2.current.focus() }}
                     />
                     <TouchableOpacity style={styles.toggleButton} onPress={()=>{setShowPassword(!showPassword);}}>
                         <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" />
@@ -81,11 +86,13 @@ function SignUp({ navigation }) {
                 <View style={styles.inputText}>
                     <Icon name="lock" style={styles.icon}></Icon>
                     <TextInput style={styles.pass} 
+                                    ref={pass2}
                                     placeholder="Xác nhận lại mật khẩu"
                                     secureTextEntry={!showConfirmPassword}
                                     textContentType="password"
                                     value={confirmPassword}
                                     onChangeText={(text) => setConfirmPassword(text)}
+                                    onSubmitEditing={handleSignup}
                     />
                     <TouchableOpacity style={styles.toggleButton} onPress={()=>{
                         setShowConfirmPassword(!showConfirmPassword)
