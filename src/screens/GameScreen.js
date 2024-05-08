@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome.js';
 import Icon3 from 'react-native-vector-icons/Ionicons.js';
 import Icon4 from 'react-native-vector-icons/MaterialCommunityIcons.js';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { Audio } from 'expo-av';
 
 import styles from "../components/Styles.js";
 import PlayerCard from "../components/playerCard.js";
@@ -17,11 +18,14 @@ import ModalGameResult from "../components/ModalGameResult.js";
 import ModalGameVoteResult from "../components/ModalGameVoteResult.js";
 import ChatBox from "../components/chats.js";
 import { socket } from "../util/index.js";
+import SoundVolumeContext from "../AuthContext/SoundProvider.js";
 
 function GameScreen({route}) {
     const navigation = useNavigation();
     const {user} = useContext(userContext)
     const keywords = useContext(keywordContext)
+    const { volume } = useContext(SoundVolumeContext)
+    const [sound, setSound] = useState(null)
     // State
     const [roomInfo, setRoomInfo] = useState({})
     const [isGhost, setIsGhost] = useState(false)
@@ -44,8 +48,21 @@ function GameScreen({route}) {
     const [describeVisible, describeModalVisible] = useState(false);
     const [roundVisible, roundModalVisible] = useState(false);
     const [voteResultVisible, voteResultModalVisible] = useState(false);
-
     const [resultVisible, resultModalVisible] = useState(false);
+
+    async function playSound(filepath) {
+        const { sound } = await Audio.Sound.createAsync(filepath,{volume});
+        setSound(sound);
+        await sound.playAsync();
+    }
+
+    useFocusEffect(useCallback(() => {
+        return sound
+          ? () => {
+              sound.unloadAsync();
+            }
+          : undefined;
+      }, [sound]));
 
     const handleCloseDescribeModal = () =>{
         describeModalVisible(false)
@@ -182,6 +199,7 @@ function GameScreen({route}) {
         if(roomInfo.isShowResult){
             resultModalVisible(true)
             describeModalVisible(false)
+            playSound(require('../assets/sound/winner.mp3'))
         }
     },[roomInfo.isShowResult]))
     useFocusEffect(useCallback(()=>{
@@ -248,6 +266,7 @@ function GameScreen({route}) {
 
                     <TouchableOpacity style={styles.rulesButton} onPress={()=>{
                         socket.emit('log-roominfo',{roomid: route.params})
+                        playSound(require('../assets/sound/winner.mp3'))
                     }}>
                         <Icon name="question" style={styles.rulesIcon} ></Icon>
                     </TouchableOpacity>

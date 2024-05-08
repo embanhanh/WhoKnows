@@ -15,6 +15,7 @@ import avatarContext from './src/AuthContext/AvatarProvider';
 import GameScreen from './src/screens/GameScreen';
 import LoadingScreen from './src/screens/LoadingScreen';
 import Profile from './src/screens/Profile';
+import { SoundVolumeProvider } from './src/AuthContext/SoundProvider';
 
 const Stack = createStackNavigator()
 
@@ -74,23 +75,25 @@ export default function App() {
   }
 
   return (
-    <avatarContext.Provider value={urlAvatar}>
-      <keywordContext.Provider value={keyword}>
-        <userContext.Provider value={{user}}>
-          <NavigationContainer >
-            <Stack.Navigator screenOptions={{headerShown: false}} >
-              {
-                user ? (<><Stack.Screen name='Home' component={Home}></Stack.Screen>
-                <Stack.Screen name='GameScreen' component={GameScreen}></Stack.Screen>
-                <Stack.Screen name='Profile' component={Profile}></Stack.Screen></>) :
-                (<><Stack.Screen name='Signin' component={Signin} ></Stack.Screen>
-                <Stack.Screen name='Signup' component={Signup} ></Stack.Screen></>)
-              }  
-            </Stack.Navigator>
-          </NavigationContainer>
-        </userContext.Provider>
-      </keywordContext.Provider>
-    </avatarContext.Provider>
+    <SoundVolumeProvider>
+      <avatarContext.Provider value={urlAvatar}>
+        <keywordContext.Provider value={keyword}>
+          <userContext.Provider value={{user}}>
+            <NavigationContainer >
+              <Stack.Navigator screenOptions={{headerShown: false}} >
+                {
+                  user ? (<><Stack.Screen name='Home' component={Home}></Stack.Screen>
+                  <Stack.Screen name='GameScreen' component={GameScreen}></Stack.Screen>
+                  <Stack.Screen name='Profile' component={Profile}></Stack.Screen></>) :
+                  (<><Stack.Screen name='Signin' component={Signin} ></Stack.Screen>
+                  <Stack.Screen name='Signup' component={Signup} ></Stack.Screen></>)
+                }  
+              </Stack.Navigator>
+            </NavigationContainer>
+          </userContext.Provider>
+        </keywordContext.Provider>
+      </avatarContext.Provider>
+    </SoundVolumeProvider>
   );
 }
 

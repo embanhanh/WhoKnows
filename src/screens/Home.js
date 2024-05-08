@@ -11,6 +11,7 @@ import ModalCreateRoom from "../components/ModalCreateRoom.js";
 import ModalFindRoom from "../components/ModalFindRoom.js";
 import ModalGameLobbyPass from "../components/ModalLobbyPass.js";
 import { socket } from "../util/index.js";
+import ModalSetting from "../components/ModalSetting.js";
 
 function Home() {
     const {user} = useContext(userContext)
@@ -161,7 +162,7 @@ function Home() {
                     </View>
 
                     <View style={styles.setting}>
-                        <TouchableOpacity style={styles.settingButton} onPress={() => setModalVisible(!modalVisible)}>
+                        <TouchableOpacity style={styles.settingButton} onPress={() => setModalVisible(true)}>
                             <Icon name="gear"  style={styles.settingIcon}></Icon>
                         </TouchableOpacity>
 
@@ -172,21 +173,9 @@ function Home() {
                 </SafeAreaView>
             </View>
 
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible);
-                }}
-            >
-                {modalVisible && <View style={styles.overlay} />}
-                <View style={styles.modalContainer}>
-                    <TouchableOpacity onPress={()=>{setModalVisible(!modalVisible);}}>
-                        <Icon name="close" style={styles.iconClose}></Icon>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
+            {
+                modalVisible && <ModalSetting setModalVisible={setModalVisible}/>
+            }
 
             {
                 createVisible &&
