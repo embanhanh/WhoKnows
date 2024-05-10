@@ -266,9 +266,9 @@ function GameScreen({route}) {
 
                     <TouchableOpacity style={styles.rulesButton} onPress={()=>{
                         socket.emit('log-roominfo',{roomid: route.params})
-                        playSound(require('../assets/sound/winner.mp3'))
+                        playSound(require('../assets/sound/button-click.mp3'))
                     }}>
-                        <Icon name="question" style={styles.rulesIcon} ></Icon>
+                        <Icon name="question" style={styles.rulesIcon}></Icon>
                     </TouchableOpacity>
                     
                     <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>

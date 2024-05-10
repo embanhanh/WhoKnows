@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
       },
 
     owlImage: {
@@ -72,7 +71,8 @@ const styles = StyleSheet.create({
     lobbyPassContainer: {
         position: "relative",
         width: "75%",
-        height: "25%",
+        height: 180,
+        marginTop: 250,
         borderRadius: RFValue(20),
         backgroundColor:  "#29353B",
         alignItems: "center",

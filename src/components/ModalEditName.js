@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     editNameContainer: {
         position: "relative",
         width: "75%",
-        height: "25%",
+        height: 180,
         borderRadius: RFValue(20),
         backgroundColor:  "#29353B",
         alignItems: "center",
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
 
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
     },
 })
 

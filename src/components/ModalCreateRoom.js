@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { View, Text, TouchableOpacity, Modal, Switch, TextInput, StyleSheet } from "react-native";
 import { Divider } from 'react-native-paper';
 import { RFValue } from "react-native-responsive-fontsize";
+import { Audio } from 'expo-av';
+import { useFocusEffect } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/FontAwesome5.js';
 import * as Animatable from 'react-native-animatable';
 import * as Clipboard from 'expo-clipboard';
+import SoundVolumeContext from "../AuthContext/SoundProvider.js";
 
 import NumericUpDown from "./NumericUpDown.js";
 
@@ -18,6 +21,22 @@ function ModalCreateRoom({
     const [passwordSwitch, setPasswordSwitch] = useState(false)
     const [password, setPassword] = useState('')
     const [maxPlayers, setMaxPlayers] = useState(4)
+    const { volume } = useContext(SoundVolumeContext)
+    const [sound, setSound] = useState(null)
+
+    async function playSound(filepath) {
+        const { sound } = await Audio.Sound.createAsync(filepath,{volume});
+        setSound(sound);
+        await sound.playAsync();
+    }
+
+    useFocusEffect(useCallback(() => {
+        return sound
+          ? () => {
+              sound.unloadAsync();
+            }
+          : undefined;
+      }, [sound]));
 
     const handleCopy = async () => {
         await Clipboard.setStringAsync(idroom);
@@ -76,7 +95,7 @@ function ModalCreateRoom({
                         trackColor={{ false: "#767577", true: "#F8C630" }}
                         thumbColor={passwordSwitch ? "#f4f3f4" : "#f4f3f4"}
                         ios_backgroundColor="#3e3e3e"
-                        onValueChange={()=>setPasswordSwitch(!passwordSwitch)}
+                        onValueChange={()=>{setPasswordSwitch(!passwordSwitch); playSound(require('../assets/sound/toggle.mp3'))}}
                         value={passwordSwitch}
                         />
                         {passwordSwitch && (
@@ -122,9 +141,9 @@ function ModalCreateRoom({
 const styles = StyleSheet.create({
     createContainer: {
         backgroundColor: "#1E1E1E",
-        top: "24%",
+        marginTop: 150,
         width: "80%",
-        height: "47%",
+        height: 350,
         alignSelf: "center",
         justifyContent: "center",
         borderRadius: RFValue(20),
@@ -246,7 +265,7 @@ const styles = StyleSheet.create({
 
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
     },
 })
 

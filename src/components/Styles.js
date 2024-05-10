@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
 
     backgroundBehindText: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: "#6938EF",
+        backgroundColor: "#E67C1E",
         borderRadius: 15,
     },
     textButton: {
@@ -139,14 +139,14 @@ const styles = StyleSheet.create({
 
     //Home
     container: {
-        flex: 1,
-        paddingTop: "20%",
+        height: 760,
+        paddingTop: 72,
     },
 
     backgroundImage: {
         flex: 1,
         width: '100%',
-        height: '100%',
+        height: 760,
         resizeMode: "cover",
     },
     
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
         top: "20%", 
         marginHorizontal: "5%",
         width: "90%",
-        height: "27%",
+        height: 200,
         backgroundColor: "#363442",
         borderRadius: RFValue(10),
         elevation: 5, 
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginHorizontal: "5%",
         borderRadius: 10,
-        height: "10%",
+        height: 44,
         marginTop: "10%",
     },
     textTools: {
@@ -272,9 +272,9 @@ const styles = StyleSheet.create({
     roomImage: {
         resizeMode: "stretch",
         marginLeft: "4%",
-        marginBottom: "12%",
+        marginBottom: 43,
         width: "56%",
-        height: "170%",
+        height: 155,
         position: "relative",
     },
     textRoomNumber: {
