@@ -325,6 +325,7 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         justifyContent: 'space-between',
         marginBottom: "5%",
+        flex: 1
     },
     gameToolsContainer: {
         flex: 1,
