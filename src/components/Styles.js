@@ -139,14 +139,12 @@ const styles = StyleSheet.create({
 
     //Home
     container: {
-        height: 760,
-        paddingTop: 72,
+        height: "100%",
+        paddingTop: 30,
     },
 
     backgroundImage: {
-        flex: 1,
         width: '100%',
-        height: 760,
         resizeMode: "cover",
     },
     
@@ -265,42 +263,35 @@ const styles = StyleSheet.create({
     },
     //GameRoom
     roomInfo: {
-        flex: 1.5,
+        flex: 2,
         alignItems: "center",
         justifyContent: "center",
+        flexDirection: "row"
     },    
     roomImage: {
-        resizeMode: "stretch",
-        marginLeft: "4%",
-        marginBottom: 43,
-        width: "56%",
-        height: 155,
-        position: "relative",
+        resizeMode: "cover",
+        height: "100%",
+        justifyContent: "center",
+        alignItems:"center",
+        marginTop: -10
+
     },
     textRoomNumber: {
-        position: 'absolute',
-        bottom: "90%",
         color: 'black', 
         fontSize: RFValue(15), 
         fontWeight: 'bold', 
-        padding: 5, 
     },
     textWord: {
-        bottom: "45%",
-        position: 'absolute',
         color: 'black', 
         fontSize: RFValue(24),
         fontWeight: 'bold', 
-        padding: 5, 
     },
     homeButton: {
-        position: 'absolute',
         borderRadius: 25,
         borderColor: "white",
         alignItems: "center",
         justifyContent: "center",
-        right: "6%",
-        top: "-30%",
+        marginTop: 5
     },
     homeIcon: {
         fontSize: RFValue(30),
@@ -310,12 +301,10 @@ const styles = StyleSheet.create({
     },
 
     characterGif: {
-        position: 'absolute',
-        resizeMode: "stretch",
-        width: "20%",
-        height: "75%",
-        left: "2%",
-        top: "7%",
+        resizeMode: "center",
+        width: "90%",
+        height: "60%",
+        marginTop:3
     },
     playContainer: {
         flex: 9,
@@ -331,6 +320,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         position: "relative",
+        marginTop: 20
     },
     rulesButton: {
         backgroundColor: "#353B63",

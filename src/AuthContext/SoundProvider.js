@@ -1,11 +1,17 @@
 
 import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Audio } from 'expo-av';
 
 const SoundVolumeContext = createContext();
 
 export const SoundVolumeProvider = ({ children }) => {
     const [volume, setVolume] = useState(1.0);
+
+    async function playSound(filepath) {
+        const { sound } = await Audio.Sound.createAsync(filepath,{volume});
+        await sound.playAsync();
+    }
     
     useEffect(() => {
         const fetchVolume = async () => {
@@ -33,7 +39,7 @@ useEffect(() => {
 }, [volume]);
 
 return (
-    <SoundVolumeContext.Provider value={{ volume, setVolume }}>
+    <SoundVolumeContext.Provider value={{ volume, setVolume, playSound }}>
       {children}
     </SoundVolumeContext.Provider>
   );

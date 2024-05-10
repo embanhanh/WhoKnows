@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     chatBox: {
         borderRadius: RFValue(20),
         width: "90%",
-        marginBottom: 25,
         backgroundColor: "#171D63",
     },
 })

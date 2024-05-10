@@ -1,8 +1,7 @@
 import React, { useState, useContext, useCallback } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, Modal, Alert } from "react-native";
+import { View, Text, TouchableOpacity, SafeAreaView, ImageBackground, Alert, Dimensions } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { Audio } from 'expo-av';
 
 import styles from "../components/Styles.js";
 import LogoGame from "../components/logoGame.js";
@@ -18,8 +17,7 @@ import SoundVolumeContext from "../AuthContext/SoundProvider.js";
 function Home() {
     const {user} = useContext(userContext)
     const navigation = useNavigation();
-    const { volume } = useContext(SoundVolumeContext)
-    const [sound, setSound] = useState(null)
+    const { playSound } = useContext(SoundVolumeContext)
 
     const [isloading, setIsloading] = useState(false)
     // Modal variables 
@@ -30,21 +28,6 @@ function Home() {
     // Room data
     const [roomData, setRooms] = useState([]);
     const [dataRoom, setDataRoom] = useState({})
-
-    async function playSound(filepath) {
-        const { sound } = await Audio.Sound.createAsync(filepath,{volume});
-        setSound(sound);
-        await sound.playAsync();
-    }
-
-    useFocusEffect(useCallback(() => {
-        return sound
-          ? () => {
-              sound.unloadAsync();
-            }
-          : undefined;
-      }, [sound]));
-
 
     const handleProfile = () => {
         navigation.navigate('Profile');
@@ -165,14 +148,14 @@ function Home() {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.createRoomButton} onPress={() => {createModalVisible(true); playSound(require('../assets/sound/button-click.mp3'))}}>
+                        <TouchableOpacity style={styles.createRoomButton} onPress={() => {playSound(require('../assets/sound/button-click.mp3'));createModalVisible(true); }}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Tạo Phòng
                             </Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.findRoomButton} onPress={() => {findModalVisible(true); playSound(require('../assets/sound/button-click.mp3'))}}>
+                        <TouchableOpacity style={styles.findRoomButton} onPress={() => {playSound(require('../assets/sound/button-click.mp3'));findModalVisible(true); }}>
                             <View style={styles.backgroundBehindText}/>
                             <Text style={styles.textButton}>
                                 Tìm Phòng
