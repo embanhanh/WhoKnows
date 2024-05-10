@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     resultContainer: {
         position: "relative",
         width: "85%",
-        height: "80%",
+        height: 580,
         borderRadius: RFValue(15),
         backgroundColor:  "#1E1E1E",
         alignItems: "center",

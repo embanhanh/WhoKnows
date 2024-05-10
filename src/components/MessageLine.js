@@ -25,10 +25,10 @@ const MessageLine = ({ displayName, message, role }) => {
 
 const styles = StyleSheet.create({
     messageLineContainer: {
-        height: "13%",
         width: "90%", 
         flexDirection:"row", 
         marginLeft: "5%",
+        marginBottom: 5
     },
     userName: {
         fontSize: RFValue(13),
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     messageText: {
         fontSize: RFValue(13),
         color: "white",
-        maxWidth: "50%",
+        maxWidth: "75%"
     },
 });
 

@@ -69,9 +69,9 @@ function ModalFindRoom({
 const styles = StyleSheet.create({
     findRoomContainer: {
         backgroundColor: "#1E1E1E",
-        top: "20%",
+        marginTop: 150,
         width: "80%",
-        height: "57%",
+        height: 400,
         alignSelf: "center",
         justifyContent: "center",
         borderRadius: RFValue(15),

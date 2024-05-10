@@ -36,14 +36,13 @@ function ChatBox({
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false} 
                 contentContainerStyle={{
-                justifyContent: "flex-end", 
+                justifyContent: "flex-start", 
                 paddingVertical: "10%",
                 paddingHorizontal: "1%",
                 flexGrow: 1
             }}
             >
                 {
-                    
                     chats?.map(({ displayName, message, id}, index) => (
                         <MessageLine key={index} displayName={displayName} message={message} role={id === 'system' && 'System' || id === host && 'Manager' || id === user.uid && 'You'}/>
                     ))
@@ -69,7 +68,6 @@ const styles = StyleSheet.create({
     chatBox: {
         borderRadius: RFValue(20),
         width: "90%",
-        marginBottom: "7%",
         backgroundColor: "#171D63",
     },
 })

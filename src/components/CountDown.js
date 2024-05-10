@@ -27,15 +27,12 @@ function CountDown( ) {
 
 const styles = StyleSheet.create({
     timeClock:{
-        position: 'absolute',
         flexDirection: "row",
         borderRadius: RFValue(25),
         alignItems: "center",
         justifyContent: "space-between",
-        left: "2%",
-        right: "74%",
-        top: "-35%",
         backgroundColor: "purple",
+        marginTop: 10
     },
     clockIcon: {
         fontSize: RFValue(20),
