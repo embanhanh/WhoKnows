@@ -128,8 +128,7 @@ function Profile() {
                     <Text style={styles.textProfile}>
                         {userName}  
                     </Text>
-                    <Text style={styles.textProfile}>  </Text>
-                    <TouchableOpacity style={styles.iconEdit} onPress={() => {setEditVisible(true)}}>
+                    <TouchableOpacity style={styles.iconEditContainer} onPress={() => {setEditVisible(true)}}>
                         <Icon name="edit" style={styles.iconEdit}></Icon>
                     </TouchableOpacity>
                 </View>

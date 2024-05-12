@@ -79,9 +79,10 @@ const styles = StyleSheet.create({
 
     backgroundBehindText: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: "#E67C1E",
+        backgroundColor: "#094E43",
         borderRadius: 15,
     },
+
     textButton: {
         fontSize: 20,
         color: "white",
@@ -225,7 +226,10 @@ const styles = StyleSheet.create({
     textProfile: {
         fontSize: 20,
         color: "white",
+        marginRight: "3%",
+        fontWeight: "bold",
     },
+
     tools: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -235,6 +239,7 @@ const styles = StyleSheet.create({
         height: 44,
         marginTop: "10%",
     },
+    
     textTools: {
         fontSize: 22,
         color: "white",
@@ -254,8 +259,12 @@ const styles = StyleSheet.create({
         fontSize: RFValue(30),
     },
     displayUserName: {
-        marginTop: "5%",
+        marginTop: "3%",
         flexDirection: 'row',
+    },
+    iconEditContainer: {
+        justifyContent: "center",
+        marginTop: "1%",
     },
     iconEdit: {
         color: "white",
