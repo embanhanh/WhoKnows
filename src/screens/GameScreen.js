@@ -19,8 +19,9 @@ import ChatBox from "../components/chats.js";
 import { socket } from "../util/index.js";
 import SoundVolumeContext from "../AuthContext/SoundProvider.js";
 
+const {  height } = Dimensions.get('window');
+
 function GameScreen({route}) {
-    const {  height } = Dimensions.get('window');
     const navigation = useNavigation();
     const {user} = useContext(userContext)
     const keywords = useContext(keywordContext)
@@ -202,8 +203,9 @@ function GameScreen({route}) {
                     <View style={styles.roomInfo}>
                         <View style={{flex: 1, height: "100%", marginRight: 10}}>
                             <CountDown /> 
-                            {isGhost && roomInfo.isStart &&<Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
-                            || roomInfo.isStart && <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>}
+                            {/* {isGhost && roomInfo.isStart &&<Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
+                            || roomInfo.isStart && <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>} */}
+                            <Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
                         </View>
                         <View style={{flex: 2, height: "100%"}}>
                             <ImageBackground source={require('../assets/img/RoomInfo.png')} style={styles.roomImage}>
@@ -225,6 +227,7 @@ function GameScreen({route}) {
                                 (<PlayerCard key={index} bubbleType={index%2==0?"left":"right"} avatarAlignment={index%2==0?"flex-start":"flex-end"}
                                     isManager={member.Id === roomInfo.roomMaster} isYou={member.Id === user.uid} displayName={member.displayName}  isVoted={isVoted}
                                     answer={member.answer} answering={((roomInfo.isStartVote || roomInfo.isStartAnswer)&&member.Id === roomInfo.roomMembers[roomInfo.memberAnswer]?.Id)||(roomInfo.isGuessKeyword && member.isGhost)} 
+                                    // answer={"..."} answering={true}
                                     handleVote={handleVote} userId={member.Id} containerWidth={"50%"} isStartVote={roomInfo.isStartVote} isGhost={isGhost && member.isGhost} isStart={roomInfo.isStart}
                                     isReady={member.isReady} playerNumber={index + 1} avatar={member.photoURL}
                                 ></PlayerCard>)

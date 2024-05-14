@@ -28,6 +28,7 @@ function InputMessage({
 
 const styles = StyleSheet.create({
     inputContainer: {
+        position: "absolute",
         zIndex: 200,
         flexDirection: 'row',
         alignItems: 'center',
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#00FFDF",
         borderRadius: RFValue(15),
         justifyContent: "space-between",
-        marginBottom: "60%"
+        bottom: "70%"
     },
     textInput:{
         fontSize: RFValue(16),
