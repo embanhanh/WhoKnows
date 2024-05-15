@@ -70,10 +70,10 @@ const styles = StyleSheet.create({
     },
     owlImage: {
         position: "absolute",
-        width: '35%',
-        height: '65%',
-        top: "-61%",
-        left: "-1%",
+        width: 100,
+        height: 120,
+        bottom: 170,
+        left: 0
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,

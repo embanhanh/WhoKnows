@@ -48,7 +48,7 @@ function ModalAvatar({ handleClose, confirmAvatar }) {
                                     style={{ width: 50, 
                                             height: 50, 
                                             borderRadius: 50, 
-                                            marginTop: "30%", 
+                                            marginTop: 10, 
                                             borderWidth: selectedImage === url ? 2 : 0,
                                             borderColor: selectedImage === url ? 'yellow' : 'transparent'}}
                                 />  
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     },
 
     avatarListContainer: {
-        flex: 2.5,
+        // flex: 2.5,
         flexDirection: 'row',
         flexWrap: "wrap",
         justifyContent: 'space-between',
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
         marginHorizontal: "10%",
         backgroundColor: "#121212",
         borderRadius: 20,
+        paddingBottom: 10
     },
 
     buttonContainer: {

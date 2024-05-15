@@ -81,15 +81,15 @@ const styles = StyleSheet.create({
 
     owlImage: {
         position: "absolute",
-        width: '35%',
-        height: '60%',
-        top: "-57.2%",
-        left: "0%",
+        width: 120,
+        height: 140,
+        bottom: 245,
+        left: 0
     },
 
     voteResultContainer: {
         width: "85%",
-        height: "32%",
+        height: 250,
         borderRadius: RFValue(20),
         backgroundColor:  "#1E1E1E",
         alignItems: "center",
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     titleContainer: {
         justifyContent: "center",
         alignItems: "center",
-        marginVertical: "5%"
+        marginVertical: 20
     },
 
     titleText: {
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#121212",
         width: "85%",
-        marginBottom: "7%",
+        marginBottom: 25,
         borderRadius: RFValue(20),
     }, 
 
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
         justifyContent: "space-between",
-        marginBottom: "7%",
-        height: "auto"
+        // height: "100%",
+       alignItems: "center",
     },
 
     closeButton: {

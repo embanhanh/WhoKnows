@@ -205,12 +205,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25, 
         shadowRadius: 3.84, 
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
     },
     avatar: {
-        width: "31.5%",
-        height: "50%",
-        borderRadius: RFValue(100),
+        width: 120,
+        height: 120,
+        borderRadius: RFValue(999),
         backgroundColor: "white",
         overflow: 'hidden',
         shadowColor: '#000',
@@ -317,13 +317,14 @@ const styles = StyleSheet.create({
     },
     playContainer: {
         flex: 9,
+        justifyContent:"space-between",
     },
     joinedPlayer: {
         flexDirection: 'row',
         flexWrap: "wrap",
         justifyContent: 'space-between',
         marginBottom: "5%",
-        flex: 1
+        // flex: 1
     },
     gameToolsContainer: {
         flex: 1,

@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#00FFDF",
         borderRadius: RFValue(15),
         justifyContent: "space-between",
-        bottom: "70%"
+        bottom: 200
     },
     textInput:{
         fontSize: RFValue(16),

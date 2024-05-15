@@ -183,9 +183,21 @@ function GameScreen({route}) {
     
     useFocusEffect(useCallback(()=>{
         if(roomInfo.isShowResult){
+            if(isGhost){
+                if(roomInfo.winer !== "Village"){
+                    playSound(require('../assets/sound/winner.mp3'))
+                }else{
+                    playSound(require('../assets/sound/loser.mp3'))
+                }
+            }else{
+                if(roomInfo.winer === "Village"){
+                    playSound(require('../assets/sound/winner.mp3'))
+                }else{
+                    playSound(require('../assets/sound/loser.mp3'))
+                }
+            }
             resultModalVisible(true)
             describeModalVisible(false)
-            playSound(require('../assets/sound/winner.mp3'))
         }
     },[roomInfo.isShowResult]))
     useFocusEffect(useCallback(()=>{
@@ -203,9 +215,8 @@ function GameScreen({route}) {
                     <View style={styles.roomInfo}>
                         <View style={{flex: 1, height: "100%", marginRight: 10}}>
                             <CountDown /> 
-                            {/* {isGhost && roomInfo.isStart &&<Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
-                            || roomInfo.isStart && <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>} */}
-                            <Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
+                            {isGhost && roomInfo.isStart &&<Image source={require('../assets/img/role-Ghost.png')} style={styles.characterGif}></Image>
+                            || roomInfo.isStart && <Image source={require('../assets/img/role-Villager.png')} style={styles.characterGif}></Image>}
                         </View>
                         <View style={{flex: 2, height: "100%"}}>
                             <ImageBackground source={require('../assets/img/RoomInfo.png')} style={styles.roomImage}>
@@ -227,7 +238,6 @@ function GameScreen({route}) {
                                 (<PlayerCard key={index} bubbleType={index%2==0?"left":"right"} avatarAlignment={index%2==0?"flex-start":"flex-end"}
                                     isManager={member.Id === roomInfo.roomMaster} isYou={member.Id === user.uid} displayName={member.displayName}  isVoted={isVoted}
                                     answer={member.answer} answering={((roomInfo.isStartVote || roomInfo.isStartAnswer)&&member.Id === roomInfo.roomMembers[roomInfo.memberAnswer]?.Id)||(roomInfo.isGuessKeyword && member.isGhost)} 
-                                    // answer={"..."} answering={true}
                                     handleVote={handleVote} userId={member.Id} containerWidth={"50%"} isStartVote={roomInfo.isStartVote} isGhost={isGhost && member.isGhost} isStart={roomInfo.isStart}
                                     isReady={member.isReady} playerNumber={index + 1} avatar={member.photoURL}
                                 ></PlayerCard>)
@@ -259,7 +269,7 @@ function GameScreen({route}) {
 
                         <TouchableOpacity style={styles.rulesButton} onPress={()=>{
                             socket.emit('log-roominfo',{roomid: route.params})
-                            playSound(require('../assets/sound/button-click.mp3'))
+                            playSound(require('../assets/sound/loser.mp3'))
                         }}>
                             <Icon name="question" style={styles.rulesIcon}></Icon>
                         </TouchableOpacity>

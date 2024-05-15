@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: "4%",
     paddingHorizontal: "5%",
-    height: "20%"
   },
   avatarContainer: {
     position: "relative",

@@ -119,7 +119,7 @@ function Profile() {
                     } style={{ 
                         width: "100%", 
                         height: "100%", 
-                        borderRadius: 100, 
+                        borderRadius: 999, 
                         overflow: 'hidden',
                     }}></Image>
                 </TouchableOpacity>

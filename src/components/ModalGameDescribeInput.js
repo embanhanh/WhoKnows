@@ -62,16 +62,17 @@ const styles = StyleSheet.create({
 
     owlImage: {
         position: "absolute",
-        width: '35%',
-        height: '65%',
-        top: "-61%",
-        left: "-3%",
+        bottom: 192,
+        left: 5,
+        height: 120,
+        width: 100
     },
 
     describeContainer: {
         position: "relative",
         width: "75%",
-        height: 180,
+        height: 200,
+        paddingVertical: 10,
         marginTop: 250,
         borderRadius: RFValue(20),
         backgroundColor:  "#29353B",
@@ -89,10 +90,10 @@ const styles = StyleSheet.create({
         paddingLeft: "6%",
         justifyContent: "center",
         width: "80%",
-        height: "23%",
+        height: 45,
         backgroundColor: "#00FFDF",
         borderRadius: RFValue(15),
-        marginTop: "6%",
+        marginTop: 10,
     },
 
     textInput:{
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        marginTop: "6%",
+        marginTop: 20,
         alignItems: 'center',
         flexDirection: "row",
         justifyContent: "space-between",

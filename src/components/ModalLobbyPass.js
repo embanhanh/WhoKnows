@@ -62,16 +62,16 @@ const styles = StyleSheet.create({
 
     owlImage: {
         position: "absolute",
-        width: '35%',
-        height: '65%',
-        top: "-61%",
-        left: "-3%",
+        width: 100,
+        height: 120,
+        bottom:192,
+        left: 0,
     },
 
     lobbyPassContainer: {
         position: "relative",
         width: "75%",
-        height: 180,
+        height: 200,
         marginTop: 250,
         borderRadius: RFValue(20),
         backgroundColor:  "#29353B",
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: RFValue(18), 
         fontWeight: "bold", 
-        marginTop: "8%"
+        marginTop: 20
     },
 
     inputContainer: {
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
 
     mainButton: {
         position: "relative",
-        paddingVertical: "3%",
+        paddingVertical: 10,
         justifyContent: 'center',
         alignItems: 'center',
         minWidth: "80%",

@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         maxHeight: "45%",
+        marginBottom: 5
     },
 
     chatBox: {
