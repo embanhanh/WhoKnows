@@ -9,7 +9,8 @@ import {
     PROJECT_ID,
     STORAGE_BUCKET,
     MESSAGING_SENDER_ID,
-    APP_ID
+    APP_ID,
+    MEASUREMENT_ID
 } from "@env"
 
 
@@ -19,7 +20,8 @@ const firebaseConfig = {
   projectId: PROJECT_ID,
   storageBucket: STORAGE_BUCKET,
   messagingSenderId: MESSAGING_SENDER_ID,
-  appId: APP_ID
+  appId: APP_ID,
+  measurementId: MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
@@ -27,6 +29,6 @@ const app = initializeApp(firebaseConfig);
 export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
 });
-export const database = getFirestore()
+export const database = getFirestore(app)
 
 export default app

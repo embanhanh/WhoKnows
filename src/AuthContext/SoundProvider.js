@@ -1,5 +1,5 @@
 
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Audio } from 'expo-av';
 
@@ -7,10 +7,27 @@ const SoundVolumeContext = createContext();
 
 export const SoundVolumeProvider = ({ children }) => {
     const [volume, setVolume] = useState(1.0);
+    const backgroundMusicRef = useRef(null);
 
     async function playSound(filepath) {
         const { sound } = await Audio.Sound.createAsync(filepath,{volume});
         await sound.playAsync();
+    }
+
+    async function playBackgroundMusic(filepath) {
+        if (backgroundMusicRef.current) {
+            await backgroundMusicRef.current.unloadAsync();
+        }
+        const { sound } = await Audio.Sound.createAsync(filepath, { volume, isLooping: true });
+        backgroundMusicRef.current = sound;
+        await sound.playAsync();
+    }
+
+    async function stopBackgroundMusic() {
+        if (backgroundMusicRef.current) {
+            await backgroundMusicRef.current.unloadAsync();
+            backgroundMusicRef.current = null;
+        }
     }
     
     useEffect(() => {
@@ -38,8 +55,14 @@ useEffect(() => {
     saveVolume();
 }, [volume]);
 
+useEffect(() => {
+    if (backgroundMusicRef.current) {
+        backgroundMusicRef.current.setVolumeAsync(volume);
+    }
+}, [volume]);
+
 return (
-    <SoundVolumeContext.Provider value={{ volume, setVolume, playSound }}>
+    <SoundVolumeContext.Provider value={{ volume, setVolume, playSound, playBackgroundMusic, stopBackgroundMusic }}>
       {children}
     </SoundVolumeContext.Provider>
   );

@@ -17,7 +17,7 @@ import SoundVolumeContext from "../AuthContext/SoundProvider.js";
 function Home() {
     const {user} = useContext(userContext)
     const navigation = useNavigation();
-    const { playSound } = useContext(SoundVolumeContext)
+    const { playSound, playBackgroundMusic, stopBackgroundMusic } = useContext(SoundVolumeContext)
 
     const [isloading, setIsloading] = useState(false)
     // Modal variables 
@@ -27,7 +27,15 @@ function Home() {
     const [lobbyPassVisible, lobbyPassModalVisible] = useState(false);
     // Room data
     const [roomData, setRooms] = useState([]);
-    const [dataRoom, setDataRoom] = useState({})
+    const [dataRoom, setDataRoom] = useState({});
+
+    useFocusEffect(useCallback(() => {
+        playBackgroundMusic(require('../assets/sound/theme-home.mp3'));
+
+        return () =>{
+            stopBackgroundMusic()
+        }
+    }, []));
 
     const handleProfile = () => {
         navigation.navigate('Profile');

@@ -1,5 +1,5 @@
 import { Platform } from "react-native";
 import io from "socket.io-client";
 
-export const BaseUrl = Platform.OS === 'android'?  'http://localhost:3000': 'http://10.0.2.2:3000';
-export const socket = io('http://192.168.0.101:3000')
+// export const BaseUrl = Platform.OS === 'android'?  'http://localhost:3000': 'http://10.0.2.2:3000';
+export const socket = io('https://stark-castle-80869-734f9920aa99.herokuapp.com')

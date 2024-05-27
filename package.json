@@ -1,5 +1,5 @@
 {
-  "name": "chatapp",
+  "name": "whoknows",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -21,10 +21,11 @@
     "@types/react": "~18.2.45",
     "@ui-kitten/components": "^5.3.1",
     "expo": "~50.0.11",
-    "expo-av": "^14.0.3",
+    "expo-av": "~13.10.6",
     "expo-clipboard": "~5.0.1",
     "expo-dev-client": "~3.3.11",
     "expo-font": "~11.10.3",
+    "expo-modules-core": "~1.11.13",
     "expo-status-bar": "~1.11.1",
     "firebase": "^10.8.1",
     "lottie-react-native": "^6.7.0",

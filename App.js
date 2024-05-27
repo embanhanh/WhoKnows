@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNetInfo } from '@react-native-community/netinfo'
 import {  collection, getDocs } from "firebase/firestore";
 
@@ -43,18 +43,26 @@ export default function App() {
     }
   },[user])
 
-  const getKeywords = async ()=>{
-    const docRef = collection(database, "keywords")
-    const keywords = await getDocs(docRef)
-    setKeyword(keywords.docs.map(keyword => keyword.data()))
-  }
+  const getKeywords = useCallback(async ()=>{
+    try{
+      const docRef = collection(database, "keywords")
+      const keywords = await getDocs(docRef)
+      setKeyword(keywords.docs.map(keyword => keyword.data()))
+    }catch(e){
+      console.error('Error fetching avatar URLs:', e);
+    }
+  },[]) 
 
-  const getUrlAvatar = async ()=>{
-    const docRef = collection(database,"urlImages")
-    const urlAvatar = await getDocs(docRef)
-    const final = urlAvatar.docs.map(avatars => avatars.data())
-    setUrlAvatar(final[0]?.avatar)
-  }
+  const getUrlAvatar =  useCallback(async ()=>{
+    try{
+      const docRef = collection(database,"urlImages")
+      const urlAvatar = await getDocs(docRef)
+      const final = urlAvatar.docs.map(avatars => avatars.data())
+      setUrlAvatar(final[0]?.avatar)
+    }catch(e){
+      console.error('Error fetching avatar URLs:', e);
+    }
+  },[]) 
   
 
   useEffect(()=>{
