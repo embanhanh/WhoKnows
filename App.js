@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { onAuthStateChanged } from 'firebase/auth';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNetInfo } from '@react-native-community/netinfo'
 import {  collection, getDocs } from "firebase/firestore";
 
@@ -30,6 +30,7 @@ export default function App() {
     const unsubscribe = onAuthStateChanged(auth,
       async authuser =>{
         if(authuser){
+          console.log(authuser);
           setUser(authuser)
         } else{
           console.log("out");
@@ -81,12 +82,12 @@ export default function App() {
   if(isloading){
     return <LoadingScreen />;
   }
-
+  
   return (
-    <SoundVolumeProvider>
-      <avatarContext.Provider value={urlAvatar}>
-        <keywordContext.Provider value={keyword}>
-          <userContext.Provider value={{user}}>
+    <userContext.Provider value={{user}}>
+      <SoundVolumeProvider>
+        <avatarContext.Provider value={urlAvatar}>
+          <keywordContext.Provider value={keyword}>
             <NavigationContainer >
               <Stack.Navigator screenOptions={{headerShown: false}} >
                 {
@@ -98,10 +99,10 @@ export default function App() {
                 }  
               </Stack.Navigator>
             </NavigationContainer>
-          </userContext.Provider>
-        </keywordContext.Provider>
-      </avatarContext.Provider>
-    </SoundVolumeProvider>
+          </keywordContext.Provider>
+        </avatarContext.Provider>
+      </SoundVolumeProvider>
+    </userContext.Provider>
   );
 }
 

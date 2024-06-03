@@ -11,6 +11,9 @@
       "distribution": "internal"
     },
     "production": {
+      "android": {
+        "buildType": "apk"
+      },
       "env": {
         "API_KEY": "AIzaSyCMrSJDpZSO51QtXptBkjbLPO9QWdzRA5M",
         "AUTH_DOMAIN": "myreactnativeapp-416913.firebaseapp.com",

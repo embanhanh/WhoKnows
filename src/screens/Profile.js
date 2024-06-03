@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import { Alert,View, Text, TouchableOpacity, Image } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import { doc, deleteDoc } from "firebase/firestore";
 import { signOut, updateProfile } from "firebase/auth";
 import { useNavigation } from "@react-navigation/core";
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import styles from "../components/Styles.js";
-import { auth, database } from "../../firebaseconfig";
+import { auth } from "../../firebaseconfig";
 import userContext from "../AuthContext/AuthProvider";
 import ModalEditName from "../components/ModalEditName.js";
 import ModalAvatar from "../components/ModalAvatar.js";
@@ -100,9 +100,13 @@ function Profile() {
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.tools} onPress={async() => {
-                        await signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))
-                        const refDoc = doc(database,"user",user?.uid)
-                        await deleteDoc(refDoc)
+                        try{
+                            await GoogleSignin.revokeAccess();
+                            await GoogleSignin.signOut();
+                            await signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))
+                        }catch(e){
+                            console.log(e);
+                        }
                     }}
                 >
                     <View style={styles.square}>    

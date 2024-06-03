@@ -1,0 +1,51 @@
+{
+  "project_info": {
+    "project_number": "557430720915",
+    "project_id": "myreactnativeapp-416913",
+    "storage_bucket": "myreactnativeapp-416913.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557430720915:android:39698794091faa84628066",
+        "android_client_info": {
+          "package_name": "com.embanhanh.whoknows"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557430720915-i5kbff2us734s3dp3tvjinaor7p9pnng.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.embanhanh.whoknows",
+            "certificate_hash": "17d0994487368f175c80b3c5c0ced64c80f08575"
+          }
+        },
+        {
+          "client_id": "557430720915-rtbdkchu8vfuukmgf182b4l8849jb9c0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.embanhanh.whoknows",
+            "certificate_hash": "3beb4239739299d0c02bfbcf93af9d7c29434b04"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfG5vZ9dWamjKKFqha7O8zG1Y5v0l_Wl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557430720915-7cdupqhfkg2gq57vmpjktukth4i82g1d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

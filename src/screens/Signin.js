@@ -2,14 +2,40 @@ import React, { useRef, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Pressable, Alert, SafeAreaView } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithCredential } from 'firebase/auth'
 
 import styles from "../components/Styles.js";
 import LogoGame from "../components/logoGame.js";
 import { auth } from "../../firebaseconfig.js"
 import LoadingScreen from "./LoadingScreen.js";
+import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin'
 
 function Signin({ navigation }) {
+
+    GoogleSignin.configure(
+        {
+            webClientId:"557430720915-7cdupqhfkg2gq57vmpjktukth4i82g1d.apps.googleusercontent.com",
+            iosClientId: "557430720915-45ll33mu9lhe3lan26t9164kqb1gqnur.apps.googleusercontent.com"
+        }
+    )
+
+     const onGoogleButtonPress = async() =>{
+        // Check if your device supports Google Play
+        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+        // Get the users ID token
+        const { idToken } = await GoogleSignin.signIn();
+      
+        // Create a Google credential with the token
+        const googleCredential =  GoogleAuthProvider.credential(idToken);
+        // Sign-in the user with the credential
+        signInWithCredential(auth,googleCredential)
+            .then((user)=>{
+                // console.log(user);
+            })
+            .catch((e)=>{
+                console.log("login failed:", e);
+            });
+      }
 
     const passwordRef = useRef(null)
     const [email, setEmail] = useState('')
@@ -73,13 +99,21 @@ function Signin({ navigation }) {
                         <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={24} color="black" />
                     </TouchableOpacity>
                 </View>
-                
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.mainButton} onPress={handleLogin}>
                         <View style={styles.backgroundBehindText}/>
                         <Text style={styles.textButton}>
                             Đăng nhập
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.mainButton} onPress={onGoogleButtonPress}>
+                        <View style={styles.backgroundBehindText}/>
+                        <Text style={styles.textButton}>
+                            Đăng nhập bằng Google
                         </Text>
                     </TouchableOpacity>
                 </View>

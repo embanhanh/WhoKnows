@@ -259,8 +259,8 @@ function GameScreen({route}) {
                             >
                                 <Icon name="pencil"  style={styles.toolsIcon}></Icon>
                             </TouchableOpacity> :
-                            <TouchableOpacity style={user.uid === roomInfo.roomMaster && (countReady !== memberId.length /*|| countReady < 4*/)?styles.toolsButton:[styles.toolsButton, {backgroundColor: "#ffa500"}]}
-                                disabled={user.uid === roomInfo.roomMaster && (countReady !== memberId.length /*|| countReady < 4*/) }
+                            <TouchableOpacity style={user.uid === roomInfo.roomMaster && (countReady !== memberId.length || countReady < 4)?styles.toolsButton:[styles.toolsButton, {backgroundColor: "#ffa500"}]}
+                                disabled={user.uid === roomInfo.roomMaster && (countReady !== memberId.length || countReady < 4) }
                                 onPress={handleReadyCancelStart}
                             >
                                 <Text style={styles.startText}>{user.uid === roomInfo.roomMaster && "Bắt đầu" || isReady && "Hủy" || "Sẵn sàng"}</Text>
@@ -268,8 +268,7 @@ function GameScreen({route}) {
                         }
 
                         <TouchableOpacity style={styles.rulesButton} onPress={()=>{
-                            socket.emit('log-roominfo',{roomid: route.params})
-                            playSound(require('../assets/sound/loser.mp3'))
+                            console.log(height);
                         }}>
                             <Icon name="question" style={styles.rulesIcon}></Icon>
                         </TouchableOpacity>
