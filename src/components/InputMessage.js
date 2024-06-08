@@ -6,11 +6,12 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 
 function InputMessage({
-    handleSendMessage
+    handleSendMessage,
+    heightKeyboard
 }) {
     const [inputMessage, setInputMessage] = useState('');
     return ( 
-        <View style={styles.inputContainer}>
+        <View style={{...styles.inputContainer, bottom: heightKeyboard}}>
             <TextInput
                 autoFocus
                 style={styles.textInput}
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#00FFDF",
         borderRadius: RFValue(15),
         justifyContent: "space-between",
-        bottom: 200
+        // bottom: 200
     },
     textInput:{
         fontSize: RFValue(16),

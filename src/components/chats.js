@@ -9,8 +9,7 @@ import userContext from "../AuthContext/AuthProvider";
 function ChatBox({
     idRoom,
     host,
-    showTextInput,
-    setShowTextInput
+    setShowTextInput,
 }) {
 
     const {user} = useContext(userContext)
@@ -23,13 +22,6 @@ function ChatBox({
             socket.off('chats')
         }
     },[])
-    const handleSendMessage = async (inputMessage) => {
-        console.log(inputMessage);
-        if(inputMessage !== ''){
-            setShowTextInput(false)
-            socket.emit('send-msg',{idroom: idRoom, userName: user.displayName, message: inputMessage, userId: user.uid})
-        }
-    }
     return ( 
         <View style={styles.chatBoxContainer}>
             <ScrollView style={styles.chatBox}
@@ -48,9 +40,6 @@ function ChatBox({
                     ))
                 }
             </ScrollView>
-            {showTextInput && (
-                <InputMessage handleSendMessage={handleSendMessage}/>
-            )}
         </View>
     );
 }

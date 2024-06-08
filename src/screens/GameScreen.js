@@ -18,6 +18,7 @@ import ModalGameVoteResult from "../components/ModalGameVoteResult.js";
 import ChatBox from "../components/chats.js";
 import { socket } from "../util/index.js";
 import SoundVolumeContext from "../AuthContext/SoundProvider.js";
+import InputMessage from "../components/InputMessage.js";
 
 const {  height } = Dimensions.get('window');
 
@@ -113,6 +114,7 @@ function GameScreen({route}) {
 
     //Input message variable
     const [showTextInput, setShowTextInput] = useState(false);
+    const [heightKeyboard, setHeightKeyboard] = useState(0);
 
     const handleShowTextInput = () => {
         setShowTextInput(true);
@@ -124,9 +126,16 @@ function GameScreen({route}) {
     
     useFocusEffect(useCallback(() => {
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleHideTextInput);
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            (e) => {
+                setHeightKeyboard(e.endCoordinates.height);
+            }
+          );
         
         return () => {
             keyboardDidHideListener.remove();
+            keyboardDidShowListener.remove()
         };
     }, []));
 
@@ -209,6 +218,14 @@ function GameScreen({route}) {
         }
     },[roomInfo.isGuessKeyword]))
 
+    const handleSendMessage = async (inputMessage) => {
+        console.log(inputMessage);
+        if(inputMessage !== ''){
+            setShowTextInput(false)
+            socket.emit('send-msg',{idroom: route.params, userName: user.displayName, message: inputMessage, userId: user.uid})
+        }
+    }
+
     return ( 
             <ImageBackground source={require('../assets/img/Theme2.jpg')} style={{...styles.backgroundImage, height: height}} >
                 <View style={styles.container}>
@@ -249,8 +266,12 @@ function GameScreen({route}) {
                             )
                         } 
                         </View>
-                        <ChatBox idRoom={route.params} host={roomInfo.roomMaster} showTextInput={showTextInput} setShowTextInput={setShowTextInput}/>
+                        <ChatBox idRoom={route.params} host={roomInfo.roomMaster} showTextInput={showTextInput} setShowTextInput={setShowTextInput} heightKeyboard={heightKeyboard}/>
                     </View>
+
+                    {showTextInput && (
+                        <InputMessage handleSendMessage={handleSendMessage} heightKeyboard={heightKeyboard}/>
+                    )}
 
                     <View style={styles.gameToolsContainer}>
                         {roomInfo.isStart ?
