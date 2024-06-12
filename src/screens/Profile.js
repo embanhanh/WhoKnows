@@ -100,9 +100,12 @@ function Profile() {
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.tools} onPress={async() => {
+                        const isGoogleProvider = user.providerData.some((profile) => profile.providerId === 'google.com');
                         try{
-                            await GoogleSignin.revokeAccess();
-                            await GoogleSignin.signOut();
+                            if(isGoogleProvider){
+                                await GoogleSignin.revokeAccess();
+                                await GoogleSignin.signOut();
+                            }
                             await signOut(auth).then(()=>console.log("Log out success")).catch((e)=>Alert.alert("eror",e.Message))
                         }catch(e){
                             console.log(e);

@@ -24,7 +24,8 @@ const PlayerCard = ({
   isStart, 
   isReady,
   playerNumber,
-  isShowVoteResult
+  isShowVoteResult, 
+  isVoteResult
 }) => {
     const windowWidth = Dimensions.get('window').width;
     const avatarSize = windowWidth * 0.15; 
@@ -57,7 +58,7 @@ const PlayerCard = ({
             </Text>
           }
 
-          {!isEmpty && <View style={{position: "absolute", width: "43%", height: "58%", top: "-30%", right: "85%"}}>
+          {!isEmpty && !isVoteResult && <View style={{position: "absolute", width: "43%", height: "58%", top: "-30%", right: "85%"}}>
               <ImageBackground 
                 source={require('../assets/img/NumberOfPlayer.png')} 
                 style={[styles.numberBackground]}
@@ -77,10 +78,11 @@ const PlayerCard = ({
             <Icon name="check" style={styles.unReadyIcon}></Icon>
           </View>}  
 
-          {isStartVote && !isVoted && !isYou && 
+          {/* {isStartVote && !isVoted && !isYou &&  */}
           <TouchableOpacity onPress={()=>{handleVote(userId); }} style={{backgroundColor: "#21a3fb", padding: 2, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center"}}>
               <Text style={{fontSize:14, color: "#fff"}}>+ Vote</Text>
-          </TouchableOpacity>}
+          </TouchableOpacity>
+          {/* } */}
         </View>
         {bubbleType === 'left' && (answering || answer !== "") && (
             <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>

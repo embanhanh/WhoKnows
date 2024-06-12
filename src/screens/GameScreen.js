@@ -289,7 +289,7 @@ function GameScreen({route}) {
                         }
 
                         <TouchableOpacity style={styles.rulesButton} onPress={()=>{
-                            console.log(height);
+                            voteResultModalVisible(true)
                         }}>
                             <Icon name="question" style={styles.rulesIcon}></Icon>
                         </TouchableOpacity>
