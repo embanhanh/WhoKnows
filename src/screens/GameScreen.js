@@ -318,7 +318,7 @@ function GameScreen({route}) {
                                 handleConfirm={handleConfirm}
                             />
                         }
-
+                        
                         {
                             roundVisible && 
                             <ModalGameRoundEnd

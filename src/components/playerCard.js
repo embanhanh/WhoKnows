@@ -79,8 +79,8 @@ const PlayerCard = ({
           </View>}  
 
           {/* {isStartVote && !isVoted && !isYou &&  */}
-          <TouchableOpacity onPress={()=>{handleVote(userId); }} style={{backgroundColor: "#21a3fb", padding: 2, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center"}}>
-              <Text style={{fontSize:14, color: "#fff"}}>+ Vote</Text>
+          <TouchableOpacity onPress={()=>{handleVote(userId); }} style={{backgroundColor: "#21a3fb", padding: 5, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center", minWidth: 50}}>
+              <Text style={{fontSize:10, color: "#fff", fontWeight: "bold"}}>Bỏ phiếu</Text>
           </TouchableOpacity>
           {/* } */}
         </View>
