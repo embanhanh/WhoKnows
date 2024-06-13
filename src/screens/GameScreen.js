@@ -19,6 +19,7 @@ import ChatBox from "../components/chats.js";
 import { socket } from "../util/index.js";
 import SoundVolumeContext from "../AuthContext/SoundProvider.js";
 import InputMessage from "../components/InputMessage.js";
+import ModalGameRules from "../components/ModalGameRules.js";
 
 const {  height } = Dimensions.get('window');
 
@@ -50,6 +51,7 @@ function GameScreen({route}) {
     const [roundVisible, roundModalVisible] = useState(false);
     const [voteResultVisible, voteResultModalVisible] = useState(false);
     const [resultVisible, resultModalVisible] = useState(false);
+    const [rulesVisible, rulesModalVisible] = useState(false);
 
     const handleCloseDescribeModal = () =>{
         describeModalVisible(false)
@@ -65,6 +67,10 @@ function GameScreen({route}) {
 
     const handleCloseVoteResultModal = () =>{
         voteResultModalVisible(false)
+    }
+
+    const handleCloseRulesModal = () =>{
+        rulesModalVisible(false)
     }
 
     useFocusEffect(useCallback(()=>{
@@ -289,12 +295,12 @@ function GameScreen({route}) {
                         }
 
                         <TouchableOpacity style={styles.rulesButton} onPress={()=>{
-                            voteResultModalVisible(true)
+                            rulesModalVisible(true)
                         }}>
                             <Icon name="question" style={styles.rulesIcon}></Icon>
                         </TouchableOpacity>
                         
-                        <TouchableOpacity style={styles.historyButton} onPress={() => roundModalVisible(!roundVisible)}>
+                        <TouchableOpacity style={styles.historyButton} onPress={() => {playSound(require('../assets/sound/button-click.mp3')), roundModalVisible(!roundVisible)}}>
                             <Icon4 name="clipboard-text-clock"  style={styles.historyIcon}></Icon4>
                         </TouchableOpacity>
 
@@ -343,6 +349,11 @@ function GameScreen({route}) {
                                 handleCloseVoteResultModal={handleCloseVoteResultModal}
                                 roomMembers={roomInfo.roomMembers}
                             />
+                        }
+
+                        {
+                            rulesVisible &&
+                            <ModalGameRules handleCloseRulesModal={handleCloseRulesModal}/>
                         }
                     </View>
                 </View>
