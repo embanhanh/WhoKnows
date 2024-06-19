@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNetInfo } from '@react-native-community/netinfo'
@@ -27,9 +27,9 @@ export default function App() {
   const [keyword, setKeyword] = useState([])
   const [urlAvatar, setUrlAvatar] = useState([])
 
-  useEffect(()=>{
+  useFocusEffect(useCallback(()=>{
     NavigationBar.setVisibilityAsync('hidden');
-  },[])
+  },[]))
 
   useEffect(()=>{
     const unsubscribe = onAuthStateChanged(auth,

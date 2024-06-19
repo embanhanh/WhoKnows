@@ -28,6 +28,10 @@
       "package": "com.embanhanh.whoknows",
       "statusBar": {
         "hidden": true
+      },
+      "navigationBar": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "visible": "immersive"
       }
     },
     "web": {
