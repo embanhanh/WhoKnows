@@ -11,7 +11,7 @@ function InputMessage({
 }) {
     const [inputMessage, setInputMessage] = useState('');
     return ( 
-        <View style={{...styles.inputContainer, bottom: heightKeyboard}}>
+        <View style={{...styles.inputContainer, bottom: heightKeyboard + 5}}>
             <TextInput
                 autoFocus
                 style={styles.textInput}

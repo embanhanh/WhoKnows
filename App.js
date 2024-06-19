@@ -16,6 +16,7 @@ import GameScreen from './src/screens/GameScreen';
 import LoadingScreen from './src/screens/LoadingScreen';
 import Profile from './src/screens/Profile';
 import { SoundVolumeProvider } from './src/AuthContext/SoundProvider';
+import * as NavigationBar from 'expo-navigation-bar';
 
 const Stack = createStackNavigator()
 
@@ -25,6 +26,10 @@ export default function App() {
   const [isloading, setIsloading] = useState(true)
   const [keyword, setKeyword] = useState([])
   const [urlAvatar, setUrlAvatar] = useState([])
+
+  useEffect(()=>{
+    NavigationBar.setVisibilityAsync('hidden');
+  },[])
 
   useEffect(()=>{
     const unsubscribe = onAuthStateChanged(auth,

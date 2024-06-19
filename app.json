@@ -25,10 +25,16 @@
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.embanhanh.whoknows"
+      "package": "com.embanhanh.whoknows",
+      "statusBar": {
+        "hidden": true
+      }
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
+    },
+    "androidStatusBar": {
+      "visible": false
     },
     "plugins": [
       "expo-font",

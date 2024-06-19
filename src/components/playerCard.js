@@ -78,11 +78,11 @@ const PlayerCard = ({
             <Icon name="check" style={styles.unReadyIcon}></Icon>
           </View>}  
 
-          {/* {isStartVote && !isVoted && !isYou &&  */}
+          {isStartVote && !isVoted && !isYou && 
           <TouchableOpacity onPress={()=>{handleVote(userId); }} style={{backgroundColor: "#21a3fb", padding: 5, position: "absolute", top: 5,  borderRadius: 6, alignSelf: "center", minWidth: 50}}>
               <Text style={{fontSize:10, color: "#fff", fontWeight: "bold"}}>Bỏ phiếu</Text>
           </TouchableOpacity>
-          {/* } */}
+           } 
         </View>
         {bubbleType === 'left' && (answering || answer !== "") && (
             <ImageBackground source={require('../assets/img/Left.png')} style={styles.leftBubbleChat}>

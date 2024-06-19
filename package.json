@@ -26,6 +26,7 @@
     "expo-dev-client": "~3.3.11",
     "expo-font": "~11.10.3",
     "expo-modules-core": "~1.11.13",
+    "expo-navigation-bar": "~2.8.1",
     "expo-status-bar": "~1.11.1",
     "firebase": "^10.8.1",
     "lottie-react-native": "^6.7.0",
