@@ -27,9 +27,13 @@ export default function App() {
   const [keyword, setKeyword] = useState([])
   const [urlAvatar, setUrlAvatar] = useState([])
 
-  useFocusEffect(useCallback(()=>{
-    NavigationBar.setVisibilityAsync('hidden');
-  },[]))
+  const hideNavigationBar = useCallback(async () => {
+    await NavigationBar.setVisibilityAsync('hidden');
+  }, []);
+  
+  useEffect(() => {
+    hideNavigationBar();
+  }, [hideNavigationBar]);
 
   useEffect(()=>{
     const unsubscribe = onAuthStateChanged(auth,

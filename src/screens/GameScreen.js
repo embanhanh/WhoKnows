@@ -21,9 +21,9 @@ import SoundVolumeContext from "../AuthContext/SoundProvider.js";
 import InputMessage from "../components/InputMessage.js";
 import ModalGameRules from "../components/ModalGameRules.js";
 
-const {  height } = Dimensions.get('window');
 
 function GameScreen({route}) {
+    const {  height } = Dimensions.get('screen');
     const navigation = useNavigation();
     const {user} = useContext(userContext)
     const keywords = useContext(keywordContext)
@@ -232,8 +232,14 @@ function GameScreen({route}) {
         }
     }
 
-    return ( 
-            <ImageBackground source={require('../assets/img/Theme2.jpg')} style={{...styles.backgroundImage, height: height}} >
+    console.log("Height", height);
+
+    return (
+        // <View style={{backgroundColor: "red", flex: 1}}>
+            <ImageBackground source={require('../assets/img/Theme2.jpg')} style={{width: '100%',resizeMode: "stretch", height: height - 50,}} >
+                {showTextInput && (
+                        <InputMessage handleSendMessage={handleSendMessage} heightKeyboard={heightKeyboard}/>
+                    )}
                 <View style={styles.container}>
                     <View style={styles.roomInfo}>
                         <View style={{flex: 1, height: "100%", marginRight: 10}}>
@@ -275,9 +281,7 @@ function GameScreen({route}) {
                         <ChatBox idRoom={route.params} host={roomInfo.roomMaster} showTextInput={showTextInput} setShowTextInput={setShowTextInput} heightKeyboard={heightKeyboard}/>
                     </View>
 
-                    {showTextInput && (
-                        <InputMessage handleSendMessage={handleSendMessage} heightKeyboard={heightKeyboard}/>
-                    )}
+                    
 
                     <View style={styles.gameToolsContainer}>
                         {roomInfo.isStart ?
@@ -358,6 +362,7 @@ function GameScreen({route}) {
                     </View>
                 </View>
             </ImageBackground>
+        // </View> 
     );
 }
 

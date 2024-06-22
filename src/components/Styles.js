@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
 
     backgroundImage: {
         width: '100%',
-        resizeMode: "cover",
+        resizeMode: "cover"
     },
     
     findRoomButton: {
