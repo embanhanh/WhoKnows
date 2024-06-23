@@ -26,9 +26,6 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.embanhanh.whoknows",
-      "statusBar": {
-        "hidden": true
-      },
       "navigationBar": {
         "backgroundColor": "rgba(0, 0, 0, 0)",
         "visible": "immersive"
@@ -36,9 +33,6 @@
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
-    },
-    "androidStatusBar": {
-      "visible": false
     },
     "plugins": [
       "expo-font",

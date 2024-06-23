@@ -232,11 +232,10 @@ function GameScreen({route}) {
         }
     }
 
-    console.log("Height", height);
 
     return (
         // <View style={{backgroundColor: "red", flex: 1}}>
-            <ImageBackground source={require('../assets/img/Theme2.jpg')} style={{width: '100%',resizeMode: "stretch", height: height - 50,}} >
+            <ImageBackground source={require('../assets/img/Theme2.jpg')} style={{width: '100%',resizeMode: "stretch", height: height - 75,}} >
                 {showTextInput && (
                         <InputMessage handleSendMessage={handleSendMessage} heightKeyboard={heightKeyboard}/>
                     )}
