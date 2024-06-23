@@ -297,9 +297,7 @@ function GameScreen({route}) {
                             </TouchableOpacity>
                         }
 
-                        <TouchableOpacity style={styles.rulesButton} onPress={()=>{
-                            rulesModalVisible(true)
-                        }}>
+                        <TouchableOpacity style={styles.rulesButton} onPress={()=>{playSound(require('../assets/sound/button-click.mp3')), rulesModalVisible(true)}}>
                             <Icon name="question" style={styles.rulesIcon}></Icon>
                         </TouchableOpacity>
                         

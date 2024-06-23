@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { Alert,View, Text, TouchableOpacity, Image } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import { signOut, updateProfile } from "firebase/auth";
@@ -7,18 +7,23 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import styles from "../components/Styles.js";
 import { auth } from "../../firebaseconfig";
+import SoundVolumeContext from "../AuthContext/SoundProvider.js";
 import userContext from "../AuthContext/AuthProvider";
 import ModalEditName from "../components/ModalEditName.js";
 import ModalAvatar from "../components/ModalAvatar.js";
+import ModalGameRules from "../components/ModalGameRules.js";
 
 function Profile() {
     const {user} = useContext(userContext)
     const navigation = useNavigation();
+    const { playSound } = useContext(SoundVolumeContext)
 
     const [editVisible, setEditVisible] = useState(false);
     const [userName, setUserName] = useState(user?.displayName)
     const [avatar, setAvatar] = useState(user?.photoURL)
     const [isModalAvatar, setModalAvatar] = useState(false)
+
+    const [rulesVisible, rulesModalVisible] = useState(false);
 
     const handleHome = () => {
         navigation.navigate('Home');
@@ -26,6 +31,10 @@ function Profile() {
 
     const handleCloseEditModal = ()=>{
         setEditVisible(false); 
+    }
+
+    const handleCloseRulesModal = () =>{
+        rulesModalVisible(false)
     }
 
     const updateDisplayName = async (newName) => {
@@ -99,6 +108,13 @@ function Profile() {
                     <Text style={styles.textTools}>Trang Chủ</Text>
                 </TouchableOpacity>
 
+                <TouchableOpacity style={styles.tools} onPress={()=>{playSound(require('../assets/sound/button-click.mp3')), rulesModalVisible(true)}}>
+                    <View style={styles.square}>    
+                        <Icon name="question" style={styles.iconTools}></Icon>
+                    </View>
+                    <Text style={styles.textTools}>Luật chơi</Text>
+                </TouchableOpacity>
+
                 <TouchableOpacity style={styles.tools} onPress={async() => {
                         const isGoogleProvider = user.providerData.some((profile) => profile.providerId === 'google.com');
                         try{
@@ -120,7 +136,7 @@ function Profile() {
             </View>
 
             <View style={styles.cardContainer}>
-                <TouchableOpacity style={styles.avatar} onPress={()=>setModalAvatar(true)}>
+                <TouchableOpacity style={styles.avatar} onPress={()=>{playSound(require('../assets/sound/button-click.mp3')),setModalAvatar(true)}}>
                     <Image source={ 
                         {uri: avatar}
                     } style={{ 
@@ -147,6 +163,11 @@ function Profile() {
                     handleConfirm={handleConfirm}
                     handleCloseEditModal={handleCloseEditModal}
                 />
+            }
+
+            {
+                rulesVisible &&
+                <ModalGameRules handleCloseRulesModal={handleCloseRulesModal}/>
             }
         </View>
     );
