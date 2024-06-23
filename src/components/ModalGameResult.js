@@ -1,14 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text, Modal, StyleSheet, Image, Dimensions,SafeAreaView } from "react-native";
 import { RFValue } from 'react-native-responsive-fontsize';
 
 import * as Animatable from 'react-native-animatable';
+import PlayerCard from "./playerCard";
+import userContext from "../AuthContext/AuthProvider";
 
 function ModalGameResult({
     handleCloseResultModal,
     winer,
     keyword,
+    roomMembers
 }) {
+    const {user} = useContext(userContext)
     const windowWidth = Dimensions.get('window').width;
     const avatarSize = windowWidth * 0.2; // Kích thước avatarContainer dựa trên tỷ lệ màn hình
 
@@ -41,30 +45,52 @@ function ModalGameResult({
                     <Image source={require('../assets/img/Banner1.png')} style={styles.resultImage}></Image>
                     <View style={styles.infoGameContainer}>
                        <View style={styles.keyWordContainer}>
-                            <Text style={{fontSize: RFValue(11), fontWeight: "bold", color: "white", marginBottom: "5%"}}>Từ khóa của dân làng</Text>
-                            <Text style={{fontSize: RFValue(25), fontWeight: "bold", color: "white"}}>{keyword}</Text>
+                            <Text style={{fontSize: RFValue(12), fontWeight: "bold", color: "white", marginBottom: "5%"}}>Từ khóa của dân làng</Text>
+                            <Text style={{fontSize: RFValue(18), fontWeight: "bold", color: "white"}}>{keyword}</Text>
                        </View>
 
                        <View style={styles.winContainer}>
-                            <Text style={{fontSize: RFValue(11), fontWeight: "bold", color: "white", marginBottom: "5%"}}>Đội chiến thắng</Text>
-                            <Text style={{fontSize: RFValue(25), fontWeight: "bold", color: textColor}}>{winer}</Text>
+                            <Text style={{fontSize: RFValue(12), fontWeight: "bold", color: "white", marginBottom: "5%"}}>Đội chiến thắng</Text>
+                            <Text style={{fontSize: RFValue(18), fontWeight: "bold", color: textColor}}>{winer}</Text>
                        </View>
                     </View>
 
                     <View style={styles.villagerContainer}>
-                        <View style={styles.villagerTeam}>
                             <View style={{...styles.avatarContainer, width: avatarSize, height: avatarSize }}>
-                                <Image source={require('../assets/img/role-Villager.png')} style={styles.avatar}/>
+                                <Image source={require('../assets/img/role-Villager.png')} style={styles.avatar}/> 
                             </View>
-                        </View>
+                            <View style={{ flexDirection:"row", width: "100%", flexWrap: "wrap", paddingTop: "10%"}}>
+                                {
+                                    roomMembers.map((mb, index)=>{
+                                        if(!mb.isGhost){
+                                            return (
+                                                <PlayerCard key={index} containerWidth={"33%"} displayName={mb.displayName} isVoteResult={true}
+                                                        isYou={user.uid === mb.Id} isGhost={mb.isGhost} isShowVoteResult={true} avatar={mb.photoURL}>
+                                                </PlayerCard>
+                                            )
+                                        }
+                                    })
+                                }
+                            </View>
                     </View>
 
                     <View style={styles.ghostContainer}>
-                        <View View style={styles.ghostTeam}>
-                            <View style={{...styles.avatarContainer, width: avatarSize, height: avatarSize, borderColor:"#121212", top: "-41%", backgroundColor: "#4E3E92" }}>
+                            <View style={{...styles.avatarContainer, width: avatarSize, height: avatarSize, borderColor:"#121212", backgroundColor: "#4E3E92", top: "-33%" }}>
                                 <Image source={require('../assets/img/role-Ghost.png')} style={styles.avatar}/>
                             </View>
-                        </View>
+                            <View style={{ flexDirection:"row", width: "100%",  paddingTop: "10%"}}>
+                                {
+                                    roomMembers.map((mb, index)=>{
+                                        if(mb.isGhost){
+                                            return (
+                                                <PlayerCard key={index} containerWidth={"33%"} displayName={mb.displayName} isVoteResult={true}
+                                                        isYou={user.uid === mb.Id} isGhost={mb.isGhost} isShowVoteResult={true} avatar={mb.photoURL}>
+                                                </PlayerCard>
+                                            )
+                                        }
+                                    })
+                                }
+                            </View>
                     </View>
                 </Animatable.View>
             </SafeAreaView>
@@ -118,48 +144,33 @@ const styles = StyleSheet.create({
     },
 
     villagerContainer: {
-        flex: 5,
+        flex: 3,
         alignItems: "center",
-        justifyContent: "center",
-    },
-
-    villagerTeam: {
-        position: "relative",
-        width: "90%",
-        height: "85%",
-        paddingHorizontal: "40%",
-        marginTop: "18%",
         backgroundColor: "#121212",
+        width: "90%", 
         borderRadius: RFValue(10),
     },
 
     ghostContainer:{
-        flex: 4,
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: "5%",
-    },
-
-    ghostTeam: {
-        position: "relative",
+        marginTop: "15%",
+        flex: 2,
         width: "90%",
-        height: "60%",
-        paddingHorizontal: "40%",
-        marginTop: "20%",
-        backgroundColor: "#121212",
         borderRadius: RFValue(10),
+        alignItems: "center",
+        backgroundColor: "#121212",
+        marginBottom: "5%",
     },
 
     avatarContainer: {
         position: "absolute",
         borderRadius: 60, 
-        backgroundColor: "#507033",     
+        backgroundColor: "#507033",
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: RFValue(3),
         borderColor: "#121212",
         top: "-23%",
-        left: "300%",
+        left: "36.5%",
     },
 
     avatar: {

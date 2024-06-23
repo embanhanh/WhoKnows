@@ -341,6 +341,7 @@ function GameScreen({route}) {
                                 winer={roomInfo.winer}
                                 keyword={keyword.key}
                                 handleCloseResultModal={handleCloseResultModal}
+                                roomMembers={roomInfo.roomMembers}
                             />
                         }
 

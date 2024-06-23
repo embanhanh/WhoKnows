@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     },
     textWord: {
         color: 'black', 
-        fontSize: RFValue(24),
+        fontSize: RFValue(20),
         fontWeight: 'bold', 
     },
     homeButton: {
